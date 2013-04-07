@@ -4,7 +4,7 @@ deltur
 deltur.no
 
 
-
+- apt-get install python-lxml
 - pip install gpxpy
 - aptitude install python-shapely
 - apt-get install python-psycopg2
