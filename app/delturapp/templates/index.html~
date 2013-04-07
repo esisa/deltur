@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>deltur.no</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fileupload-ui.css') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 70px;
+        padding-bottom: 40px;
+        background-color: rgb(39,43,48);
+      }
+
+      .form-signin {
+        max-width: 400px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+       text-align: center;
+      }
+   
+
+      #apilink {
+          font-size: 11px;
+          margin-top: 5px;
+          text-align: center;
+      }
+      
+      #delturbutton {
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          width: 95%;
+          margin-top: 30px;
+      }
+      
+      #maptable {
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      #uploadbutton {
+          margin-left: 25%;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      #dropdown {
+          margin-left: 25%;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+          width:165px;
+      }
+      
+      #text {
+          margin-left: auto;
+          margin-right: auto;
+      }
+      
+      #filename {
+          text-align: center;
+          display: none;
+      }
+      
+      
+    </style>
+   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+       <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+       <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+   <script>
+       $(function() {
+           $( document ).tooltip();
+       });
+       </script>
+       <style>
+       label {
+           display: inline-block;
+           width: 5em;
+       }
+       </style>
+									   
+
+   
+  </head>
+
+  <body>
+      
+          
+      
+      <div id="mobileModal" class="modal hide">
+         <div class="modal-header">
+           <a class="close" data-dismiss="modal" >&times;</a>
+           <h3>deltur.no - Public domain</h3>
+         </div>
+         <div class="modal-body">
+          <p>
+              All data som lastes opp til deltur.no er i såkalt <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.no">public domain</a> . Det betyr at alle fritt kan gjenbruke dataene, endre de og republisere de. 
+          </p>
+                  
+          <p>
+              Faktisk oppfordrer deltur.no til å gjenbruke dataene til bruk i f. eks. <a href="http://www.osm.org">OpenStreetMap</a>  
+          </p>
+    
+          <p>
+              Alle data kan lastes ned <a href="data/">her</a> eller hentes ved kart <a href="kart/">her</a>.  
+          </p>
+                  
+          <p>
+              Liker du ikke at dataene er fritt tilgjengelig så ikke bruk deltur.no. 
+          </p>
+                  
+                  
+          </div>  
+         <div class="modal-footer">
+           <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+       </div>
+     </div>
+             
+             
+             
+
+    <div class="container">
+      <form class="form-signin">
+          
+        <!--h2 style="margin-left: 100px" class="form-signin-heading">Last opp fil</h2-->
+        <h1 style="text-align: center;font-size:4em;" class="form-signin-heading">deltur.no</h1>
+        <div style="text-align: center; font-size:20px;">Del din tur p&aring; 1-2-3!</div>
+        <hr>
+        <p id="text">
+           Turen kan du vise p&aring; Facebook, Twitter, e-post eller din egen blogg.  Ved deling godkjenner du at dataene er i <a data-toggle="modal" href="#mobileModal">public domain</a>.     
+        </p>
+        
+        <span id="uploadbutton" class="btn btn-large btn-primary fileinput-button">
+            <i class="icon-plus icon-white"></i>
+            <span>Last opp GPS-fil...</span>
+            <input id="fileupload" type="file">
+        </span>
+        <br><br><br><br>
+        <div id="filename">filnavn</div>
+        <!--input id="fileupload" type="file" name="files[]" data-url="server/php/" multiple-->
+        <!--button style="margin-left: 25%; margin-top: 30px;" class="btn btn-large btn-primary" type="submit">Last opp GPS-fil...</button-->
+        
+        <h3  style="text-align: center;margin-top: 20px;"  class="form-signin-heading">velg bakgrunnskart</h3>
+        
+        <select id="dropdown" class="visible-phone">
+          <option value="turkart">Turkart fra Turkompisen</option>
+          <option value="skikart">Skikart fra Turkompisen</option>
+          <option value="kartverket">Turkart fra Kartverket</option>
+        </select>
+        
+        <table  class="hidden-phone" id="maptable">
+            <tr>
+                <td style="width:100px;margin-left:50px;padding:10px;">
+                    <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/turkart.png') }}"></td>
+                <td style="width:100px;padding:10px;">
+                    <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart.png') }}"></td>
+                <td style="width:100px;padding:10px;">
+                    <img  id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}"></td>
+            </tr>
+            <tr>
+                <td style="width:100px;"><input style="margin-left:40px;" id="turkart-radio" name="karttype" type="radio" checked></td>
+                <td style="width:100px;"><input style="margin-left:40px;" id="skikart-radio" name="karttype" type="radio"></td>
+                <td style="width:100px;"><input style="margin-left:40px;" id="topokart-radio" name="karttype" type="radio"></td>
+            </tr>
+        </table>
+       
+        <button id="delturbutton" class="btn btn-large btn-primary" type="submit">Del turen</button><br>
+        <div id="apilink"><a href="{{ url_for('api') }}">Mer glad i API enn GUI?</a></div>
+        
+		<div style="color:F8F8F8; font-size: 12px; text-align: center;">
+			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a> og <a href="http://www.turkompisen.no">turkompisen.no</a>
+		</div>	
+        
+      </form>
+      
+      
+
+    </div> <!-- /container -->
+    
+    
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileupload/vendor/jquery.ui.widget.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileupload/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileupload/jquery.fileupload.js') }}"></script>
+    <script>
+    $(function () {
+        $('#fileupload').fileupload({
+            
+   	    submit: function (e, data) {
+debugger;
+		var $this = $(this);
+		$.getJSON("{{ url_for('createGPXTrip') }}", function (result) {
+		    data.formData = result; // e.g. {id: 123}
+		    $this.fileupload('send', data);
+		});
+		return false;
+	    } 
+            
+        });
+        
+        // Check if mapped is clicked
+        $('#turkart').click(function () {
+            jQuery("#turkart-radio").attr('checked', 'checked');
+        });
+        $('#skikart').click(function () {
+            jQuery("#skikart-radio").attr('checked', 'checked');
+        });
+        $('#topokart').click(function () {
+            jQuery("#topokart-radio").attr('checked', 'checked');
+        });
+    });
+    </script>
+    
+
+  </body>
+</html>

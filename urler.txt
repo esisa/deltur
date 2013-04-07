@@ -1,0 +1,9 @@
+deltur.no/del/gpx[/kartype]
+deltur.no/del/geojson[/kartype]
+deltur.no/del/kml[/kartype]
+
+deltur.no/567
+deltur.no/567/gpx
+deltur.no/567/geojson
+deltur.no/567/kml
+deltur.no/567/embed

@@ -1,0 +1,2 @@
+- Antall write per måned?
+- Hvordan registrere bruker for å få token?

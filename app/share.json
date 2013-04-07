@@ -1,0 +1,19 @@
+PUNKT INN:
+{
+    "data": "ijflksajjjjoij32kljdsklsjdkl",
+    "text": "Godt med en liten pause i lyngen." 
+    "imgurl": "http://flickr.com/kdjdh43"
+}
+
+PUNKT UT:
+{
+    "text": "Godt med en liten pause i lyngen." 
+    "imgurl": "http://flickr.com/kdjdh43",
+    "latitude": 60.4,
+    "longitude" 10.3,
+}
+
+LINJE UT:
+{
+    "length" 10.3,
+}

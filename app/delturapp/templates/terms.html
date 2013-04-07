@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>deltur.no</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 70px;
+        padding-bottom: 40px;
+        background-color: rgb(39,43,48);
+      }
+
+      .form-signin {
+        max-width: 400px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+       text-align: center;
+      }
+   
+
+      #apilink {
+          font-size: 11px;
+          margin-top: 5px;
+          text-align: center;
+      }
+      
+      #delturbutton {
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          width: 95%;
+          margin-top: 30px;
+      }
+      
+      #maptable {
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      #uploadbutton {
+          margin-left: 25%;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      #dropdown {
+          margin-left: 25%;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+          width:165px;
+      }
+      
+      #text {
+          margin-left: auto;
+          margin-right: auto;
+      }
+      
+      #filename {
+          text-align: center;
+          display: none;
+      }
+      
+      
+    </style>
+   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+       <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+       <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+   <script>
+       $(function() {
+           $( document ).tooltip();
+       });
+       </script>
+       <style>
+       label {
+           display: inline-block;
+           width: 5em;
+       }
+       </style>
+									   
+
+   
+  </head>
+
+  <body>
+      
+          
+      
+    
+             
+
+    <div class="container">
+      <form class="form-signin">
+          
+        <!--h2 style="margin-left: 100px" class="form-signin-heading">Last opp fil</h2-->
+        <h1 style="text-align: center;font-size:4em;" class="form-signin-heading">deltur.no</h1>
+        <div style="text-align: center; font-size:20px;">Betingelser for bruk av deltur.no</div>
+        <hr>
+        <p id="text">
+           deltur.no tilbyr gratis deling av turer. Alle turer er i public domain som betyr at alle kan bruke turen til hva de ønsker. Du kan også 
+           bruke deltur.no sitt <a href="{{ url_for('api') }}">API</a> hvis du ønsker å dele til deltur.no gjennom en applikasjon.       
+        </p>
+        <p id="text">
+            Følgende regler gjelder alle turer:
+            <ul>
+                <li>Alle turer er kun tilgjengelige i 45 dager.</li>
+                <li>I framtida kan det bli lagt inn reklame på delte turer.</li>
+                <li>En tur kan ikke ha en filstørrelse på over X mb.</li>
+                <li>Alle turer er tilgjengelige i public domain.</li>
+            </ul> 
+        </p>
+        <p id="text">
+            Følgende tilleggsbegrensninger gjelder turer delt gjennom API'et:
+            <ul>
+                <li>Du kan maks bruke skrive API endepunkt X ganger per måned.</li>
+            </ul> 
+        </p>
+        
+      </form>
+      
+      
+
+    </div> <!-- /container -->
+    
+    
+    
+
+  </body>
+</html>

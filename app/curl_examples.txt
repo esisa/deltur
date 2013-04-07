@@ -1,0 +1,6 @@
+Lage sted:
+curl  -H "Content-type: application/json" -X POST -d @example_sted.json http://localhost:5000/del/sted/60.1/10.1
+
+curl  -H "Content-type: application/gpx+xml" -X POST --data-binary @example.gpx http://localhost:5000/del/gpx
+
+curl  -H "Content-type: application/json" -X POST -d @example.geojson http://localhost:5000/del/geojson
