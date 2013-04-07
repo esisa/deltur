@@ -303,10 +303,10 @@
                 //Upload to deltur.no/del/gpx
                 $.ajax({
                   type: "POST",
-                  url: "http://localhost:5000/del/gpx",
+                  url: "/del/gpx",
                   data: data,
                   success: function (response) {
-                          document.location.href = "http://localhost:5000/"+response.id+"/" + maptype;
+                          document.location.href = "/"+response.id+"/" + maptype;
                         },
                         error: function (response) {
                           alert("Klarte dessverre ikke å laste opp filen!");
