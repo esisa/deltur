@@ -321,7 +321,7 @@
             var id = value;
           
     		
-            $.getJSON('http://localhost:5000/'+id+'/geojson', function (data) {
+            $.getJSON('/'+id+'/geojson', function (data) {
                 geoObject = [data];
         		
                 var line = true;
@@ -348,7 +348,7 @@
                     
                 }
                 else {
-                    $.getJSON('http://localhost:5000/'+id+'/metadata', function (metadata) {
+                    $.getJSON('/'+id+'/metadata', function (metadata) {
                         var marker = L.marker([data.coordinates[1], data.coordinates[0]]);
                         marker.addTo(map).bindPopup('<h3>'+metadata.title+'</h3><img width="250" src="'+ metadata.url +'"><br>' + metadata.description);
                         $([metadata.url]).preload(); // Preload image
