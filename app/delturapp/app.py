@@ -4,6 +4,7 @@ from flask import render_template
 from flask import Response
 from flask import jsonify
 from flask import request
+from flask import redirect
 from werkzeug import secure_filename
 
 import gpxpy
@@ -133,6 +134,10 @@ def createKMLTrip():
 @app.route('/api/')
 def api():
     return render_template('api.html')
+    
+@app.route('/elev/')
+def elev():
+    return redirect("http://verktoy.kresendo.no/elevProfile")
     
 @app.route('/pro/')
 def pro():
