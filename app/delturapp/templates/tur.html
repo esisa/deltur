@@ -388,7 +388,22 @@
         			
                 trip.setStyle(myStyle);
                 
-        		
+                if(numLines==1) {
+                    // Request elevation profile
+                    // TODO: Remove when only point
+            
+                   	$.ajax({
+                	      url: "/elev/",
+                	      dataType: 'json',
+                	      type: 'post',
+                	      contentType: "application/json",
+                	      data: JSON.stringify(lineFeature),
+                	      success: setElevationProfile
+                	});
+            
+           
+            
+                }
             
                 // TODO: Rewrite
                 setTimeout(function() {
@@ -402,22 +417,7 @@
             });
 		
 		});
-        if(numLines==1) {
-            // Request elevation profile
-            // TODO: Remove when only point
-            
-           	$.ajax({
-        	      url: "/elev/",
-        	      dataType: 'json',
-        	      type: 'post',
-        	      contentType: "application/json",
-        	      data: JSON.stringify(lineFeature),
-        	      success: setElevationProfile
-        	});
-            
-           
-            
-        }
+        
         
     
     
