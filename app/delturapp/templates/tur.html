@@ -17,7 +17,7 @@
 	<script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
     <script src="{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}"></script>
     <script src="{{ url_for('static', filename='js/rickshaw.js') }}"></script>
-	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.js"></script>
+	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
     
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -39,9 +39,9 @@
 	<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
 
    
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.css" />
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
 	<!--[if lte IE 8]>
-		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.5/leaflet.ie.css" />
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
 	<![endif]-->
     <link href="{{ url_for('static', filename='css/bootstrap_alt.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
@@ -134,7 +134,10 @@
 	  
     </style>
     <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">							   
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />									   
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />	
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">	
+    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>							   
   </head>
 
   <body>
@@ -336,7 +339,7 @@
                     numLines++;
                     lineFeature = geoObject;
                     
-                    trip.addData(geoObject);
+                    trip.addData(geoObject[0]);
             		trip.on('mouseover', function(e) {
             		    //alert(e.latlng);
                         markerGroup.clearLayers(); 
@@ -346,10 +349,35 @@
             		});
                     featureBounds.extend(trip.getBounds());
                     
+            
+                    
+                    var start = L.AwesomeMarkers.icon({
+                      icon: ' icon-play', 
+                      color: 'green'
+                    });
+                    
+                    var stop = L.AwesomeMarkers.icon({
+                      icon: ' icon-stop', 
+                      color: 'red'
+                    });
+                    
+                    // Set start and stop marker
+                    var marker = L.marker([lineFeature[0].coordinates[0][0][1], lineFeature[0].coordinates[0][0][0]], {icon: start});
+                    marker.addTo(map).bindPopup('Start');
+                    
+                    var marker = L.marker([lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1][1], 
+                                                                         lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1][0]], {icon: stop});
+                    marker.addTo(map).bindPopup('Slutt');
+                    
                 }
                 else {
+                    
+                    var picture = L.AwesomeMarkers.icon({
+                      icon: 'icon-picture', 
+                      color: 'blue'
+                    });
                     $.getJSON('/'+id+'/metadata', function (metadata) {
-                        var marker = L.marker([data.coordinates[1], data.coordinates[0]]);
+                        var marker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
                         marker.addTo(map).bindPopup('<h3>'+metadata.title+'</h3><img width="250" src="'+ metadata.url +'"><br>' + metadata.description);
                         $([metadata.url]).preload(); // Preload image
                         featureBounds.extend(marker.getLatLng());
@@ -385,6 +413,8 @@
         	      data: JSON.stringify(lineFeature),
         	      success: setElevationProfile
         	});
+            
+           
             
         }
         
