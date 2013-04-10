@@ -135,7 +135,7 @@ def createKMLTrip():
 def api():
     return render_template('api.html')
     
-@app.route('/elev/')
+@app.route('/elev/', methods = ['POST'])
 def elev():
     return redirect("http://verktoy.kresendo.no/elevProfile")
     
@@ -230,7 +230,7 @@ def getLineFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select st_asgeojson(geo) from trips where id=%s"
+    sql_string = "Select st_asgeojson(st_linemerge(geo)) from trips where id=%s"
     cursor.execute(sql_string, (id,))
     geojson = cursor.fetchone()[0]
     conn.commit();

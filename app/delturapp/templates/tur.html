@@ -362,12 +362,11 @@
                     });
                     
                     
-                    var marker = L.marker([lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1][1], 
-                                                                         lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1][0]], {icon: stop});
+                    var marker = L.marker([lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][1], lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][0]], {icon: stop});
                     marker.addTo(map).bindPopup('Slutt');
                     
                     // Set start and stop marker
-                    var marker = L.marker([lineFeature[0].coordinates[0][0][1], lineFeature[0].coordinates[0][0][0]], {icon: start});
+                    var marker = L.marker([lineFeature[0].coordinates[0][1], lineFeature[0].coordinates[0][0]], {icon: start});
                     marker.addTo(map).bindPopup('Start');
                     
                 }
