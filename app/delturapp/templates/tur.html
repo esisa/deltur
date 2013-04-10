@@ -315,6 +315,7 @@
 		    "opacity": 0.65
 		};
         var geoObject;
+        var markerGroup = new L.LayerGroup();
         var numLines = 0; var lineFeature;
         var trip = L.geoJson();
         trip.addTo(map);
@@ -332,7 +333,6 @@
                     line = false;
                 }
                 
-                var markerGroup = new L.LayerGroup();
                 map.addLayer(markerGroup);
                 var marker;
                 if(line) {
@@ -362,6 +362,12 @@
                     });
                     
                     
+                    /*var marker = L.marker([lineFeature[0].coordinates
+                        [lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1]
+                        [1], 
+                                                                         lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1][0]], {icon: stop});
+                        
+                        */
                     var marker = L.marker([lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][1], lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][0]], {icon: stop});
                     marker.addTo(map).bindPopup('Slutt');
                     
