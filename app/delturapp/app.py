@@ -73,7 +73,7 @@ def createPointJSON(lon=10, lat=60):
     if request.method == 'POST':
         return addPointToDB(lon, lat, request.json['url'], request.json['description'], "", request.json['title'])
     else:
-        return addPointToDB(lon, lat, "", "", "")
+        return addPointToDB(lon, lat, "", "", "", "")
     
 
 @app.route('/del/gpx', methods = ['POST'])
