@@ -319,6 +319,14 @@
 			//scheme: "tms",
 			maxZoom: 18
 		});
+        
+        var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
+			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
+			subdomains: ["1", "2", "3", "4"],
+			//scheme: "tms",
+			maxZoom: 18
+		});
+        
 
         if({{mapType}}==0) {
             map.addLayer(turkart);
@@ -331,6 +339,9 @@
         }
         else if({{mapType}}==3) {
             map.addLayer(topokart);
+        }
+        else if({{mapType}}==4) {
+            map.addLayer(satellite);
         }
 		    
 

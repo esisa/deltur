@@ -32,7 +32,7 @@ pg_user = "deltur"
 pg_passwd = "deltur._01"
 pg_port = "5432"
 
-mapTypesList = ['turkart','skikart','veikart','topokart']
+mapTypesList = ['turkart','skikart','veikart','topokart', 'satellitt']
 
 ### READ ###
 
