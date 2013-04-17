@@ -14,6 +14,7 @@ from shapely.geometry import LineString
 from shapely.geometry import Point
 import psycopg2
 import json
+import requests
 
 app = Flask(__name__)
 app.debug = True
@@ -28,10 +29,12 @@ app.secret_key = '....'
 pg_db = "deltur"
 pg_host = "localhost"
 pg_user = "deltur"
-pg_passwd = ""
+pg_passwd = "deltur"
 pg_port = "5432"
 
 mapTypesList = ['turkart','skikart','veikart','topokart']
+
+### READ ###
 
 
 @app.route('/<int:id>/metadata')
@@ -49,8 +52,70 @@ def getTripGeoJSON(id):
     except:
         return getPointFromDB(id)
         
+@app.route('/<int:id>/osm')
+def getTripOSM(id):
+    if isPoint(id):
+        try:
+            r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=osm')
+            return Response(r.text, mimetype='text/xml')
+        except:
+            return "Error"
+    else:
+        try:
+            r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=osm')
+            return Response(r.text, mimetype='text/xml')
+        except:
+            return "Error"
+    
+@app.route('/<int:id>/kml')
+def getTripKML(id):
+    if isPoint(id):
+        try:
+            r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=kml')
+            return Response(r.text, mimetype='text/xml')
+        except:
+            return "Error"
+    else:
+        try:
+            r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=kml')
+            return Response(r.text, mimetype='text/xml')
+        except:
+            return "Error"
+
+@app.route('/<int:id>/csv')
+def getTripCSV(id):
+    if isPoint(id):
+        try:
+            r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=csv')
+            return Response(r.text, mimetype='text/plain')
+        except:
+            return "Error"
+    else:
+        try:
+            r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=csv')
+            return Response(r.text, mimetype='text/plain')
+        except:
+            return "Error"
+
+@app.route('/<int:id>/gpx')
+def getTripGPX(id):
+    if isPoint(id):
+        try:
+            r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=gpx')
+            return Response(r.text, mimetype='text/xml')
+        except:
+            return "Error"
+    else:
+        try:
+            r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=gpx')
+            return Response(r.text, mimetype='text/xml')
+        except:
+            return "Error"
 
 
+
+
+### TEMPLATES ###
     
 @app.route('/<ids>')
 @app.route('/<ids>/<string:mapType>')
@@ -66,7 +131,12 @@ def getTripEmbed(ids, mapType='turkart'):
     map = mapTypesList.index(mapType)
     return render_template('embed.html', mapType=map, idList=ids)
 
-    
+
+
+
+
+
+### WRITE ###
 
 @app.route('/del/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])
 def createPointJSON(lon=10, lat=60):
@@ -160,7 +230,7 @@ def home():
     
 def addPointToDB(lon, lat, url, description, markerType, title):
     try:
-        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+"  host="+pg_host+" ")
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
             
@@ -185,7 +255,7 @@ def addPointToDB(lon, lat, url, description, markerType, title):
     
 def addLineToDB(line, title):
     try:
-        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+"  host="+pg_host+" ")
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
             
@@ -207,7 +277,7 @@ def addLineToDB(line, title):
     
 def getPointFromDB(id):
     try:
-        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+"  host="+pg_host+" ")
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
             
@@ -224,7 +294,7 @@ def getPointFromDB(id):
         
 def getLineFromDB(id):
     try:
-        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+"  host="+pg_host+" ")
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
             
@@ -241,7 +311,7 @@ def getLineFromDB(id):
     
 def getPointMetadataFromDB(id):
     try:
-        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+"  host="+pg_host+" ")
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
             
@@ -268,7 +338,7 @@ def getPointMetadataFromDB(id):
     
 def getLineMetadataFromDB(id):
     try:
-        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+"  host="+pg_host+" ")
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
             
@@ -289,3 +359,21 @@ def getLineMetadataFromDB(id):
     
     return resp
     
+def isPoint(id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+    
+    sql_string = "Select count(*) from points where id=%s"
+    cursor.execute(sql_string, (id,))
+    res = cursor.fetchone()[0]
+    conn.commit();
+    
+    #if res == 0:
+    #    return True
+    #else:
+    #    return False
+    return True
