@@ -29,7 +29,7 @@ app.secret_key = '....'
 pg_db = "deltur"
 pg_host = "localhost"
 pg_user = "deltur"
-pg_passwd = "deltur"
+pg_passwd = "deltur._01"
 pg_port = "5432"
 
 mapTypesList = ['turkart','skikart','veikart','topokart']
@@ -372,8 +372,7 @@ def isPoint(id):
     res = cursor.fetchone()[0]
     conn.commit();
     
-    #if res == 0:
-    #    return True
-    #else:
-    #    return False
-    return True
+    if res == 1:
+        return True
+    else:
+        return False
