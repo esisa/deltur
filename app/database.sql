@@ -19,12 +19,17 @@ create table trips(
 );
 SELECT AddGeometryColumn ('public','trips','geo',4326,'MULTILINESTRING',2);
 
+drop view if exists trips_v;
+create view trips_v as 
+    select id, title, dato, st_linemerge(geo) as geo
+    from trips;
+
 drop table if exists points;
 create table points(
     id int4 DEFAULT nextval('common_trip_id_seq') NOT NULL,
     title varchar(50),
-    url varchar(100),
-    description varchar(250),
+    url varchar(500),
+    description varchar(500),
     markerType varchar(20),
     dato timestamp
 );
