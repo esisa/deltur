@@ -165,8 +165,20 @@
           <h3>Last ned turen</h3>
         </div>
         <div class="modal-body">
-          <p>Du kan laste ned turen i ulike formater.</p>
-          <p> Kommer! </p>
+          <p>
+              Steder: &nbsp;&nbsp;
+              <select id="placeSelect" class="input-small"><option>1</option><option>2</option></select>
+              &nbsp;&nbsp;&nbsp;&nbsp;<select id="placeDownloadType" class="input-small"><option>GPX</option><option>GeoJSON</option><option>OSM</option><option>CSV</option><option>KML</option></select>
+              &nbsp;&nbsp;&nbsp;<button class="btn btn-success" type="button">Last ned</button>
+          </p>
+          <p>Turer: &nbsp;&nbsp;&nbsp;&nbsp;
+              <select id="tripSelect" class="input-small"><option>1</option><option>2</option></select>
+              &nbsp;&nbsp;&nbsp;&nbsp;<select id="tripsDownloadType" class="input-small"><option>GPX</option><option>GeoJSON</option><option>OSM</option><option>CSV</option><option>KML</option></select>
+              &nbsp;&nbsp;&nbsp;<button class="btn btn-success" type="button">Last ned</button>
+          </p>
+          <p>
+              Denne turen er satt sammen av turer og steder. Du kan sjøl velge formatet du ønsker å laste ned dataene i. 
+          </p>
         </div>
         <div class="modal-footer">
           <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
