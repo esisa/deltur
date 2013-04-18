@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>deltur.no</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fileupload-ui.css') }}">
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Alegreya+SC:700,400italic' rel='stylesheet' type='text/css' />
+    
+    
+    <style type="text/css">
+      body {
+        padding-top: 70px;
+        padding-bottom: 40px;
+        background-color: rgb(39,43,48);
+      }
+
+      .form-signin {
+        max-width: 1000px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+       text-align: center;
+      }
+   
+
+      #apilink {
+          font-size: 11px;
+          margin-top: 5px;
+          text-align: center;
+      }
+      
+      #termslink {
+          font-size: 11px;
+          margin-top: 5px;
+          text-align: center;
+      }
+      
+      #delturbutton {
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          width: 95%;
+          margin-top: 30px;
+      }
+      
+      #enkelTur {
+          text-align: center;          
+      }
+      
+      #avansertTur {
+          margin-left: 20%;          
+      }
+      
+      #maptable {
+          margin-left: 28%;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      #uploadbutton {
+          margin-left: 25%;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      #dropdown {
+          margin-left: 25%;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+          width:165px;
+      }
+      
+      #text {
+          text-align: center;
+      }
+      
+      #filename {
+          text-align: center;
+          display: none;
+      }
+      
+      
+      
+      .da-thumbs {
+      	list-style: none;
+      	width: 984px;
+      	height: 170px;
+      	position: relative;
+      	margin: 0px auto;
+      	padding: 0;
+      }
+      .da-thumbs li {
+      	float: left;
+      	margin: 5px;
+      	background: #f2f2f2;
+      	padding: 8px;
+      	position: relative;
+      	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      .da-thumbs li a,
+      .da-thumbs li a img {
+      	display: block;
+      	position: relative;
+      }
+      .da-thumbs li a {
+      	overflow: hidden;
+      }
+      .da-thumbs li a div {
+      	position: absolute;
+      	background: #333;
+      	background: rgba(75,75,75,0.7);
+      	width: 100%;
+      	height: 100%;
+      }
+      .da-thumbs li a div span {
+      	display: block;
+      	padding: 10px 0;
+      	margin: 40px 20px 20px 20px;
+      	font-weight: normal;
+      	color: rgba(255,255,255,0.9);
+      	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+      	border-bottom: 1px solid rgba(255,255,255,0.5);
+
+      }
+
+      .mapContainer > header{
+      	margin: 10px;
+      	position: relative;
+      	display: block;
+      	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+          text-align: center;
+      }
+
+
+      /* NOJS */
+      .da-thumbs li a div {
+      	top: 0px;
+      	left: -100%;
+      	-webkit-transition: all 0.3s ease;
+      	-moz-transition: all 0.3s ease-in-out;
+      	-o-transition: all 0.3s ease-in-out;
+      	-ms-transition: all 0.3s ease-in-out;
+      	transition: all 0.3s ease-in-out;
+      }
+      .da-thumbs li a:hover div{
+      	left: 0px;
+      }
+      
+      label {
+          display: inline-block;
+          width: 5em;
+      }
+      
+    </style>
+   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
+   
+<!--link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.css" /-->
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+
+<!--[if lte IE 8]>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+<![endif]-->
+
+<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+   
+   
+   
+   <script src="{{ url_for('static', filename='js/modernizr.custom.97074.js') }}"></script>
+   <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+   <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+   <script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>   
+   <script type="text/javascript" src="{{ url_for('static', filename='js/spin.js') }}"></script>
+   
+   <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+   <!--script type="text/javascript" src="http://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.js"></script-->
+   
+   <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>
+   <!--script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script-->
+   
+   <script src="https://raw.github.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
+   
+   
+   
+   <script>
+       $(function() {
+           $( document ).tooltip();
+       });
+       filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
+       
+       
+       var uploadFile; // Store the URL to the file uploaded
+  
+  
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-40003995-1']);
+         _gaq.push(['_trackPageview']);
+
+         (function() {
+           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+         
+       </script>
+   
+   
+   
+  </head>
+  
+  
+
+  <body>
+      
+     
+      
+      <div id="mobileModal" class="modal hide">
+         <div class="modal-header">
+           <a class="close" data-dismiss="modal" >&times;</a>
+           <h3>deltur.no - Public domain</h3>
+         </div>
+         <div class="modal-body">
+          <p>
+              All data som lastes opp til deltur.no er i såkalt <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.no">public domain</a> . Det betyr at alle fritt kan gjenbruke dataene, endre de og republisere de. 
+          </p>
+                  
+          <p>
+              Faktisk oppfordrer deltur.no til å gjenbruke dataene til bruk i f. eks. <a href="http://www.osm.org">OpenStreetMap</a>  
+          </p>
+    
+          <p>
+              Alle data kan lastes ned <a href="data/">her</a> eller hentes ved kart <a href="kart/">her</a>.  
+          </p>
+                  
+          <p>
+              Liker du ikke at dataene er fritt tilgjengelig så ikke bruk deltur.no. 
+          </p>
+                  
+                  
+          </div>  
+         <div class="modal-footer">
+           <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+       </div>
+     </div>
+             
+             
+             
+
+    <div class="container">
+      <form class="form-signin" onsubmit="return false;" AUTOCOMPLETE="off">
+          
+        <!--h2 style="margin-left: 100px" class="form-signin-heading">Last opp fil</h2-->
+        <h1 style="text-align: center;font-size:4em;" class="form-signin-heading">deltur.no</h1>
+        <div style="text-align: center; font-size:20px;">Del din tur p&aring; 1-2-3!</div>
+        <hr>
+        <p id="text">
+           Turen kan du vise p&aring; Facebook, Twitter, e-post eller din egen blogg.  Ved deling godkjenner du at dataene er i <a data-toggle="modal" href="#mobileModal">public domain</a>.<br /><br />     
+        </p>
+        
+        <div id="enkelTur">
+            <input id="dd" type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX();" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
+        </div>
+        
+        <div class="mapContainer">
+			<!-- Codrops top bar -->
+            
+			<header class="clearfix">
+                <div id="map" style="height: 350px; "></div>
+				
+			</header>
+			<section>
+				<ul id="da-thumbs" class="da-thumbs">
+					<li>
+						<a href="javascript:void(0)">
+							<img src="{{ url_for('static', filename='img/a2.jpg') }}" width="166" height="146" />
+							<div><span>Klikk for å endre plassering i kartet</span></div>
+						</a>
+					</li>
+					<li>
+						<a id="addImg" href="javascript:void(0)">
+							<img src="{{ url_for('static', filename='img/a3.png') }}" width="166" height="146" />
+							<div><span>Legg til flere bilder...</span></div>
+						</a>
+					</li>
+					
+
+				</ul>
+			</section>
+        </div>
+		
+        
+        <select id="dropdown" class="visible-phone">
+          <option value="turkart">Turkart fra Turkompisen</option>
+          <option value="skikart">Skikart fra Turkompisen</option>
+          <option value="kartverket">Turkart fra Kartverket</option>
+        </select>
+        
+        <table  class="hidden-phone" id="maptable">
+            <tr>
+                <td style="width:100px;margin-left:50px;padding:10px;">
+                    <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/turkart.png') }}"></td>
+                <td style="width:100px;padding:10px;">
+                    <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart.png') }}"></td>
+                <td style="width:100px;padding:10px;">
+                    <img  id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}"></td>
+            </tr>
+            <tr>
+                <td style="width:100px;"><input style="margin-left:40px;" id="turkart-radio" name="karttype" type="radio" checked></td>
+                <td style="width:100px;"><input style="margin-left:40px;" id="skikart-radio" name="karttype" type="radio"></td>
+                <td style="width:100px;"><input style="margin-left:40px;" id="topokart-radio" name="karttype" type="radio"></td>
+            </tr>
+        </table>
+       
+        <button id="delturbutton" class="btn btn-large btn-primary" type="submit" disabled>Del turen</button><br>
+        
+        <div id ="spinner" style="margin-top: 15px;"></div>
+
+        <div id="apilink"><a href="{{ url_for('api') }}">Mer glad i API enn GUI?</a></div>
+        <div id="termslink"><a href="{{ url_for('terms') }}">Betingelser for bruk av deltur.no</a></div>
+        
+		<div style="color:F8F8F8; font-size: 12px; text-align: center;">
+			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a> og <a href="http://www.turkompisen.no">turkompisen.no</a>
+		</div>	
+        
+      </form>
+      
+      
+
+    </div> <!-- /container -->
+    
+    
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileupload/vendor/jquery.ui.widget.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileupload/jquery.iframe-transport.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileupload/jquery.fileupload.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.tab.min.js') }}"></script>
+    <script>
+    
+    //var groupLayer = new L.LayerGroup();
+    var gpxBounds = L.LatLngBounds();
+    var gpx;
+    function addGPX() {
+        var url = uploadFile; // URL to your GPX file
+        gpx = new L.GPX(url, {
+            async: true,
+            marker_options: {
+                startIconUrl: 'images/pin-icon-start.png',
+                endIconUrl: 'images/pin-icon-end.png',
+                shadowUrl: 'images/pin-shadow.png'
+              }
+          }).on('loaded', function(e) {
+            map.fitBounds(e.target.getBounds());
+          }).addTo(map);
+            
+          /*map.addLayer(gpx);
+          gpxBounds.extend(e.target.getBounds());
+          map.fitBounds(gpxBounds.getBounds());
+        })*/
+    }
+    var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
+    $(function () {
+
+
+ 		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
+        
+         if($('.container').width()>480) {
+             L.control.scale({imperial:false, position: 'bottomleft'}).addTo(map);
+         }
+		
+
+ 		skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
+ 			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+ 			subdomains: ["1", "2", "3", "4"],
+ 			//scheme: "tms",
+ 			maxZoom: 18
+ 		});
+
+ 		turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
+ 			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+ 			subdomains: ["1", "2", "3", "4"],
+ 			//scheme: "tms",
+ 			maxZoom: 18
+ 		});
+		
+ 		veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
+ 			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
+ 			subdomains: ["1", "2", "3", "4"],
+ 			//scheme: "tms",
+ 			maxZoom: 18
+ 		});
+        
+ 		topokart = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}", {
+ 			attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
+ 			subdomains: ["1", "2", "3", "4"],
+ 			//scheme: "tms",
+ 			maxZoom: 18
+ 		});
+        
+         var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
+ 			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
+ 			subdomains: ["1", "2", "3", "4"],
+ 			//scheme: "tms",
+ 			maxZoom: 18
+ 		});
+
+        map.addLayer(turkart);
+        
+        
+        
+        
+        /*
+        var drawnItems = new L.FeatureGroup();
+        		map.addLayer(drawnItems);
+
+        		var drawControl = new L.Control.Draw({
+                    //position: 'topright',
+        			draw: {
+        				position: 'topleft',
+                        polygon: false,
+        				polyline: {
+        					title: 'Tegn en tur',
+        					shapeOptions: {
+        						color: '#ff7800'
+        					}
+        				},
+        				circle: false,
+                        marker: false,
+                        rectangle: false
+        			},
+        			edit: {
+        				featureGroup: drawnItems,
+                        remove: false
+        			}
+        		});
+        		map.addControl(drawControl);
+
+        		map.on('draw:created', function (e) {
+        			var type = e.layerType,
+        				layer = e.layer;
+
+        			if (type === 'marker') {
+        				layer.bindPopup('A popup!');
+        			}
+
+        			drawnItems.addLayer(layer);
+        		});
+        
+        */
+        
+        
+        
+        $('#delturbutton').click(function () {
+            //console.log(uploadFile);
+
+            new Spinner().spin(document.getElementById('spinner'));
+            $('#apilink').css('visibility','hidden');
+            $('#termslink').css('visibility','hidden');
+            $('#delturbutton').text("Laster opp...");
+            
+            /*FPFile from a previous pick, etc.*/
+            var fpfile = {url: uploadFile,
+                filename: 'hello.txt', mimetype: 'text/plain', isWriteable: false, size: 100};
+            //console.log("Loading "+fpfile.filename);
+            filepicker.read(fpfile, function(data){
+                //console.log(data);
+                
+                // Check maptype
+                var maptype = turkart;
+                if(jQuery("#turkart-radio").attr('checked') == 'checked') {
+                    maptype = "turkart";
+                }
+                else if(jQuery("#skikart-radio").attr('checked') == 'checked') {
+                    maptype = "skikart";
+                }
+                else {
+                    maptype = "topokart";
+                }
+                
+                //Upload to deltur.no/del/gpx
+                $.ajax({
+                  type: "POST",
+                  url: "/del/gpx",
+                  data: data,
+                  success: function (response) {
+                          document.location.href = "/"+response.id+"/" + maptype;
+                        },
+                        error: function (response) {
+                          alert("Klarte dessverre ikke å laste opp filen!");
+                        },
+                  contentType: "application/gpx+xml",
+                  dataType: "json"
+                });
+                
+            })
+        });
+        
+        // Check if mapped is clicked
+        $('#turkart').click(function () {
+            jQuery("#turkart-radio").attr('checked', 'checked');
+        });
+        $('#skikart').click(function () {
+            jQuery("#skikart-radio").attr('checked', 'checked');
+        });
+        $('#topokart').click(function () {
+            jQuery("#topokart-radio").attr('checked', 'checked');
+        });
+        
+        $('#addImg').click(function () {
+            filepicker.pickAndStore(
+                {
+                    mimetype:"image/*",
+                    services:['COMPUTER', 'FACEBOOK', 'DROPBOX', 'GMAIL',  'EVERNOTE',  'FTP',  'GOOGLE_DRIVE'],
+                },
+                    {location:"S3", access: 'public'}, 
+                    function(fpfiles){
+                        console.log(JSON.stringify(fpfiles));
+                        
+                        // Add to list
+                        $('#da-thumbs').prepend('<li><a href="javascript:void(0)"><img  src="'+fpfiles[0].url+'"  width="166" height="146" /><div><span>Klikk for å plassere i kartet</span></div></a></li>')
+                        
+                    },
+                    function(FPError){
+                        console.log(FPError.toString());
+                    });
+            });
+        
+        });
+    
+    
+    
+    </script>
+    
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.hoverdir.js') }}"></script>	
+	<script type="text/javascript">
+		$(function() {
+		
+			$(' #da-thumbs > li ').each( function() { $(this).hoverdir({
+				hoverDelay : 50,
+				inverse : true
+			}); } );
+
+		});
+	</script>
+    
+
+  </body>
+</html>

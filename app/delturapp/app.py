@@ -207,7 +207,10 @@ def createKMLTrip():
     
     return addLineToDB(linestring, "")
     
-    
+
+@app.route('/advanced/')
+def advanced():
+    return render_template('advanced.html')    
 
 @app.route('/api/')
 def api():
