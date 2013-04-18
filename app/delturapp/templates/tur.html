@@ -582,7 +582,23 @@
         var type = $("#placeDownloadType option:selected").text().toLowerCase();
         window.open("/" + id + "/" + type);
     });
+    
+    // FIX LINKS TO SOSIAL NETWORKS
+    var link = $("#fb_share").attr("href");
+    var encodedLink = link.replace("+","%2B");
+    var link = $("#fb_share").attr("href", encodedLink);
+    
+    var link = $("#tw_share").attr("href");
+    var encodedLink = link.replace("+","%2B");
+    var link = $("#tw_share").attr("href", encodedLink);
 
+    var link = $("#go_share").attr("href");
+    var encodedLink = link.replace("+","%2B");
+    var link = $("#go_share").attr("href", encodedLink);
+
+    var link = $("#mail_share").attr("href");
+    var encodedLink = link.replace("+","%2B");
+    var link = $("#mail_share").attr("href", encodedLink);
 	</script>
 
 </html>
