@@ -43,6 +43,12 @@
           text-align: center;
       }
       
+      #termslink {
+          font-size: 11px;
+          margin-top: 5px;
+          text-align: center;
+      }
+      
       #delturbutton {
           margin-left: auto;
           margin-right: auto;
@@ -104,7 +110,9 @@
        <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
        <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
    
-   <script type="text/javascript" src="//api.filepicker.io/v1/filepicker.js"></script>   
+   <script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>   
+   <script type="text/javascript" src="http://fgnass.github.io/spin.js/dist/spin.js"></script>
+   
    <script>
        $(function() {
            $( document ).tooltip();
@@ -220,7 +228,7 @@
           <div class="tab-content">
             <div class="tab-pane active" id="tab1">
                 <div id="enkelTur">
-                    <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
+                    <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
                 </div>
               
             </div>
@@ -270,9 +278,12 @@
             </tr>
         </table>
        
-        <button id="delturbutton" class="btn btn-large btn-primary" type="submit">Del turen</button><br>
+        <button id="delturbutton" class="btn btn-large btn-primary" type="submit" disabled>Del turen</button><br>
+        
+        <div id ="spinner" style="margin-top: 15px;"></div>
+
         <div id="apilink"><a href="{{ url_for('api') }}">Mer glad i API enn GUI?</a></div>
-        <div id="apilink"><a href="{{ url_for('terms') }}">Betingelser for bruk av deltur.no</a></div>
+        <div id="termslink"><a href="{{ url_for('terms') }}">Betingelser for bruk av deltur.no</a></div>
         
 		<div style="color:F8F8F8; font-size: 12px; text-align: center;">
 			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a> og <a href="http://www.turkompisen.no">turkompisen.no</a>
@@ -293,31 +304,22 @@
     <script src="{{ url_for('static', filename='js/fileupload/vendor/jquery.ui.widget.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fileupload/jquery.iframe-transport.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fileupload/jquery.fileupload.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.blockUI.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.tab.min.js') }}"></script>
     <script>
     $(function () {
         
         $('#delturbutton').click(function () {
-            console.log(uploadFile);
+            //console.log(uploadFile);
 
-            $.blockUI({ message:  '<img src="http://localhost:5000/static/img/loader.png"><h2>Turen din er straks klar...</h2>',
-            css: { 
-                border: 'none', 
-    
-                padding: '15px', 
-                backgroundColor: '#000', 
-                '-webkit-border-radius': '10px', 
-                '-moz-border-radius': '10px', 
-                opacity: .5, 
-                color: '#fff' 
-            } }); 
-              
+            new Spinner().spin(document.getElementById('spinner'));
+            $('#apilink').css('visibility','hidden');
+            $('#termslink').css('visibility','hidden');
+            $('#delturbutton').text("Laster opp...");
             
             /*FPFile from a previous pick, etc.*/
             var fpfile = {url: uploadFile,
                 filename: 'hello.txt', mimetype: 'text/plain', isWriteable: false, size: 100};
-            console.log("Loading "+fpfile.filename);
+            //console.log("Loading "+fpfile.filename);
             filepicker.read(fpfile, function(data){
                 //console.log(data);
                 
