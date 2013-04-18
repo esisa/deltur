@@ -6,6 +6,7 @@ from flask import jsonify
 from flask import request
 from flask import redirect
 from werkzeug import secure_filename
+from werkzeug.routing import BaseConverter
 
 import gpxpy
 import gpxpy.gpx
@@ -21,10 +22,18 @@ app.debug = True
 app.secret_key = '....'
 
 
+class RegexConverter(BaseConverter):
+    def __init__(self, url_map, *items):
+        super(RegexConverter, self).__init__(url_map)
+        self.regex = items[0]
+
+app.url_map.converters['regex'] = RegexConverter
+
 # maptypes
 # 1 = turkart
 # 2 = skikart
 # 3 = kartverket
+# 4 = satellitt
 
 pg_db = "deltur"
 pg_host = "localhost"
@@ -116,17 +125,16 @@ def getTripGPX(id):
 
 
 ### TEMPLATES ###
-    
-@app.route('/<ids>')
-@app.route('/<ids>/<string:mapType>')
+@app.route('/<regex("[0-9+]+"):ids>')
+@app.route('/<regex("[0-9+]+"):ids>/<string:mapType>')
 def getTripHTML(ids, mapType='turkart'):
     map = mapTypesList.index(mapType)
     return render_template('tur.html', mapType=map, idList=ids)
 
 
     
-@app.route('/<ids>/embed')
-@app.route('/<ids>/embed/<string:mapType>')
+@app.route('/<regex("[0-9+]+"):ids>/embed')
+@app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>')
 def getTripEmbed(ids, mapType='turkart'):
     map = mapTypesList.index(mapType)
     return render_template('embed.html', mapType=map, idList=ids)
