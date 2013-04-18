@@ -15,7 +15,8 @@ drop table if exists trips;
 create table trips(
     id int4 DEFAULT nextval('common_trip_id_seq') NOT NULL,
     title varchar(50),
-    dato timestamp
+    dato timestamp,
+    token varchar(50)
 );
 SELECT AddGeometryColumn ('public','trips','geo',4326,'MULTILINESTRING',2);
 
@@ -31,6 +32,7 @@ create table points(
     url varchar(500),
     description varchar(500),
     markerType varchar(20),
-    dato timestamp
+    dato timestamp,
+    token varchar(50)
 );
 SELECT AddGeometryColumn ('public','points','geo',4326,'POINT',2);
