@@ -171,16 +171,12 @@
 
 	<script type="text/javascript">
     
-        $("#elevProfile").click(function() {
-          $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-          return false;
+    $.fn.preload = function() {
+        this.each(function(){
+            $('<img/>')[0].src = this;
         });
-        
-        $("#upTop").click(function() {
-          $("html, body").animate({ scrollTop:0 }, "slow");
-          return false;
-        });
-
+    }
+    
     
 		var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
 
@@ -321,7 +317,7 @@
                         });
                         $.getJSON('/'+id+'/metadata', function (metadata) {
                             var marker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
-                            marker.addTo(map).bindPopup('<h3 style="color:272B30">'+metadata.title+'</h3><img width="250" src="'+ metadata.url +'"><br><div style="color:272B30">' + metadata.description + '</div>');
+                            marker.addTo(map).bindPopup('<h3 id="popupText">'+metadata.title+'</h3><img width="250" src="'+ metadata.url +'"><br><div id="popupText">' + metadata.description + '</div>');
                             $([metadata.url]).preload(); // Preload image
                             featureBounds.extend(marker.getLatLng());
                         });
@@ -350,10 +346,15 @@
                     // TODO: Rewrite
                     setTimeout(function() {
                             map.fitBounds(featureBounds);
-                            /*if(map.getZoom()>14) {
-                                map.setZoom(14);
-                            } */
+                            setTimeout(function() {
+                                if(numLines==0 && map.getZoom() > 11) {
+                                        map.setZoom(11);
+                                }
+                                
+                        
+                                },300);
                         },300);
+                    
             
     
                 });
