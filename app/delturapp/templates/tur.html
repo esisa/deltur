@@ -448,7 +448,7 @@
                     });
                     $.getJSON('/'+id+'/metadata', function (metadata) {
                         var marker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
-                        marker.addTo(map).bindPopup('<h3 style="color:272B30">'+metadata.title+'</h3><img width="250" src="'+ metadata.url +'"><br><div style="color:272B30">' + metadata.description + '</div>');
+                        marker.addTo(map).bindPopup('<h3 id="popupText">'+metadata.title+'</h3><img width="250" src="'+ metadata.url +'"><br><div id="popupText">' + metadata.description + '</div>');
                         $([metadata.url]).preload(); // Preload image
                         featureBounds.extend(marker.getLatLng());
                     });
