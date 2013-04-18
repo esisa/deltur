@@ -228,7 +228,7 @@ body {
   font-family: Georgia, Utopia, Palatino, 'Palatino Linotype', serif;
   font-size: 15px;
   line-height: 20px;
-  color: #ece9d7;
+  color: #F8F8F8;
   background-color: #2a333c;
 }
 
@@ -2952,7 +2952,7 @@ table th[class*="span"],
   clear: both;
   font-weight: normal;
   line-height: 20px;
-  color: #ece9d7;
+  color: #F8F8F8;
   white-space: nowrap;
 }
 
@@ -6182,7 +6182,7 @@ h1 {
 
 code,
 pre {
-  color: #ece9d7;
+  color: #F8F8F8;
   background-color: #566577;
   border: none;
 }
@@ -6273,7 +6273,7 @@ blockquote.pull-right {
 .navbar .nav .dropdown-toggle .caret,
 .navbar .nav .open.dropdown .caret {
   margin-top: 14px;
-  border-top-color: #ece9d7;
+  border-top-color: #F8F8F8;
 }
 
 .navbar .dropdown-menu::before {
@@ -6319,7 +6319,7 @@ blockquote.pull-right {
             box-shadow: none;
   }
   .navbar .nav-collapse .nav-header {
-    color: #ece9d7;
+    color: #F8F8F8;
   }
 }
 
@@ -6331,7 +6331,7 @@ div.subnav {
 
 div.subnav .nav > li > a,
 div.subnav .nav > li.active > a {
-  color: #ece9d7;
+  color: #F8F8F8;
   border-color: transparent;
 }
 
@@ -6375,11 +6375,11 @@ div.subnav.subnav-fixed .nav > li.active > a:hover {
 
 div.subnav .nav > .active > a .caret,
 div.subnav .nav > .active > a:hover .caret {
-  border-top-color: #ece9d7;
+  border-top-color: #F8F8F8;
 }
 
 .nav .nav-header {
-  color: #ece9d7;
+  color: #F8F8F8;
   text-shadow: none;
 }
 
@@ -6389,7 +6389,7 @@ div.subnav .nav > .active > a:hover .caret {
 
 .nav-list > li > a,
 .nav-list > .nav-header {
-  color: #ece9d7;
+  color: #F8F8F8;
   text-shadow: none;
 }
 
@@ -6409,7 +6409,7 @@ div.subnav .nav > .active > a:hover .caret {
 }
 
 .nav-tabs > li > a {
-  color: #ece9d7;
+  color: #F8F8F8;
   background-color: #45515f;
 }
 
@@ -6428,7 +6428,7 @@ div.subnav .nav > .active > a:hover .caret {
 }
 
 .nav-pills > li > a {
-  color: #ece9d7;
+  color: #F8F8F8;
   background-color: #45515f;
 }
 
@@ -6450,7 +6450,7 @@ div.subnav .nav > .active > a:hover .caret {
 
 .nav-pills .dropdown .caret,
 .nav-pills .dropdown:hover .caret {
-  border-top-color: #ece9d7;
+  border-top-color: #F8F8F8;
 }
 
 .dropdown.open .dropdown-menu > li > a:hover,
@@ -6480,7 +6480,7 @@ div.subnav .nav > .active > a:hover .caret {
 }
 
 .breadcrumb .divider {
-  color: #ece9d7;
+  color: #F8F8F8;
 }
 
 .pagination ul {
@@ -6490,7 +6490,7 @@ div.subnav .nav > .active > a:hover .caret {
 
 .pagination ul > li > a,
 .pagination ul > li > span {
-  color: #ece9d7;
+  color: #F8F8F8;
   border: none;
 }
 
@@ -6515,7 +6515,7 @@ div.subnav .nav > .active > a:hover .caret {
 
 .pager li > a,
 .pager li > span {
-  color: #ece9d7;
+  color: #F8F8F8;
   background-color: #45515f;
   border: none;
 }
@@ -6686,11 +6686,11 @@ legend {
 
 label {
   line-height: 15px;
-  color: #ece9d7;
+  color: #F8F8F8;
 }
 
 .help-block {
-  color: #ece9d7;
+  color: #F8F8F8;
   opacity: 0.6;
 }
 
@@ -6831,7 +6831,7 @@ label {
 }
 
 .label {
-  color: #ece9d7;
+  color: #F8F8F8;
   background-color: #45515f;
 }
 
@@ -6852,7 +6852,7 @@ label {
 }
 
 .alert {
-  color: #ece9d7;
+  color: #F8F8F8;
   text-shadow: none;
   background-color: #45515f;
   border: none;
