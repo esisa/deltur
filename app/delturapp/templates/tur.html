@@ -456,7 +456,7 @@
                 }
         			
                 trip.setStyle(myStyle);
-                
+
                 if(numLines==1) {
                     // Request elevation profile
                     // TODO: Remove when only point
@@ -473,23 +473,24 @@
            
             
                 }
-            
+                
                 // TODO: Rewrite
                 setTimeout(function() {
                         map.fitBounds(featureBounds);
-                        /*if(map.getZoom()>14) {
-                            map.setZoom(14);
-                        } */
+                        setTimeout(function() {
+                            if(numLines==0 && map.getZoom() > 11) {
+                                    map.setZoom(11);
+                            }
+                                
+                        
+                            },300);
                     },300);
-            
-    
+
             });
 		
 		});
         
         
-    
-    
     
     
    
