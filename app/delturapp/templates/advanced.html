@@ -69,7 +69,6 @@
       }
       
       #maptable {
-          margin-left: 28%;
           display: block;
           margin-top: 30px;
       }
@@ -170,12 +169,23 @@
           width: 5em;
       }
       
+      #imageNotification {
+          display: none;
+          position: fixed;
+          cursor: pointer;
+          width: 100%;
+          background: #EFEFEF;
+          text-align: center;
+          border-top: 2px solid #FFF;
+          z-index:9999;
+      }
+      
     </style>
    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
    
-<!--link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.css" /-->
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.css" />
+<!--link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" /-->
 
 <!--[if lte IE 8]>
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
@@ -195,14 +205,17 @@
    <script src="{{ url_for('static', filename='js/modernizr.custom.97074.js') }}"></script>
    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+   
+   
    <script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>   
    <script type="text/javascript" src="{{ url_for('static', filename='js/spin.js') }}"></script>
+   <script type="text/javascript" src="{{ url_for('static', filename='js/lib/miniNotification.js') }}"></script>
    
-   <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
-   <!--script type="text/javascript" src="http://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.js"></script-->
+   <!--script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script-->
+   <script type="text/javascript" src="http://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.js"></script>
    
    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>
-   <!--script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script-->
+   <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
    
    <script src="https://raw.github.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
    
@@ -238,7 +251,9 @@
 
   <body>
       
-     
+      <div id="imageNotification">
+        <p>Klikk i kartet hvor bildet er tatt. </p>
+      </div>
       
       <div id="mobileModal" class="modal hide">
          <div class="modal-header">
@@ -269,7 +284,33 @@
        </div>
      </div>
              
-             
+     <div id="markerInfo" class="modal hide fade">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+         <h3>Stedsinformasjon</h3>
+       </div>
+       <div class="modal-body">
+         
+         
+           <form class="form-horizontal">
+             <div class="control-group">
+               <label class="control-label" for="inputTittel">Tittel</label>
+               <div class="controls">
+                 <input type="text" id="inputTittel" placeholder="Tittel">
+               </div>
+             </div>
+             <div class="control-group">
+               <label class="control-label" for="inputBeskrivelse">Beskrivelse</label>
+               <div class="controls">
+                   <textarea id="inputBeskrivelse" placeholder="Beskrivelse" rows="3"></textarea>
+               </div>
+             </div>
+           </form>
+       </div>
+       <div class="modal-footer">
+         <a href="#" data-dismiss="modal" class="btn btn-primary">Lagre</a>
+       </div>
+     </div>        
              
 
     <div class="container">
@@ -284,8 +325,9 @@
         </p>
         
         <div id="enkelTur">
-            <input id="dd" type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX();" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
+            <input id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX();" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
         </div>
+        <div id ="gpxSpinner" style="margin-bottom: 30px;"></div>
         
         <div class="mapContainer">
 			<!-- Codrops top bar -->
@@ -297,15 +339,15 @@
 			<section>
 				<ul id="da-thumbs" class="da-thumbs">
 					<li>
-						<a href="javascript:void(0)">
-							<img src="{{ url_for('static', filename='img/a2.jpg') }}" width="166" height="146" />
+						<a class="img" href="javascript:void(0)" >
+							<img src="{{ url_for('static', filename='img/a2.jpg') }}" width="166" height="120" />
 							<div><span>Klikk for å endre plassering i kartet</span></div>
 						</a>
 					</li>
 					<li>
 						<a id="addImg" href="javascript:void(0)">
-							<img src="{{ url_for('static', filename='img/a3.png') }}" width="166" height="146" />
-							<div><span>Legg til flere bilder...</span></div>
+							<img src="{{ url_for('static', filename='img/empty_plus.png') }}" width="166" height="120" />
+							<div><span>&nbsp;&nbsp;&nbsp;&nbsp;Legg til bilde...</span></div>
 						</a>
 					</li>
 					
@@ -323,17 +365,17 @@
         
         <table  class="hidden-phone" id="maptable">
             <tr>
-                <td style="width:100px;margin-left:50px;padding:10px;">
-                    <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/turkart.png') }}"></td>
-                <td style="width:100px;padding:10px;">
-                    <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart.png') }}"></td>
-                <td style="width:100px;padding:10px;">
-                    <img  id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}"></td>
+                <td style="width:300px;margin-left:50px;padding:10px;">
+                    <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" heigth="115" width="315" src="{{ url_for('static', filename='img/turkart_big.png') }}"></td>
+                <td style="width:300px;padding:10px;">
+                    <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="315" src="{{ url_for('static', filename='img/skikart_big.png') }}"></td>
+                <td style="width:300px;padding:10px;">
+                    <img  id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" width="315" src="{{ url_for('static', filename='img/kartverket_big.png') }}"></td>
             </tr>
             <tr>
-                <td style="width:100px;"><input style="margin-left:40px;" id="turkart-radio" name="karttype" type="radio" checked></td>
-                <td style="width:100px;"><input style="margin-left:40px;" id="skikart-radio" name="karttype" type="radio"></td>
-                <td style="width:100px;"><input style="margin-left:40px;" id="topokart-radio" name="karttype" type="radio"></td>
+                <td style="width:300px;"><input style="margin-left:140px;" id="turkart-radio" name="karttype" type="radio" checked></td>
+                <td style="width:300px;"><input style="margin-left:140px;" id="skikart-radio" name="karttype" type="radio"></td>
+                <td style="width:300px;"><input style="margin-left:140px;" id="topokart-radio" name="karttype" type="radio"></td>
             </tr>
         </table>
        
@@ -371,9 +413,33 @@
     //var groupLayer = new L.LayerGroup();
     var gpxBounds = L.LatLngBounds();
     var gpx;
+    var gpxUrl;
     function addGPX() {
-        var url = uploadFile; // URL to your GPX file
-        gpx = new L.GPX(url, {
+        
+        var spinner;
+        var opts = {
+                      lines: 13, // The number of lines to draw
+                      length: 5, // The length of each line
+                      width: 2, // The line thickness
+                      radius: 6, // The radius of the inner circle
+                      corners: 1, // Corner roundness (0..1)
+                      rotate: 0, // The rotation offset
+                      direction: 1, // 1: clockwise, -1: counterclockwise
+                      color: '#000', // #rgb or #rrggbb
+                      speed: 1, // Rounds per second
+                      trail: 60, // Afterglow percentage
+                      shadow: false, // Whether to render a shadow
+                      hwaccel: false, // Whether to use hardware acceleration
+                      className: 'spinner', // The CSS class to assign to the spinner
+                      zIndex: 2e9, // The z-index (defaults to 2000000000)
+                      top: 'auto', // Top position relative to parent in px
+                      left: 'auto' // Left position relative to parent in px
+                    };
+        $('#enkelTur').hide();
+        spinner = new Spinner(opts).spin(document.getElementById('gpxSpinner'));
+        
+        //gpxUrl = uploadFile; // URL to your GPX file
+        gpx = new L.GPX(uploadFile, {
             async: true,
             marker_options: {
                 startIconUrl: 'images/pin-icon-start.png',
@@ -382,7 +448,18 @@
               }
           }).on('loaded', function(e) {
             map.fitBounds(e.target.getBounds());
+            //$('#enkelTur').show();
+            spinner.stop();
+            // Set style
+      		var myStyle = {
+      		    "color": "#ff7800",
+      		    "weight": 5,
+      		    "opacity": 0.65
+      		};
+            gpx.setStyle(myStyle);
           }).addTo(map);
+          
+        
             
           /*map.addLayer(gpx);
           gpxBounds.extend(e.target.getBounds());
@@ -390,6 +467,10 @@
         })*/
     }
     var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
+    var drawnItems;
+    var layer;
+    var numMarkers  = 0;
+    var markerInfo = Array();
     $(function () {
 
 
@@ -438,52 +519,116 @@
         map.addLayer(turkart);
         
         
+        var baseMaps = {
+            "Turkart": turkart,
+            "Skikart": skikart,
+            "Topo": topokart//,
+            //"Veikart": veikart,
+            //"Flyfoto": satellite
+        };
+        L.control.layers(baseMaps).addTo(map);
         
         
-        /*
-        var drawnItems = new L.FeatureGroup();
-        		map.addLayer(drawnItems);
+        drawnItems = new L.FeatureGroup();
+		map.addLayer(drawnItems);
 
-        		var drawControl = new L.Control.Draw({
-                    //position: 'topright',
-        			draw: {
-        				position: 'topleft',
-                        polygon: false,
-        				polyline: {
-        					title: 'Tegn en tur',
-        					shapeOptions: {
-        						color: '#ff7800'
-        					}
-        				},
-        				circle: false,
-                        marker: false,
-                        rectangle: false
-        			},
-        			edit: {
-        				featureGroup: drawnItems,
-                        remove: false
-        			}
-        		});
-        		map.addControl(drawControl);
+		var drawControl = new L.Control.Draw({
+            //position: 'topright',
+			draw: {
+				position: 'topleft',
+                polygon: false,
+				polyline: false, /*{
+					title: 'Tegn en tur',
+					shapeOptions: {
+						color: '#ff7800'
+					}
+				},*/
+				circle: false,
+                marker: true,
+                rectangle: false
+			},
+			edit: {
+				featureGroup: drawnItems,
+                remove: false
+			}
+		});
+		map.addControl(drawControl);
 
-        		map.on('draw:created', function (e) {
-        			var type = e.layerType,
-        				layer = e.layer;
+		map.on('draw:created', function (e) {
+			var type = e.layerType,
+				layer = e.layer;
 
-        			if (type === 'marker') {
-        				layer.bindPopup('A popup!');
-        			}
 
-        			drawnItems.addLayer(layer);
-        		});
+			if (type === 'marker') {
+                $('#markerInfo').modal();
+                $('#markerInfo').on('hidden', function () {
+                    
+                  layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
+                  //layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><img width="250" src="'+ $('#inputTittel').val() +'"><br><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
+                  drawnItems.addLayer(layer);
+                  $('#delturbutton').attr('disabled', false); // Enable button
+                })
+			}
+            else { // Line
+                drawnItems.addLayer(layer);
+                $('#delturbutton').attr('disabled', false); // Enable button
+            }
+
+			
+		});
+
         
-        */
         
         
         
         $('#delturbutton').click(function () {
-            //console.log(uploadFile);
-
+            // Start uploading points
+            
+            var points = new Array();
+            $.each(drawnItems._layers, function(index, value) {
+    
+                var url = "/del/sted/" + value.getLatLng().lat +"/"+ value.getLatLng().lng
+                
+                var jsonData =  JSON.stringify({"title": "DSFDSFSD","description":"Beskrivelse","url": "https://s3-eu-west-1.amazonaws.com/espen-name-akiajapdeoifcbjdnsjqturkompiseniosimages/turkompisen_D06013FB-ED90-436D-A5AD-CFC71ED022C8-2738-0000022EBE76309A.jpg"});
+                
+                var postArray = {json:jsonData};
+                
+                
+                $.ajax({
+                  type: "GET",
+                  url: url,
+                  data: jsonData,
+                  success: function (response) {
+                      points.push(response.id);
+                  },
+                  error: function (response) {
+                      alert("Klarte dessverre ikke å laste opp filen!");
+                  }
+                });
+            });
+            
+           
+            
+            
+            // Start uploading GPX
+            var opts = {
+              lines: 13, // The number of lines to draw
+              length: 5, // The length of each line
+              width: 2, // The line thickness
+              radius: 6, // The radius of the inner circle
+              corners: 1, // Corner roundness (0..1)
+              rotate: 0, // The rotation offset
+              direction: 1, // 1: clockwise, -1: counterclockwise
+              color: '#000', // #rgb or #rrggbb
+              speed: 1, // Rounds per second
+              trail: 60, // Afterglow percentage
+              shadow: false, // Whether to render a shadow
+              hwaccel: false, // Whether to use hardware acceleration
+              className: 'spinner', // The CSS class to assign to the spinner
+              zIndex: 2e9, // The z-index (defaults to 2000000000)
+              top: 'auto', // Top position relative to parent in px
+              left: 'auto' // Left position relative to parent in px
+            };
             new Spinner().spin(document.getElementById('spinner'));
             $('#apilink').css('visibility','hidden');
             $('#termslink').css('visibility','hidden');
@@ -514,11 +659,17 @@
                   url: "/del/gpx",
                   data: data,
                   success: function (response) {
-                          document.location.href = "/"+response.id+"/" + maptype;
-                        },
-                        error: function (response) {
-                          alert("Klarte dessverre ikke å laste opp filen!");
-                        },
+                      var ids = response.id;
+                      
+                      $.each(points, function(index, value) {
+                          ids = ids + "+" + value;
+                      });
+                      
+                      document.location.href = "/"+ids+"/" + maptype;
+                    },
+                    error: function (response) {
+                      alert("Klarte dessverre ikke å laste opp filen!");
+                    },
                   contentType: "application/gpx+xml",
                   dataType: "json"
                 });
@@ -538,6 +689,7 @@
         });
         
         $('#addImg').click(function () {
+            
             filepicker.pickAndStore(
                 {
                     mimetype:"image/*",
@@ -548,8 +700,8 @@
                         console.log(JSON.stringify(fpfiles));
                         
                         // Add to list
-                        $('#da-thumbs').prepend('<li><a href="javascript:void(0)"><img  src="'+fpfiles[0].url+'"  width="166" height="146" /><div><span>Klikk for å plassere i kartet</span></div></a></li>')
-                        
+                        $('#da-thumbs').prepend('<li><a class="img" href="javascript:void(0)"><img  src="'+fpfiles[0].url+'"  width="166" height="146" /><div><span>Klikk for å plassere i kartet</span></div></a></li>')
+                        setImageOnClick();
                     },
                     function(FPError){
                         console.log(FPError.toString());
@@ -557,6 +709,43 @@
             });
         
         });
+        
+
+        
+        var marker;   
+        function setImageOnClick() {
+            $('.img').click(function (event) {
+            
+                var imgSrc = $(this).find('img').attr('src');
+    
+                $('#imageNotification').miniNotification();
+                marker = new L.Draw.Marker(map, {
+                    title: 'Add a marker'
+                });
+
+        		map.on('draw:created', function (e) {
+        			var type = e.layerType,
+        			layer = e.layer;
+
+        			if (type === 'marker') {
+                        $('#markerInfo').modal();
+                        $('#markerInfo').on('hidden', function () {
+                          layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><img width="250" src="'+imgSrc+'"><br><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
+                          drawnItems.addLayer(layer);
+                      })
+      			    }
+
+	
+          		});
+        
+                marker.addHooks();
+                map.on('mousedown', function(e) {
+                    setTimeout('marker.removeHooks()', 200);
+                });
+            });
+        }
+            
+        setImageOnClick();
     
     
     
