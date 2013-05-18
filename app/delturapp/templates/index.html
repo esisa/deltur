@@ -17,6 +17,20 @@
         padding-bottom: 40px;
         background-color: rgb(39,43,48);
       }
+      
+      #logo {
+          float: left;
+      }
+      @media screen and (max-width: 724px){
+          #logo {
+              margin-left: 25%;
+              margin-right: auto;
+              display: block;
+          }
+         
+      }
+
+      
 
       .form-signin {
         max-width: 400px;
@@ -212,11 +226,12 @@
       <form class="form-signin" onsubmit="return false;" AUTOCOMPLETE="off">
           
         <!--h2 style="margin-left: 100px" class="form-signin-heading">Last opp fil</h2-->
+        <div id="logo"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></div>
         <h1 style="text-align: center;font-size:4em;" class="form-signin-heading">deltur.no</h1>
         <div style="text-align: center; font-size:20px;">Del din tur p&aring; 1-2-3!</div>
         <hr>
         <p id="text">
-           Turen kan du vise p&aring; Facebook, Twitter, e-post eller din egen blogg.  Ved deling godkjenner du at dataene er i <a data-toggle="modal" href="#mobileModal">public domain</a>.<br /><br />     
+           Turen kan du vise p&aring; Facebook, Twitter, e-post eller din egen blogg.  Ved deling godkjenner du at dataene er i <a data-toggle="modal" href="#mobileModal">public domain*</a>.<br /><br />     
         </p>
         
         
@@ -283,7 +298,7 @@
         <div id ="spinner" style="margin-top: 15px;"></div>
 
         <div id="apilink"><a href="{{ url_for('api') }}">Mer glad i API enn GUI?</a></div>
-        <div id="termslink"><a href="{{ url_for('terms') }}">Betingelser for bruk av deltur.no</a></div>
+        <div id="termslink"><a href="{{ url_for('terms') }}">*Betingelser for bruk av deltur.no</a></div>
         
 		<div style="color:F8F8F8; font-size: 12px; text-align: center;">
 			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a> og <a href="http://www.turkompisen.no">turkompisen.no</a>
@@ -367,7 +382,7 @@
     
     $(function() {
         
-        $('#betaModal').modal('show')
+        //$('#betaModal').modal('show')
     });
     
     </script>
