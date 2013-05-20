@@ -128,9 +128,7 @@
    <script type="text/javascript" src="{{ url_for('static', filename='js/spin.js') }}"></script>
    
    <script>
-       $(function() {
-           $( document ).tooltip();
-       });
+
        filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
        
        
@@ -139,6 +137,8 @@
       
        
    </script> 
+      
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
       
        <style>
        label {
@@ -280,11 +280,20 @@
         <table  class="hidden-phone" id="maptable">
             <tr>
                 <td style="width:100px;margin-left:50px;padding:10px;">
-                    <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/turkart.png') }}"></td>
+                    <span class="hint--bottom " data-hint="Velg turkart fra Turkompisen">
+                        <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/turkart.png') }}">
+                    </span>
+                </td>
                 <td style="width:100px;padding:10px;">
-                    <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart.png') }}"></td>
+                    <span class="hint--bottom" data-hint="Velg skikart fra Turkompisen">
+                        <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart.png') }}">
+                    </span>
+                </td>
                 <td style="width:100px;padding:10px;">
-                    <img  id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}"></td>
+                    <span class="hint--bottom" data-hint="Velg turkart fra Kartverket">
+                        <img  id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}">
+                    </span>
+                </td>
             </tr>
             <tr>
                 <td style="width:100px;"><input style="margin-left:40px;" id="turkart-radio" name="karttype" type="radio" checked></td>
