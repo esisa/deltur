@@ -23,12 +23,6 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    
-    <script>
-        $(function() {
-            $( document ).tooltip();
-        });
-    </script>
 	
 	
      <!-- CSS -->
@@ -37,6 +31,8 @@
 	<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/detail.css">
 	<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
 	<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
 
    
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
@@ -217,16 +213,36 @@
       <!-- Begin page content -->
       <div class="container">
           <a style="text-decoration: none;" href="javascript:void(0)" id="elevProfile"><i class="icon-bar-chart visible-phone" ></a></i>&nbsp;
-		  <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" title="Last ned" href="#downloadModal"><i class="icon-arrow-down"></a></i>&nbsp;
-		  <a id="embedButton" style="text-decoration: none;" data-toggle="modal" title="Embed" href="#embedModal"><i class="icon-signin"></a></i>&nbsp;
+          <span class="hint--top" data-hint="Last ned denne turen">
+		      <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" href="#downloadModal"><i class="icon-arrow-down"></a></i>&nbsp;
+          </span>
+		   <span class="hint--top" data-hint="Legg kartet på eget nettsted">
+               <a id="embedButton" style="text-decoration: none;" data-toggle="modal" href="#embedModal"><i class="icon-signin"></a></i>&nbsp;
+           </span>
           
 		  <b class="hidden-phone" style="color:F8F8F8;font-size: 18px;">{{title}}</b>
 		  
 			<div style="font-size: 17px;" class="pull-right">
-			  <a id="fb_share" name="fb_share" style="text-decoration: none;" href="https://www.facebook.com/sharer/sharer.php?u=http://deltur.no/{{idList}}" target="_new" title="Del på Facebook"><i class="icon-facebook"></a></i>&nbsp;
-			  <a id="tw_share" style="text-decoration: none;" href="https://twitter.com/intent/tweet?url=http://deltur.no/{{idList}}" target="_new" title="Del på Twitter"><i class="icon-twitter"></a></i>&nbsp;
-			  <a id="go_share"  style="text-decoration: none;" href="https://plus.google.com/share?url=http://deltur.no/{{idList}}"  target="_new" title="Del på Google Plus"><i class="icon-google-plus"></a></i>&nbsp;
-			   <a id="mail_share" style="text-decoration: none;" href="mailto:?Subject=Se min tur&body=http://deltur.no/{{idList}}" title="Del på e-post"><i class="icon-envelope-alt"></a></i>
+                 <span class="hint--top" data-hint="Del på Facebook">
+			         <a id="fb_share" name="fb_share" style="text-decoration: none;" href="https://www.facebook.com/sharer/sharer.php?u=http://deltur.no/{{idList}}" target="_new">
+                         <i class="icon-facebook"></i>&nbsp;
+                     </a>
+                 </span>
+                 <span class="hint--top" data-hint="Del på Twitter">
+			         <a id="tw_share" style="text-decoration: none;" href="https://twitter.com/intent/tweet?url=http://deltur.no/{{idList}}" target="_new">
+                         <i class="icon-twitter"></i>&nbsp;
+                     </a>
+                 </span>
+                 <span class="hint--top" data-hint="Del på Google+">
+			         <a id="go_share"  style="text-decoration: none;" href="https://plus.google.com/share?url=http://deltur.no/{{idList}}"  target="_new">
+                         <i class="icon-google-plus"></i>&nbsp;
+                     </a>
+                 </span>
+                 <span class="hint--top" data-hint="Del på e-post">
+			         <a id="mail_share" style="text-decoration: none;" href="mailto:?Subject=Se min tur&body=http://deltur.no/{{idList}}">
+                         <i class="icon-envelope-alt"></i>
+                     </a>
+                 </span>
 			</div>
 
 		<br>
