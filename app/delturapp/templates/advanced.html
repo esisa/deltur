@@ -180,6 +180,74 @@
           z-index:9999;
       }
       
+      
+      .maptypes {
+          width:100px;
+          padding:10px;
+      }
+      #turkart {
+          width: 315px;
+      }
+      #skikart {
+          width: 315px;
+      }
+      #topokart {
+          width: 315px;
+      }
+      #turkart-radio {
+          margin-left: 140px;
+      }
+      #skikart-radio {
+          margin-left: 140px;
+      }
+      #topokart-radio {
+          margin-left: 140px;
+      }
+      
+      @media screen and (max-width: 1200px){
+          #turkart {
+              width: 270px;
+          }
+          #skikart {
+              width: 270px;
+          }
+          #topokart {
+              width: 270px;
+          }
+          #turkart-radio {
+              margin-left: 130px;
+          }
+          #skikart-radio {
+              margin-left: 130px;
+          }
+          #topokart-radio {
+              margin-left: 130px;
+          }
+         
+      }
+      
+      @media screen and (max-width: 980px){
+          #turkart {
+              width: 200px;
+          }
+          #skikart {
+              width: 200px;
+          }
+          #topokart {
+              width: 200px;
+          }
+          #turkart-radio {
+              margin-left: 100px;
+          }
+          #skikart-radio {
+              margin-left: 100px;
+          }
+          #topokart-radio {
+              margin-left: 100px;
+          }
+         
+      }
+      
     </style>
    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
@@ -217,14 +285,14 @@
    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>
    <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
    
-   <script src="https://raw.github.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
+    <script src="https://raw.github.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
+   
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
    
    
    
    <script>
-       $(function() {
-           $( document ).tooltip();
-       });
+   
        filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
        
        
@@ -365,17 +433,26 @@
         
         <table  class="hidden-phone" id="maptable">
             <tr>
-                <td style="width:300px;margin-left:50px;padding:10px;">
-                    <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" heigth="115" width="315" src="{{ url_for('static', filename='img/turkart_big.png') }}"></td>
-                <td style="width:300px;padding:10px;">
-                    <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="315" src="{{ url_for('static', filename='img/skikart_big.png') }}"></td>
-                <td style="width:300px;padding:10px;">
-                    <img  id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" width="315" src="{{ url_for('static', filename='img/kartverket_big.png') }}"></td>
+                <td class="maptypes">
+                    <span class="hint--bottom " data-hint="Velg turkart fra Turkompisen">
+                        <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" src="{{ url_for('static', filename='img/turkart_big.png') }}">
+                    </span>
+                </td>
+                <td class="maptypes">
+                    <span class="hint--bottom " data-hint="Velg skikart fra Turkompisen">
+                        <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" src="{{ url_for('static', filename='img/skikart_big.png') }}">
+                    </span>
+                </td>
+                <td class="maptypes">
+                    <span class="hint--bottom " data-hint="Velg turkart fra Kartverket">
+                        <img id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" src="{{ url_for('static', filename='img/kartverket_big.png') }}">
+                    </span>
+                </td>
             </tr>
             <tr>
-                <td style="width:300px;"><input style="margin-left:140px;" id="turkart-radio" name="karttype" type="radio" checked></td>
-                <td style="width:300px;"><input style="margin-left:140px;" id="skikart-radio" name="karttype" type="radio"></td>
-                <td style="width:300px;"><input style="margin-left:140px;" id="topokart-radio" name="karttype" type="radio"></td>
+                <td><input class="mapButton" id="turkart-radio" name="karttype" type="radio" checked></td>
+                <td><input class="mapButton" id="skikart-radio" name="karttype" type="radio"></td>
+                <td><input class="mapButton" id="topokart-radio" name="karttype" type="radio"></td>
             </tr>
         </table>
        
