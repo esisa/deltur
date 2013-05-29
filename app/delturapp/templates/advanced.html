@@ -38,6 +38,18 @@
       .form-signin .checkbox {
        text-align: center;
       }
+
+        #logo {
+            float: left;
+        }
+        @media screen and (max-width: 724px){
+            #logo {
+                margin-left: 25%;
+                margin-right: auto;
+                display: block;
+            }
+        }
+
    
 
       #apilink {
@@ -389,6 +401,7 @@
       <form class="form-signin" onsubmit="return false;" AUTOCOMPLETE="off">
           
         <!--h2 style="margin-left: 100px" class="form-signin-heading">Last opp fil</h2-->
+        <div id="logo"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></div>
         <h1 style="text-align: center;font-size:4em;" class="form-signin-heading">deltur.no</h1>
         <div style="text-align: center; font-size:20px;">Del din tur p&aring; 1-2-3!</div>
 
