@@ -316,8 +316,10 @@
   </head>
   
   
+<body>
 
-  <body>
+    <!-- Placeholder for images uses in pop up -->
+    <div id="currentImg"></div>
       
       <div id="imageNotification">
         <p>Klikk i kartet hvor bildet er tatt. </p>
@@ -376,9 +378,11 @@
            </form>
        </div>
        <div class="modal-footer">
-         <a href="#" data-dismiss="modal" class="btn btn-primary">Lagre</a>
+         <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-primary">Lagre</a>
        </div>
-     </div>        
+     </div>     
+
+      
              
 
     <div class="container">
@@ -410,12 +414,12 @@
 			</header>
 			<section>
 				<ul id="da-thumbs" class="da-thumbs">
-					<!--li>
+					<li>
 						<a class="img" href="javascript:void(0)" >
 							<img src="{{ url_for('static', filename='img/a2.jpg') }}" width="166" height="120" />
 							<div><span>Klikk for å endre plassering i kartet</span></div>
 						</a>
-					</li-->
+					</li>
 					<li>
 						<a id="addImg" href="javascript:void(0)">
 							<img src="{{ url_for('static', filename='img/empty_plus.png') }}" width="166" height="120" />
@@ -643,24 +647,57 @@
     	map.addControl(drawControl);
 
 
-
+        var doneWithPopup;
     	map.on('draw:created', function (e) {
-    		var type = e.layerType,
-    		layer = e.layer;
+            doneWithPopup = false;
+    		var type = e.layerType;
+    		var newlayer = e.layer;
+
 
             if (type === 'marker') {
+                
+                // Open modal
                 $('#markerInfo').modal();
-                $('#markerInfo').on('hidden', function () {
-                      
-                    layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
-                    //layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><img width="250" src="'+ $('#inputTittel').val() +'"><br><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
-                    drawnItems.addLayer(layer);
-                    $('#delturbutton').attr('disabled', false); // Enable button
-                  })
+
+                // When users clicks save in modal
+                $('#lagrePopup').click(function () {
+                    
+                    // Get data to populate popup
+                    var imgSrc = $('#currentImg').html();
+                    var tittel = $('#inputTittel').val();
+                    var description = $('#inputBeskrivelse').val();
+                    
+                    // Check which markers that already have a popup
+                    var doneWithPopup = false;
+                    $.each(drawnItems._layers, function(index, value) {
+                        if(newlayer.getLatLng().lat == value.getLatLng().lat && newlayer.getLatLng().lng == value.getLatLng().lng ) {
+                            doneWithPopup = true;
+                        }
+                    });
+
+                    // For some reason this code loops all features.
+                    // So we check which features is already present in the map. 
+                    if(!doneWithPopup) {
+                        markerInfo.push([tittel,description, imgSrc, false])
+
+                        var lenMarkerInfo = markerInfo.length-1;
+                        if(imgSrc != "") { // if image
+                            newlayer.bindPopup('<h3 id="popupText">'+markerInfo[lenMarkerInfo][0]+'</h3><img width="250" src="'+markerInfo[lenMarkerInfo][2]+'"><br><div id="popupText">' + markerInfo[lenMarkerInfo][1] + '</div>');
+                            $('#currentImg').html(""); // Reset to default
+                            
+                        } else { // just a marker
+                            newlayer.bindPopup('<h3 id="popupText">'+markerInfo[lenMarkerInfo][0]+'</h3><div id="popupText">' + markerInfo[lenMarkerInfo][1] + '</div>');   
+                        }
+                    
+                        drawnItems.addLayer(newlayer);
+                        $('#delturbutton').attr('disabled', false); // Enable button
+                    }
+                })
+                
             }
             else { // Line
-                  drawnItems.addLayer(layer);
-                  $('#delturbutton').attr('disabled', false); // Enable button
+                drawnItems.addLayer(newlayer);
+                $('#delturbutton').attr('disabled', false); // Enable button
             }	
         });
 
@@ -696,40 +733,72 @@
 
             // Start uploading points
             var points = new Array();
+            var i = 0;
+            var j = 0;
             $.each(drawnItems._layers, function(index, value) {
 
-                var url = "/del/sted/" + value.getLatLng().lat +"/"+ value.getLatLng().lng
+                var tittel = markerInfo[i][0];
+                var description = markerInfo[i][1];
+                var imgUrl = markerInfo[i][2];
+                //debugger;
+                i++;
+
+                var lat = Number((value.getLatLng().lat).toFixed(5));
+                var lon = Number((value.getLatLng().lng).toFixed(5));
+                var url = "/del/sted/" + lat +"/"+ lon
+
+                var jsonData =  JSON.stringify({"title": tittel,"description":description,"url": imgUrl});
                 
-                var jsonData =  JSON.stringify({"title": "DSFDSFSD","description":"Beskrivelse","url": "https://s3-eu-west-1.amazonaws.com/espen-name-akiajapdeoifcbjdnsjqturkompiseniosimages/turkompisen_D06013FB-ED90-436D-A5AD-CFC71ED022C8-2738-0000022EBE76309A.jpg"});
-                
-                var postArray = {json:jsonData};
-                
-                
+
                 $.ajax({
-                  type: "GET",
-                  url: url,
-                  data: jsonData,
-                  success: function (response) {
+                    type: "POST",
+                    url: url,
+                    data: jsonData,
+                    contentType : 'application/json',
+                    success: function (response) {
                         points.push(response.id);
-                        if(typeof uploadFile !="undefined") {
+                        markerInfo[j][3] = true; // This marker is uploaded to server
+                        
+                        if(typeof uploadFile !="undefined") { // No markers
                             shareGPX(points);
                         } // END IF
                         else {
-                            if(points.length>1) {
+                            if(points.length>1) { // More than one marker
                                 var ids = "";
                                 $.each(points, function(index, value) {
-                                      ids = ids + "+" + value;
+                                    if(ids=="")
+                                        ids = value;
+                                    else
+                                        ids = ids + "+" + value;
                                 });
                             }
-                            else {
+                            else { // Only one marker
                                 var ids = points[0];
                             }
-                            sendToTrip(ids);
+                            
+                            // Check if all markers are uploaded
+                            var done = false;
+                            $.each(markerInfo, function(index2, value) {
+                                
+                                if(value[3]) {
+                                    done = true;    
+                                }
+                                else {
+                                    done = false;
+                                }
+                            });
+                            if(done) {
+                                sendToTrip(ids);
+                            }
+                                
                         }
-                  },
-                  error: function (response) {
-                      alert("Klarte dessverre ikke å laste opp filen!");
-                  }
+                        j++;
+                    },
+                    error: function (response) {
+                        debugger;
+                        alert("Klarte dessverre ikke å laste opp filen!");
+                        j++;
+                    }
                 });
             }); 
                
@@ -810,6 +879,7 @@
 
         function sendToTrip(ids) {
             maptype = getActiveMaptype();
+            debugger;
             document.location.href = "/"+ids+"/" + maptype;
         }
             
@@ -818,26 +888,13 @@
             $('.img').click(function (event) {
             
                 var imgSrc = $(this).find('img').attr('src');
+                $('#currentImg').html(imgSrc);
 
                 $('#imageNotification').miniNotification();
                 marker = new L.Draw.Marker(map, {
                     title: 'Add a marker'
                 });
 
-        		map.on('draw:created', function (e) {
-        			var type = e.layerType,
-        			layer = e.layer;
-
-        			if (type === 'marker') {
-                        $('#markerInfo').modal();
-                        $('#markerInfo').on('hidden', function () {
-                          layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><img width="250" src="'+imgSrc+'"><br><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
-                          drawnItems.addLayer(layer);
-                      })
-      			    }
-
-
-          		});
         
                 marker.addHooks();
                 map.on('mousedown', function(e) {
@@ -847,8 +904,8 @@
         }
             
         setImageOnClick();
-    
-    
+
+   
     
     </script>
     
