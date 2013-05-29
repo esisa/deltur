@@ -204,7 +204,9 @@
       </div>
       </div>
 	  
-
+      
+      
+      
     <!-- Part 1: Wrap all page content here -->
     <div id="wrap">
 		
@@ -247,7 +249,11 @@
 
 		<br>
 		
-		<div id="map" style="height: 500px; "></div>
+		<div id="map" style="height: 500px; ">
+            <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
+            <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
+            </a>
+		</div>
 		
 		<br>
 		
@@ -303,9 +309,9 @@
 
 		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
         
-        if($('.container').width()>480) {
+        /*if($('.container').width()>480) {
             L.control.scale({imperial:false, position: 'bottomleft'}).addTo(map);
-        }
+        }*/
 		
 
 		skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {

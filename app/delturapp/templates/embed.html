@@ -120,6 +120,7 @@
           }
 	  
     </style>
+
     <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">							   
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />		
     
@@ -139,16 +140,15 @@
       })();
 
     </script>							   
-  </head>
+</head>
 
-  <body>
-      
-    
-		
-		<div id="map" style="height: 100%; "></div>
-		
-	
-
+<body>
+      		
+    <div id="map" style="height: 100%; ">
+        <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
+        <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
+        </a>
+    </div>
 
 
     <!-- Le javascript
@@ -156,51 +156,51 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
 
-	<script type="text/javascript">
-    
+    <script type="text/javascript">
+
     $.fn.preload = function() {
         this.each(function(){
             $('<img/>')[0].src = this;
         });
     }
-    
-    
-		var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
 
-		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
+
+    	var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
+
+    	map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
         
-        if($('.container').width()>480) {
+        /*if($('.container').width()>480) {
             L.control.scale({imperial:false, position: 'bottomleft'}).addTo(map);
-        }
-		
+        }*/
+    	
 
-		skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
-			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
+    	skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
+    		attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+    		subdomains: ["1", "2", "3", "4"],
+    		//scheme: "tms",
+    		maxZoom: 18
+    	});
 
-		turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
-			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
-		
-		veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
-			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
+    	turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
+    		attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+    		subdomains: ["1", "2", "3", "4"],
+    		//scheme: "tms",
+    		maxZoom: 18
+    	});
+    	
+    	veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
+    		attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
+    		subdomains: ["1", "2", "3", "4"],
+    		//scheme: "tms",
+    		maxZoom: 18
+    	});
         
-		topokart = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}", {
-			attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
+    	topokart = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}", {
+    		attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
+    		subdomains: ["1", "2", "3", "4"],
+    		//scheme: "tms",
+    		maxZoom: 18
+    	});
 
         if({{mapType}}==0) {
             map.addLayer(turkart);
@@ -214,16 +214,16 @@
         else if({{mapType}}==3) {
             map.addLayer(topokart);
         }
-		    
+    	    
 
-		
-		/*
-		var baseMaps = {
-		    "Turkart": turkart,
-		    "Skikart": skikart
-		};
-		L.control.layers(baseMaps).addTo(map);
-		*/
+    	
+    	/*
+    	var baseMaps = {
+    	    "Turkart": turkart,
+    	    "Skikart": skikart
+    	};
+    	L.control.layers(baseMaps).addTo(map);
+    	*/
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
         /*if(ids.length>1) {
@@ -343,22 +343,22 @@
                         },300);
                     
             
-    
+
                 });
-		
+    	
     		});
         
         
-    
-    
-    
-    
-   
+
+
+
+
+
         var graphData = new Array();
         function setElevationProfile(data) {
             // Get features    
     	    geoJson = data.features;
-			   
+    		   
             // Go through each point
             $.each(data.features, function(index, value) { 
                 elev = value.properties.elev;
@@ -387,7 +387,7 @@
         			}
         		]
         	} );
-	
+
         	/*
         	var y_ticks = new Rickshaw.Graph.Axis.Y( {
         		graph: graph,
@@ -424,16 +424,16 @@
                     }
         
         			return content;
-		
+    	
         		}
         	} );
         }
 
-	
-		
 
-	
+    	
 
-	</script>
+
+
+    </script>
 
 </html>
