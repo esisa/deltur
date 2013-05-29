@@ -410,12 +410,12 @@
 			</header>
 			<section>
 				<ul id="da-thumbs" class="da-thumbs">
-					<li>
+					<!--li>
 						<a class="img" href="javascript:void(0)" >
 							<img src="{{ url_for('static', filename='img/a2.jpg') }}" width="166" height="120" />
 							<div><span>Klikk for å endre plassering i kartet</span></div>
 						</a>
-					</li>
+					</li-->
 					<li>
 						<a id="addImg" href="javascript:void(0)">
 							<img src="{{ url_for('static', filename='img/empty_plus.png') }}" width="166" height="120" />
@@ -554,12 +554,19 @@
     var markerInfo = Array();
     $(function () {
 
+        // Check if mapped is clicked
+        $('#turkart').click(function () {
+            jQuery("#turkart-radio").attr('checked', 'checked');
+        });
+        $('#skikart').click(function () {
+            jQuery("#skikart-radio").attr('checked', 'checked');
+        });
+        $('#topokart').click(function () {
+            jQuery("#topokart-radio").attr('checked', 'checked');
+        });
+
 
  		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
-        
-         if($('.container').width()>480) {
-             L.control.scale({imperial:false, position: 'bottomleft'}).addTo(map);
-         }
 		
 
  		skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
@@ -611,63 +618,86 @@
         
         
         drawnItems = new L.FeatureGroup();
-		map.addLayer(drawnItems);
+    		map.addLayer(drawnItems);
 
-		var drawControl = new L.Control.Draw({
-            //position: 'topright',
-			draw: {
-				position: 'topleft',
-                polygon: false,
-				polyline: false, /*{
-					title: 'Tegn en tur',
-					shapeOptions: {
-						color: '#ff7800'
-					}
-				},*/
-				circle: false,
-                marker: true,
-                rectangle: false
-			},
-			edit: {
-				featureGroup: drawnItems,
-                remove: false
-			}
-		});
-		map.addControl(drawControl);
-
-		map.on('draw:created', function (e) {
-			var type = e.layerType,
-				layer = e.layer;
+    		var drawControl = new L.Control.Draw({
+                //position: 'topright',
+    			draw: {
+    				position: 'topleft',
+                    polygon: false,
+    				polyline: false, /*{
+    					title: 'Tegn en tur',
+    					shapeOptions: {
+    						color: '#ff7800'
+    					}
+    				},*/
+    				circle: false,
+                    marker: true,
+                    rectangle: false
+    			},
+    			edit: {
+    				featureGroup: drawnItems,
+                    remove: false
+    			}
+    		});
+    	map.addControl(drawControl);
 
 
-			if (type === 'marker') {
+
+    	map.on('draw:created', function (e) {
+    		var type = e.layerType,
+    		layer = e.layer;
+
+            if (type === 'marker') {
                 $('#markerInfo').modal();
                 $('#markerInfo').on('hidden', function () {
-                    
-                  layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
-                  //layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><img width="250" src="'+ $('#inputTittel').val() +'"><br><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
+                      
+                    layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
+                    //layer.bindPopup('<h3 id="popupText">'+$('#inputTittel').val()+'</h3><img width="250" src="'+ $('#inputTittel').val() +'"><br><div id="popupText">' + $('#inputBeskrivelse').val() + '</div>');
+                    drawnItems.addLayer(layer);
+                    $('#delturbutton').attr('disabled', false); // Enable button
+                  })
+            }
+            else { // Line
                   drawnItems.addLayer(layer);
                   $('#delturbutton').attr('disabled', false); // Enable button
-                })
-			}
-            else { // Line
-                drawnItems.addLayer(layer);
-                $('#delturbutton').attr('disabled', false); // Enable button
-            }
+            }	
+        });
 
-			
-		});
-
-        
-        
-        
-        
-        $('#delturbutton').click(function () {
-            // Start uploading points
             
+            
+            
+            
+        $('#delturbutton').click(function () {
+
+            // Start uploading GPX
+            var opts = {
+                  lines: 13, // The number of lines to draw
+                  length: 5, // The length of each line
+                  width: 2, // The line thickness
+                  radius: 6, // The radius of the inner circle
+                  corners: 1, // Corner roundness (0..1)
+                  rotate: 0, // The rotation offset
+                  direction: 1, // 1: clockwise, -1: counterclockwise
+                  color: '#000', // #rgb or #rrggbb
+                  speed: 1, // Rounds per second
+                  trail: 60, // Afterglow percentage
+                  shadow: false, // Whether to render a shadow
+                  hwaccel: false, // Whether to use hardware acceleration
+                  className: 'spinner', // The CSS class to assign to the spinner
+                  zIndex: 2e9, // The z-index (defaults to 2000000000)
+                  top: 'auto', // Top position relative to parent in px
+                  left: 'auto' // Left position relative to parent in px
+            };
+            new Spinner().spin(document.getElementById('spinner'));
+            $('#apilink').css('visibility','hidden');
+            $('#termslink').css('visibility','hidden');
+            $('#delturbutton').text("Laster opp...");
+
+            // Start uploading points
             var points = new Array();
             $.each(drawnItems._layers, function(index, value) {
-    
+
                 var url = "/del/sted/" + value.getLatLng().lat +"/"+ value.getLatLng().lng
                 
                 var jsonData =  JSON.stringify({"title": "DSFDSFSD","description":"Beskrivelse","url": "https://s3-eu-west-1.amazonaws.com/espen-name-akiajapdeoifcbjdnsjqturkompiseniosimages/turkompisen_D06013FB-ED90-436D-A5AD-CFC71ED022C8-2738-0000022EBE76309A.jpg"});
@@ -680,73 +710,93 @@
                   url: url,
                   data: jsonData,
                   success: function (response) {
-                      points.push(response.id);
+                        points.push(response.id);
+                        if(typeof uploadFile !="undefined") {
+                            shareGPX(points);
+                        } // END IF
+                        else {
+                            if(points.length>1) {
+                                var ids = "";
+                                $.each(points, function(index, value) {
+                                      ids = ids + "+" + value;
+                                });
+                            }
+                            else {
+                                var ids = points[0];
+                            }
+                            sendToTrip(ids);
+                        }
                   },
                   error: function (response) {
                       alert("Klarte dessverre ikke å laste opp filen!");
                   }
                 });
+            }); 
+               
+            
+        }); 
+
+    
+        $('#addImg').click(function () {
+            
+            filepicker.pickAndStore(
+                {
+                    mimetype:"image/*",
+                    services:['COMPUTER', 'FACEBOOK', 'DROPBOX', 'GMAIL',  'EVERNOTE',  'FTP',  'GOOGLE_DRIVE'],
+                },
+                {location:"S3", access: 'public'}, 
+                function(fpfiles){
+                    console.log(JSON.stringify(fpfiles));
+                    
+                    // Add to list
+                    $('#da-thumbs').prepend('<li><a class="img" href="javascript:void(0)"><img  src="'+fpfiles[0].url+'"  width="166" height="146" /><div><span>Klikk for å plassere i kartet</span></div></a></li>')
+                    setImageOnClick();
+                },
+                function(FPError){
+                    console.log(FPError.toString());
+                });
             });
+        
+        });
             
-           
-            
-            
-            // Start uploading GPX
-            var opts = {
-              lines: 13, // The number of lines to draw
-              length: 5, // The length of each line
-              width: 2, // The line thickness
-              radius: 6, // The radius of the inner circle
-              corners: 1, // Corner roundness (0..1)
-              rotate: 0, // The rotation offset
-              direction: 1, // 1: clockwise, -1: counterclockwise
-              color: '#000', // #rgb or #rrggbb
-              speed: 1, // Rounds per second
-              trail: 60, // Afterglow percentage
-              shadow: false, // Whether to render a shadow
-              hwaccel: false, // Whether to use hardware acceleration
-              className: 'spinner', // The CSS class to assign to the spinner
-              zIndex: 2e9, // The z-index (defaults to 2000000000)
-              top: 'auto', // Top position relative to parent in px
-              left: 'auto' // Left position relative to parent in px
-            };
-            new Spinner().spin(document.getElementById('spinner'));
-            $('#apilink').css('visibility','hidden');
-            $('#termslink').css('visibility','hidden');
-            $('#delturbutton').text("Laster opp...");
-            
+        function getActiveMaptype() {
+            var maptype = "turkart"; // Default maptype
+
+             // Check maptype
+            if(jQuery("#turkart-radio").attr('checked') == 'checked') {
+                maptype = "turkart";
+            }
+            else if(jQuery("#skikart-radio").attr('checked') == 'checked') {
+                maptype = "skikart";
+            }
+            else {
+                maptype = "topokart";
+            }
+
+            return maptype;
+        }
+
+        function shareGPX(points) {
+
             /*FPFile from a previous pick, etc.*/
             var fpfile = {url: uploadFile,
                 filename: 'hello.txt', mimetype: 'text/plain', isWriteable: false, size: 100};
             //console.log("Loading "+fpfile.filename);
             filepicker.read(fpfile, function(data){
-                //console.log(data);
-                
-                // Check maptype
-                var maptype = turkart;
-                if(jQuery("#turkart-radio").attr('checked') == 'checked') {
-                    maptype = "turkart";
-                }
-                else if(jQuery("#skikart-radio").attr('checked') == 'checked') {
-                    maptype = "skikart";
-                }
-                else {
-                    maptype = "topokart";
-                }
-                
+
                 //Upload to deltur.no/del/gpx
                 $.ajax({
                   type: "POST",
                   url: "/del/gpx",
                   data: data,
                   success: function (response) {
-                      var ids = response.id;
+                        var ids = response.id;
                       
-                      $.each(points, function(index, value) {
-                          ids = ids + "+" + value;
-                      });
+                        $.each(points, function(index, value) {
+                            ids = ids + "+" + value;
+                        });
                       
-                      document.location.href = "/"+ids+"/" + maptype;
+                        sendToTrip(ids)
                     },
                     error: function (response) {
                       alert("Klarte dessverre ikke å laste opp filen!");
@@ -755,50 +805,20 @@
                   dataType: "json"
                 });
                 
-            })
-        });
-        
-        // Check if mapped is clicked
-        $('#turkart').click(function () {
-            jQuery("#turkart-radio").attr('checked', 'checked');
-        });
-        $('#skikart').click(function () {
-            jQuery("#skikart-radio").attr('checked', 'checked');
-        });
-        $('#topokart').click(function () {
-            jQuery("#topokart-radio").attr('checked', 'checked');
-        });
-        
-        $('#addImg').click(function () {
-            
-            filepicker.pickAndStore(
-                {
-                    mimetype:"image/*",
-                    services:['COMPUTER', 'FACEBOOK', 'DROPBOX', 'GMAIL',  'EVERNOTE',  'FTP',  'GOOGLE_DRIVE'],
-                },
-                    {location:"S3", access: 'public'}, 
-                    function(fpfiles){
-                        console.log(JSON.stringify(fpfiles));
-                        
-                        // Add to list
-                        $('#da-thumbs').prepend('<li><a class="img" href="javascript:void(0)"><img  src="'+fpfiles[0].url+'"  width="166" height="146" /><div><span>Klikk for å plassere i kartet</span></div></a></li>')
-                        setImageOnClick();
-                    },
-                    function(FPError){
-                        console.log(FPError.toString());
-                    });
-            });
-        
-        });
-        
+            }) // END UPLOAD GPX
+        }
 
-        
+        function sendToTrip(ids) {
+            maptype = getActiveMaptype();
+            document.location.href = "/"+ids+"/" + maptype;
+        }
+            
         var marker;   
         function setImageOnClick() {
             $('.img').click(function (event) {
             
                 var imgSrc = $(this).find('img').attr('src');
-    
+
                 $('#imageNotification').miniNotification();
                 marker = new L.Draw.Marker(map, {
                     title: 'Add a marker'
@@ -816,7 +836,7 @@
                       })
       			    }
 
-	
+
           		});
         
                 marker.addHooks();
