@@ -124,26 +124,6 @@ def getTripGPX(id):
 
 
 
-### TEMPLATES ###
-@app.route('/<regex("[0-9+]+"):ids>')
-@app.route('/<regex("[0-9+]+"):ids>/<string:mapType>')
-def getTripHTML(ids, mapType='turkart'):
-    map = mapTypesList.index(mapType)
-    return render_template('tur.html', mapType=map, idList=ids)
-
-
-    
-@app.route('/<regex("[0-9+]+"):ids>/embed')
-@app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>')
-def getTripEmbed(ids, mapType='turkart'):
-    map = mapTypesList.index(mapType)
-    return render_template('embed.html', mapType=map, idList=ids)
-
-
-
-
-
-
 ### WRITE ###
 
 @app.route('/del/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])
@@ -202,6 +182,26 @@ def createGeoJSONTrip():
 
 
 
+
+
+### TEMPLATES ###
+
+@app.route('/<regex("[0-9+]+"):ids>')
+@app.route('/<regex("[0-9+]+"):ids>/<string:mapType>')
+def getTripHTML(ids, mapType='turkart'):
+    map = mapTypesList.index(mapType)
+    return render_template('tur.html', mapType=map, idList=ids)
+
+
+    
+@app.route('/<regex("[0-9+]+"):ids>/embed')
+@app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>')
+def getTripEmbed(ids, mapType='turkart'):
+    map = mapTypesList.index(mapType)
+    return render_template('embed.html', mapType=map, idList=ids)
+
+
+
 @app.route('/del/kml/', methods = ['POST'])
 def createKMLTrip():
     
@@ -236,7 +236,11 @@ def terms():
 @app.route('/')
 def home():
     return render_template('index.html')
-    
+ 
+
+
+
+ ### UTILITY FUNCTIONS ###   
     
     
 def addPointToDB(lon, lat, url, description, markerType, title):
