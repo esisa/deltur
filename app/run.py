@@ -7,4 +7,4 @@ if __name__ == '__main__':
     app.debug = True
     UPLOAD_FOLDER = 'upload'
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    app.run()
+    app.run(host='0.0.0.0')

@@ -216,9 +216,9 @@ def advanced():
 def api():
     return render_template('api.html')
     
-@app.route('/elev/', methods = ['POST'])
+@app.route('/elev/elevationprofile.json', methods = ['POST'])
 def elev():
-    return redirect("http://verktoy.kresendo.no/elevProfile")
+    return redirect("http://localhost/elev/elevationprofile.json")
     
 @app.route('/pro/')
 def pro():

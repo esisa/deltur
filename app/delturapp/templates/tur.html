@@ -9,7 +9,7 @@
     
 
     <script type=text/javascript>
-  	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  	    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
     
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
@@ -43,118 +43,217 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <style type="text/css">
     
-        	.rickshaw_graph .detail .x_label { display: none }
-        	.rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
-        	.detail_swatch { float: right; display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
-        	.rickshaw_graph .detail .date { color: #a0a0a0 }
-		
-        	#chart {
-        		position: relative;
-        		left: 0px;
-                width: 680px;
-        	}
-        	#y_axis {
-        		position: absolute;
-        		left: -40px;
-        		top: 0;
-        		bottom: 0;
-        		width: 40px;
-        	}
+    	.rickshaw_graph .detail .x_label { display: none }
+    	.rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
+    	.detail_swatch { float: right; display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
+    	.rickshaw_graph .detail .date { color: #a0a0a0 }
+	
+    	#chart {
+    		position: relative;
+    		left: 0px;
+            width: 680px;
+    	}
+    	#y_axis {
+    		position: absolute;
+    		left: -40px;
+    		top: 0;
+    		bottom: 0;
+    		width: 40px;
+    	}
 
-          /* Sticky footer styles
-          -------------------------------------------------- */
+        /* Sticky footer styles
+        -------------------------------------------------- */
 
-          html,
-          body {
+        html,
+        body {
             height: 100%;
-            /* The html and body elements cannot have any padding or margin. */
-          }
+        /* The html and body elements cannot have any padding or margin. */
+        }
 
-          /* Wrapper for page content to push down footer */
-          #wrap {
+        /* Wrapper for page content to push down footer */
+        #wrap {
             min-height: 100%;
             height: auto !important;
             height: 100%;
             /* Negative indent footer by it's height */
             margin: 0 auto -60px;
-          }
+        }
 
-         
-	  
-          /* Lastly, apply responsive CSS fixes as necessary */
-          @media (max-width: 767px) {
-            #footer {
-              margin-left: -20px;
-              margin-right: -20px;
-              padding-left: 20px;
-              padding-right: 20px;
-            }
-          }
+        /* Custom page CSS
+        -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
 
-
-
-          /* Custom page CSS
-          -------------------------------------------------- */
-          /* Not required for template or sticky footer method. */
-
-          .container {
+        .container {
             width: auto;
             max-width: 680px;
-    		margin-top: 30px;
-          }
-          .container .credit {
+            margin-top: 30px;
+        }
+        .container .credit {
             margin: 20px 0;
-          }
-	  
-    	  .btn-custom {
-    	    background-color: hsl(214, 37%, 28%) !important;
-    	    background-repeat: repeat-x;
-    	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7a99c1", endColorstr="#2c4361");
-    	    background-image: -khtml-gradient(linear, left top, left bottom, from(#7a99c1), to(#2c4361));
-    	    background-image: -moz-linear-gradient(top, #7a99c1, #2c4361);
-    	    background-image: -ms-linear-gradient(top, #7a99c1, #2c4361);
-    	    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7a99c1), color-stop(100%, #2c4361));
-    	    background-image: -webkit-linear-gradient(top, #7a99c1, #2c4361);
-    	    background-image: -o-linear-gradient(top, #7a99c1, #2c4361);
-    	    background-image: linear-gradient(#7a99c1, #2c4361);
-    	    border-color: #2c4361 #2c4361 hsl(214, 37%, 19.5%);
-    	    color: #fff !important;
-    	    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.56);
-    	    -webkit-font-smoothing: antialiased;
-    	  }
-      
-          label {
-              display: inline-block;
-              width: 5em;
-          }
-          
-          #tripDownload {
-              display: none;
-          }
-          
-          #placeDownload {
-              display: none;
-          }
+        }
+
+        .btn-custom {
+            background-color: hsl(214, 37%, 28%) !important;
+            background-repeat: repeat-x;
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7a99c1", endColorstr="#2c4361");
+            background-image: -khtml-gradient(linear, left top, left bottom, from(#7a99c1), to(#2c4361));
+            background-image: -moz-linear-gradient(top, #7a99c1, #2c4361);
+            background-image: -ms-linear-gradient(top, #7a99c1, #2c4361);
+            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7a99c1), color-stop(100%, #2c4361));
+            background-image: -webkit-linear-gradient(top, #7a99c1, #2c4361);
+            background-image: -o-linear-gradient(top, #7a99c1, #2c4361);
+            background-image: linear-gradient(#7a99c1, #2c4361);
+            border-color: #2c4361 #2c4361 hsl(214, 37%, 19.5%);
+            color: #fff !important;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.56);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        label {
+            display: inline-block;
+            width: 5em;
+        }
+
+        #tripDownload {
+            display: none;
+        }
+
+        #placeDownload {
+            display: none;
+        }
+
+        #map {
+            height: 500px;
+        }
+
+
+        #mobile {
+            display: none;
+        }
+        @media screen and (max-width: 767px) {
+            .container {
+                margin-top: -20px;
+            }
+
+            #nav#full {
+                display:none
+            }
+
+            #logo {
+                float: left;
+                margin-left: 10px;
+                margin-top: 3px;
+
+            }
+
+            nav#mobile {
+                background-color:#2A333C;
+                box-shadow: 0 0 3px 2px rgba(0,0,0,0.3);
+                display:block;
+            }
+
+            /*
+            Top black bar that holds the toggle button
+            */
+
+            nav#mobile #toggle-bar {
+                line-height:70px;
+            }
+
+            /*
+            Toggle button #1 ("Menu")
+            */
+
+            nav#mobile strong a {
+                margin-left:0px;
+                border:0px solid #444;
+                padding:10px;
+                font-size: 20px;
+            }
+
+            /*
+            Toggle button #2 ("Navicon")
+            */
+
+            nav#mobile .navicon {
+                float: right;
+                height: 6px;
+                width: 34px;
+                margin: 20px;
+                border-top: 18px double #FFF;
+                border-bottom: 6px solid #FFF;
+                font-size:0;
+            }
+
+            /*
+            The dropdown menu
+            */
+
+            nav#mobile ul li {
+                clear:both;
+                list-style:none;
+            }
+
+            nav#mobile ul li a {
+                display:block;
+                background-color:#235A96;
+                text-transform:uppercase;
+                letter-spacing:.2em;
+                margin:2px 0;
+                padding:6px 0 6px 8px;
+            }
+
+            nav#mobile ul ul {
+                font-size:small;
+            }
+
+            nav#mobile ul ul li {
+                margin-left:30px;
+            }
+
+            nav#mobile ul ul a {
+                background-color:#328CBE;
+                padding-left:8px;
+            }
+
+            nav#mobile ul ul a:before {
+                /*content: "\2192";*/
+                padding-right:8px;
+            }
+        }
 	  
     </style>
-    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">							   
+    <link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet">							   
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />	
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">	
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>							   
   
     <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-40003995-1']);
+        _gaq.push(['_trackPageview']);
 
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-40003995-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
+        (function() {
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+        })();
+    </script>
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            // Mobile menu
+            $("#mmenu").hide();
+            $(".mtoggle").click(function() {
+                $("#mmenu").slideToggle(500);
+            });
 
+            // Mobile map height
+            var bodyHeight = $('body').height();
+            var menuHeight = $('#mobile').height();
+            var elevProfileHeight = $('#chart_container').height();
+            $('#map').height(bodyHeight-menuHeight-elevProfileHeight-70);
+        });
     </script>
   
   </head>
@@ -162,6 +261,27 @@
   
 
   <body>
+
+    <nav id="mobile">
+        <div id="toggle-bar">
+            <div id="logo"><img id="logo" width="50" src="{{ url_for('static', filename='img/map_logo.png') }}"></div><strong><a class="mtoggle" href="#">deltur.no</a></strong>
+            <a class="navicon mtoggle" href="#">MAIN MENU</a>
+        </div>
+
+        <ul id="mmenu">
+            <li><a href="#">Last ned turen</a></li>
+            <li><a href="#">Embed-kode</a></li>
+            <li><a href="#">Del turen på</a>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Google+</a></li>
+                    <li><a href="#">E-post</a></li>
+                </ul>
+            </li>  
+            <li><a href="#">Del ny tur</a></li>      
+        </ul>
+    </nav>
       
       <div id="downloadModal" class="modal hide fade">
         <div class="modal-header">
@@ -214,17 +334,19 @@
 
       <!-- Begin page content -->
       <div class="container">
-          <a style="text-decoration: none;" href="javascript:void(0)" id="elevProfile"><i class="icon-bar-chart visible-phone" ></a></i>&nbsp;
-          <span class="hint--top" data-hint="Last ned denne turen">
-		      <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" href="#downloadModal"><i class="icon-arrow-down"></a></i>&nbsp;
-          </span>
-		   <span class="hint--top" data-hint="Legg kartet på eget nettsted">
-               <a id="embedButton" style="text-decoration: none;" data-toggle="modal" href="#embedModal"><i class="icon-signin"></a></i>&nbsp;
-           </span>
-          
+        <div class="hidden-phone">
+            <a style="text-decoration: none;" href="javascript:void(0)" id="elevProfile"><i class="icon-bar-chart visible-phone" ></a></i>&nbsp;
+            <span class="hint--top" data-hint="Last ned denne turen">
+    		  <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" href="#downloadModal"><i class="icon-arrow-down"></a></i>&nbsp;
+            </span>
+    		<span class="hint--top" data-hint="Legg kartet på eget nettsted">
+                <a id="embedButton" style="text-decoration: none;" data-toggle="modal" href="#embedModal"><i class="icon-signin"></a></i>&nbsp;
+            </span>
+        </div>
+
 		  <b class="hidden-phone" style="color:F8F8F8;font-size: 18px;">{{title}}</b>
 		  
-			<div style="font-size: 17px;" class="pull-right">
+			<div class="hidden-phone" style="font-size: 17px;" class="pull-right">
                  <span class="hint--top" data-hint="Del på Facebook">
 			         <a id="fb_share" name="fb_share" style="text-decoration: none;" href="https://www.facebook.com/sharer/sharer.php?u=http://deltur.no/{{idList}}" target="_new">
                          <i class="icon-facebook"></i>&nbsp;
@@ -249,7 +371,7 @@
 
 		<br>
 		
-		<div id="map" style="height: 500px; ">
+		<div id="map">
             <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
             <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
             </a>
@@ -266,10 +388,9 @@
 			</div>
 			<div id="slider"></div>
 		</div>
-		<a style="text-decoration: none;" href="javascript:void(0)" id="upTop"><i class="icon-double-angle-up visible-phone" ></a></i>&nbsp;
 		
 		<div style="color:F8F8F8; font-size: 12px;">
-			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a> og <a href="http://www.turkompisen.no">turkompisen.no</a>
+			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a>
 		</div>	
       </div>
 	  

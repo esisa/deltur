@@ -414,7 +414,11 @@
         </p>
         
         <div id="enkelTur">
-            <input id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX();" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
+            <!-- Vises på vanlig desktop -->
+            <input class="hidden-phone" id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX();" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
+
+            <!-- Skjuler opplasting fra COMPUTER på mobil siden det funka dårlig. -->
+            <input class="visible-phone" id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX();" data-fp-extension=".gpx" data-fp-services="DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
         </div>
         <div id ="gpxSpinner" style="margin-bottom: 30px;"></div>
         
@@ -481,12 +485,13 @@
         
         <div id ="spinner" style="margin-top: 15px;"></div>
 
+        <div id="termslink">Alle turer er tilgjengelig i 60 dager. Ønsker du lengre tilgjengelighet så ta en kikk på våre <a href="{{ url_for('terms') }}">svært billige månedspriser.</a></div>
         <div id="apilink"><a href="{{ url_for('api') }}">Mer glad i API enn GUI?</a></div>
-        <div id="termslink"><a href="{{ url_for('terms') }}">Betingelser for bruk av deltur.no</a></div>
         
-		<div style="color:F8F8F8; font-size: 12px; text-align: center;">
-			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a> og <a href="http://www.turkompisen.no">turkompisen.no</a>
-		</div>	
+        <div style="color:F8F8F8; font-size: 12px; text-align: center;">
+      <br>
+            Utviklet av <a href="http://www.kresendo.no">kresendo.no</a>
+        </div>  
         
       </form>
       
@@ -564,6 +569,28 @@
           map.fitBounds(gpxBounds.getBounds());
         })*/
     }
+
+
+    function switchBgMap(maptype) {
+        switch(maptype) {
+            case "turkart":
+                map.addLayer(turkart);
+                map.removeLayer(skikart);
+                map.removeLayer(topokart);
+                break;
+            case "skikart":
+                map.removeLayer(turkart);
+                map.addLayer(skikart);
+                map.removeLayer(topokart);
+                break;
+            case "topokart":
+                map.removeLayer(turkart);
+                map.removeLayer(skikart);
+                map.addLayer(topokart);
+                break;
+        }
+    }
+
     var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
     var drawnItems;
     var layer;
@@ -571,15 +598,27 @@
     var markerInfo = Array();
     $(function () {
 
-        // Check if mapped is clicked
+        // Handlers for clicking map or radio buttons below map
         $('#turkart').click(function () {
             jQuery("#turkart-radio").attr('checked', 'checked');
+            switchBgMap("turkart")
+        });
+        $('#turkart-radio').click(function () {
+            switchBgMap("turkart")
         });
         $('#skikart').click(function () {
             jQuery("#skikart-radio").attr('checked', 'checked');
+            switchBgMap("skikart")
+        });
+        $('#skikart-radio').click(function () {
+            switchBgMap("skikart")
         });
         $('#topokart').click(function () {
             jQuery("#topokart-radio").attr('checked', 'checked');
+            switchBgMap("topokart")
+        });
+        $('#topokart-radio').click(function () {
+            switchBgMap("topokart")
         });
 
 
@@ -623,15 +662,6 @@
 
         map.addLayer(turkart);
         
-        
-        var baseMaps = {
-            "Turkart": turkart,
-            "Skikart": skikart,
-            "Topo": topokart//,
-            //"Veikart": veikart,
-            //"Flyfoto": satellite
-        };
-        L.control.layers(baseMaps).addTo(map);
         
         
         drawnItems = new L.FeatureGroup();
