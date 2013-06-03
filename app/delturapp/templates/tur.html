@@ -252,7 +252,7 @@
             var bodyHeight = $('body').height();
             var menuHeight = $('#mobile').height();
             var elevProfileHeight = $('#chart_container').height();
-            $('#map').height(bodyHeight-menuHeight-elevProfileHeight-70);
+            $('#map').height(bodyHeight-menuHeight-elevProfileHeight-140);
         });
     </script>
   
@@ -334,7 +334,7 @@
 
       <!-- Begin page content -->
       <div class="container">
-        <div class="hidden-phone">
+        <div class="hidden-phone" style="float:left;">
             <a style="text-decoration: none;" href="javascript:void(0)" id="elevProfile"><i class="icon-bar-chart visible-phone" ></a></i>&nbsp;
             <span class="hint--top" data-hint="Last ned denne turen">
     		  <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" href="#downloadModal"><i class="icon-arrow-down"></a></i>&nbsp;
@@ -346,7 +346,7 @@
 
 		  <b class="hidden-phone" style="color:F8F8F8;font-size: 18px;">{{title}}</b>
 		  
-			<div class="hidden-phone" style="font-size: 17px;" class="pull-right">
+			<div style="font-size: 17px;" class="pull-right hidden-phone">
                  <span class="hint--top" data-hint="Del på Facebook">
 			         <a id="fb_share" name="fb_share" style="text-decoration: none;" href="https://www.facebook.com/sharer/sharer.php?u=http://deltur.no/{{idList}}" target="_new">
                          <i class="icon-facebook"></i>&nbsp;
