@@ -212,9 +212,6 @@ def createKMLTrip():
 def advanced():
     return render_template('advanced.html')    
 
-@app.route('/api/')
-def api():
-    return render_template('api.html')
     
 @app.route('/elev/elevationprofile.json', methods = ['POST'])
 def elev():
@@ -236,6 +233,26 @@ def terms():
 @app.route('/')
 def home():
     return render_template('index.html')
+
+
+@app.route('/info')
+def infohome():
+    return render_template('infoside/index.html')
+@app.route('/info/features')
+def infoexplore():
+    return render_template('infoside/explore.html')
+@app.route('/info/priser')
+def infopriser():
+    return render_template('infoside/plans.html')
+@app.route('/info/api')
+def infoapi():
+    return render_template('infoside/api.html')
+@app.route('/info/faq')
+def infofaq():
+    return render_template('infoside/faq.html')
+@app.route('/info/kontakt')
+def infokontakt():
+    return render_template('infoside/contact.html')
  
 
 
