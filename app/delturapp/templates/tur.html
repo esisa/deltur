@@ -402,6 +402,7 @@
     <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
 
 	<script type="text/javascript">
+
     
         $.fn.preload = function() {
             this.each(function(){
@@ -410,6 +411,15 @@
         }
     
 		var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
+
+        // Events
+        //map.on('load', onLoadMap);
+        map.on('viewreset', onLoadMap);
+
+        function onLoadMap() {
+            if(numMarkers == 1)
+                imgMarker.openPopup();
+        }
 
 		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
         
@@ -487,6 +497,8 @@
         var trip = L.geoJson();
         trip.addTo(map);
         var featureBounds = new L.LatLngBounds();
+        var imgMarker;
+        var numMarkers = 0;
             
         $.each(ids, function(index, value) {
             var id = value;
@@ -565,10 +577,12 @@
                       color: 'blue'
                     });
                     $.getJSON('/'+id+'/metadata', function (metadata) {
-                        var marker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
-                        marker.addTo(map).bindPopup('<h3 id="popupText">'+metadata.title+'</h3><img width="250" src="'+ metadata.url +'"><br><div id="popupText">' + metadata.description + '</div>');
+                        numMarkers++;
+                        imgMarker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
+                        var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
+                        imgMarker.addTo(map).bindPopup('<h3 id="popupText">'+metadata.title+'</h3><img width="'+imgWidth+'" src="'+ metadata.url +'"><br><div id="popupText">' + metadata.description + '</div>');
                         $([metadata.url]).preload(); // Preload image
-                        featureBounds.extend(marker.getLatLng());
+                        featureBounds.extend(imgMarker.getLatLng());
                     });
                     
                 }
@@ -597,18 +611,24 @@
                     // Mobile map height
                     var bodyHeight = $('body').height();
                     var menuHeight = $('#mobile').height();
-                    var elevProfileHeight = 100; //$('#chart_container').height();
+                    var elevProfileHeight; // = $('#chart_container').height();
+                    if(numLines==0) {elevProfileHeight = 0} else {elevProfileHeight = 100}
+                        
+                     
                     $('#map').height(bodyHeight-menuHeight-elevProfileHeight-50);
                     map.invalidateSize(true);
+
+                    
+                    
 
                     map.fitBounds(featureBounds);
                     setTimeout(function() {
                         if(numLines==0 && map.getZoom() > 11) {
                                 map.setZoom(11);
-                        }
-                            
+                        }   
                     
                         },300);
+                    
                 },300);
 
             });
