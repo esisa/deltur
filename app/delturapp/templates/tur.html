@@ -51,7 +51,7 @@
     	#chart {
     		position: relative;
     		left: 0px;
-            width: 680px;
+            /*width: 680px;*/
     	}
     	#y_axis {
     		position: absolute;
@@ -72,7 +72,7 @@
 
         /* Wrapper for page content to push down footer */
         #wrap {
-            min-height: 100%;
+            /*min-height: 100%;*/
             height: auto !important;
             height: 100%;
             /* Negative indent footer by it's height */
@@ -598,7 +598,7 @@
                     var bodyHeight = $('body').height();
                     var menuHeight = $('#mobile').height();
                     var elevProfileHeight = 100; //$('#chart_container').height();
-                    $('#map').height(bodyHeight-menuHeight-elevProfileHeight-40);
+                    $('#map').height(bodyHeight-menuHeight-elevProfileHeight-50);
                     map.invalidateSize(true);
 
                     map.fitBounds(featureBounds);
