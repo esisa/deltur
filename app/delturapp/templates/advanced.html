@@ -542,9 +542,9 @@
         gpx = new L.GPX(uploadFile, {
             async: true,
             marker_options: {
-                startIconUrl: 'images/pin-icon-start.png',
-                endIconUrl: 'images/pin-icon-end.png',
-                shadowUrl: 'images/pin-shadow.png'
+                startIconUrl: '{{ url_for('static', filename='img/pin-icon-start.png') }}',
+                endIconUrl: '{{ url_for('static', filename='img/pin-icon-end.png') }}',
+                shadowUrl: '{{ url_for('static', filename='img/pin-shadow.png') }}'
               }
           }).on('loaded', function(e) {
             map.fitBounds(e.target.getBounds());
@@ -789,7 +789,7 @@
                     var tittel = markerInfo[i][0];
                     var description = markerInfo[i][1];
                     var imgUrl = markerInfo[i][2];
-                    //debugger;
+
                     i++;
 
                     var lat = Number((value.getLatLng().lat).toFixed(5));
@@ -809,7 +809,6 @@
                             markerInfo[j][3] = true; // This marker is uploaded to server
                             
                             if(typeof uploadFile !="undefined") { // No markers
-                                debugger;
                                 shareGPX(points);
                             } // END IF
                             else {
@@ -838,7 +837,6 @@
                                     }
                                 });
                                 if(done) {
-                                    debugger;
                                     sendToTrip(ids);
                                 }
                                     
@@ -846,7 +844,6 @@
                             j++;
                         },
                         error: function (response) {
-                            debugger;
                             alert("Klarte dessverre ikke å laste opp filen!");
                             j++;
                         }
