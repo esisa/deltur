@@ -248,12 +248,6 @@
             $(".mtoggle").click(function() {
                 $("#mmenu").slideToggle(500);
             });
-
-            // Mobile map height
-            var bodyHeight = $('body').height();
-            var menuHeight = $('#mobile').height();
-            var elevProfileHeight = $('#chart_container').height();
-            $('#map').height(bodyHeight-menuHeight-elevProfileHeight-140);
         });
     </script>
   
@@ -477,14 +471,6 @@
         }
 		    
 
-		
-		/*
-		var baseMaps = {
-		    "Turkart": turkart,
-		    "Skikart": skikart
-		};
-		L.control.layers(baseMaps).addTo(map);
-		*/
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
         /*if(ids.length>1) {
@@ -608,15 +594,22 @@
                 
                 // TODO: Rewrite
                 setTimeout(function() {
-                        map.fitBounds(featureBounds);
-                        setTimeout(function() {
-                            if(numLines==0 && map.getZoom() > 11) {
-                                    map.setZoom(11);
-                            }
-                                
-                        
-                            },300);
-                    },300);
+                    // Mobile map height
+                    var bodyHeight = $('body').height();
+                    var menuHeight = $('#mobile').height();
+                    var elevProfileHeight = 100; //$('#chart_container').height();
+                    $('#map').height(bodyHeight-menuHeight-elevProfileHeight-40);
+                    map.invalidateSize(true);
+
+                    map.fitBounds(featureBounds);
+                    setTimeout(function() {
+                        if(numLines==0 && map.getZoom() > 11) {
+                                map.setZoom(11);
+                        }
+                            
+                    
+                        },300);
+                },300);
 
             });
 		
