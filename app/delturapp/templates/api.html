@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>deltur.no</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 70px;
+        padding-bottom: 40px;
+        background-color: rgb(39,43,48);
+      }
+
+      .form-signin {
+        max-width: 400px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+       text-align: center;
+      }
+   
+
+      #apilink {
+          font-size: 11px;
+          margin-top: 5px;
+          text-align: center;
+      }
+      
+      #delturbutton {
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          width: 95%;
+          margin-top: 30px;
+      }
+      
+      #maptable {
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      #uploadbutton {
+          margin-left: 25%;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      #dropdown {
+          margin-left: 25%;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+          width:165px;
+      }
+      
+      #text {
+          margin-left: auto;
+          margin-right: auto;
+      }
+      
+      #filename {
+          text-align: center;
+          display: none;
+      }
+      
+      
+    </style>
+   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+       <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+       <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+   <script>
+       $(function() {
+           $( document ).tooltip();
+       });
+       </script>
+       <style>
+       label {
+           display: inline-block;
+           width: 5em;
+       }
+       </style>
+									   
+       <script type="text/javascript">
+
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-40003995-1']);
+         _gaq.push(['_trackPageview']);
+
+         (function() {
+           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+
+       </script>
+   
+  </head>
+
+  <body>
+      
+          
+      
+    
+             
+
+    <div class="container">
+      <form class="form-signin">
+          
+        <!--h2 style="margin-left: 100px" class="form-signin-heading">Last opp fil</h2-->
+        <h1 style="text-align: center;font-size:4em;" class="form-signin-heading">deltur.no</h1>
+        <div style="text-align: center; font-size:20px;">Del din tur med deltur.no API!</div>
+        <hr>
+        <p id="text">
+           Hvis du vil dele turer på deltur.no fra andre tjenester så kan du bruke deltur.no API. deltur.no støtter punkt og linjer. For å bruke API'et kreves det at du <a href="{{ url_for('register') }}">registrerer deg</a> og bruker token for å lage turer. 
+        </p>
+        
+        <p id="text">
+        deltur.no har samme <a href="{{ url_for('terms') }}">betingelser</a> som for deltur.no. Du kan også oppgradere til <a href="{{ url_for('pro') }}">deltur.no Pro</a>.      
+        </p>
+        
+        
+        <p id="text">
+           Deltur.no har et enkelt API med følgende endepunkter:      
+        </p>
+        
+        <h3>Lag et sted:</h3>
+        <dl>
+          <dt>deltur.no/del/sted/[lat]/[long] </dt>
+          <dd>Del et sted med lat og long i URL'en. Returnerer et JSON dokument med id til tur. </dd>
+        </dl>
+        
+        <dl>
+          <dd>Du kan også legge til en beskrivelse og et bilde ved å bruke HTTP POST(istedenfor GET) og legge til et JSON dokument med verdiene "description" og "url". <pre>
+{
+  "description":"Beskrivelse av stedet.",
+  "url": "http://eksempel.com/bildeurl.jpg"
+}
+          </pre>  </dd>
+        </dl>
+        
+        <h3>Lag en tur:</h3>
+        <dl>
+          <dt>deltur.no/del/[format] </dt>
+          <dd>Del en tur med med HTTP POST. Du kan velge mellom GPX eller GeoJSON. Returnerer et JSON dokument med id til turen.  </dd>
+        </dl>
+        
+        <dl>
+          <dd>Eksempel på GeoJSON kan være slik: <pre>
+{
+  "type": "LineString",
+  "coordinates": [
+          [10.551269375141, 59.796755011192],
+          [10.386474453266, 59.785768683067],
+          [10.348022304829, 59.719850714317],
+          [10.260131679829, 59.648439581505]
+          ]
+}
+
+          </pre>  </dd>
+        </dl>
+    
+        
+        
+        
+        <h3>Vis en tur:</h3>
+        <dl>
+          <dt>deltur.no/[id]/[kartype] </dt>
+          <dd>Vis denne turen som en HTML-side.</dd>
+        </dl>
+        
+        <dl>
+          <dt>deltur.no/[id]+[id]+[id]/[kartype] </dt>
+          <dd>Kombiner ulike turer i en HTML-visning.</dd>
+        </dl>
+        
+        <dl>
+          <dt>deltur.no/[id]/embed/[kartype] </dt>
+          <dd>Vis denne turen i en iFrame.</dd>
+        </dl>
+        
+        <dl>
+          <dt>deltur.no/[id]+[id]+[id]/embed/[kartype]</dt>
+          <dd>Kombiner ulike turer i en iFrame.</dd>
+        </dl>
+        
+        <dl>
+          <dd>Karttype er frivillig og standard er "turkart". Du kan også velge mellom "skikart", "veikart" og "topokart". Merk at topokart leveres av Kartverket og har begrensninger i bruk per IP-adresse! </dd>
+        </dl>
+        
+        
+        
+        <h3>Last ned en tur:</h3>
+        <dl>
+          <dt>deltur.no/[id]/[format] </dt>
+          <dd>Last ned denne turen i ulike formater. Du kan velge mellom GPX, GeoJSON, KML, CSV eller OSM.</dd>
+        </dl>
+        
+        <dl>
+          <dt>deltur.no/[id]/metadata </dt>
+          <dd>Last ned metadata for denne turen. Returnerer et JSON-dokument med ulike attributter for punkt og linje. </dd>
+        </dl>
+        
+        <h3>Konverter id:</h3>
+        <dl>
+          <dt><del>deltur.no/hash/[id]+[id]+[id]</del> </dt>
+          <dd><del>Returnerer en hash du kan bruke som id istedenfor for å legge sammen id'ene. Du får da en enklere id å forholde deg til.</del> </dd>
+        </dl>
+        
+       
+        
+        
+       
+       
+       
+
+        
+		<div style="color:F8F8F8; font-size: 12px; text-align: center;">
+			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a> og <a href="http://www.turkompisen.no">turkompisen.no</a>
+		</div>	
+        
+      </form>
+      
+      
+
+    </div> <!-- /container -->
+    
+    
+    
+
+  </body>
+</html>
