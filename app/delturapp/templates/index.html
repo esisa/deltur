@@ -242,7 +242,15 @@
           <div class="tab-content">
             <div class="tab-pane active" id="tab1">
                 <div id="enkelTur">
-                    <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
+                    <!-- Vises på vanlig desktop -->
+                    <div class="hidden-phone">
+                        <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
+                    </div>
+
+                    <!-- Skjuler opplasting fra COMPUTER på Android/iOS siden det funka dårlig. -->
+                    <div class="visible-phone">
+                        <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="DROPBOX,GMAIL,URL,EVERNOTE,FTP,GITHUB,GOOGLE_DRIVE,WEBDAV" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
+                    </div>
                 </div>
               
             </div>
