@@ -580,7 +580,12 @@
                         numMarkers++;
                         imgMarker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
                         var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
-                        imgMarker.addTo(map).bindPopup('<h3 id="popupText">'+metadata.title+'</h3><img width="'+imgWidth+'" src="'+ metadata.url +'"><br><div id="popupText">' + metadata.description + '</div>');
+                        
+                        // Make sure the image is never larger than 250 px
+                        if(imgWidth>250)
+                            imgWidth = 250;
+                        
+                        imgMarker.addTo(map).bindPopup('<h3 id="popupText" style="width:'+imgWidth+'px">'+metadata.title+'</h3><img width="'+imgWidth+'" src="'+ metadata.url +'"><br><div id="popupText" style="width:'+imgWidth+'px">' + metadata.description + '</div>');
                         $([metadata.url]).preload(); // Preload image
                         featureBounds.extend(imgMarker.getLatLng());
                     });
