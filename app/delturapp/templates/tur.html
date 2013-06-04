@@ -270,17 +270,17 @@
         </div>
 
         <ul id="mmenu">
-            <li><a href="#">Last ned turen</a></li>
-            <li><a href="#">Embed-kode</a></li>
-            <li><a href="#">Del turen på</a>
+            <li><a data-toggle="modal" href="#downloadModal">Last ned turen</a></li>
+            <li><a data-toggle="modal" href="#embedModal">Embed-kode</a></li>
+            <li><a href="javascript:void(0)">Del turen på</a>
                 <ul>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Google+</a></li>
-                    <li><a href="#">E-post</a></li>
+                    <li><a href="javascript:void(0)" id="fb_share_mobile" target="_new">Facebook</a></li>
+                    <li><a href="javascript:void(0)" id="tw_share_mobile" target="_new">Twitter</a></li>
+                    <li><a href="javascript:void(0)" id="go_share_mobile" target="_new">Google+</a></li>
+                    <li><a href="javascript:void(0)" id="mail_share_mobile" target="_new">E-post</a></li>
                 </ul>
             </li>  
-            <li><a href="#">Del ny tur</a></li>      
+            <li><a href="http://deltur.no">Del ny tur</a></li>      
         </ul>
     </nav>
       
@@ -336,7 +336,6 @@
       <!-- Begin page content -->
       <div class="container">
         <div class="hidden-phone" style="float:left;">
-            <a style="text-decoration: none;" href="javascript:void(0)" id="elevProfile"><i class="icon-bar-chart visible-phone" ></a></i>&nbsp;
             <span class="hint--top" data-hint="Last ned denne turen">
     		  <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" href="#downloadModal"><i class="icon-arrow-down"></a></i>&nbsp;
             </span>
@@ -415,17 +414,6 @@
                 $('<img/>')[0].src = this;
             });
         }
-    
-        $("#elevProfile").click(function() {
-          $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-          return false;
-        });
-        
-        $("#upTop").click(function() {
-          $("html, body").animate({ scrollTop:0 }, "slow");
-          return false;
-        });
-
     
 		var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
 
@@ -715,11 +703,14 @@
 
     
     $('#downloadTripButton').click(function() {
+        downloadTrip()    
+    });
+    function downloadTrip() {
         //console.log("Download trip");
         var id = $("#tripSelect option:selected").text();
         var type = $("#tripDownloadType option:selected").text().toLowerCase();
         window.open("/" + id + "/" + type);
-    });
+    }
 	
     $('#downloadPlaceButton').click(function() {
         //console.log("Download place");
@@ -728,22 +719,27 @@
         window.open("/" + id + "/" + type);
     });
     
+    
     // FIX LINKS TO SOSIAL NETWORKS
     var link = $("#fb_share").attr("href");
     var encodedLink = link.split('+').join("%2B"); 
-    var link = $("#fb_share").attr("href", encodedLink);
+    $("#fb_share").attr("href", encodedLink);
+    $("#fb_share_mobile").attr("href", encodedLink);
     
     var link = $("#tw_share").attr("href");
     var encodedLink = link.split('+').join("%2B");
-    var link = $("#tw_share").attr("href", encodedLink);
+    $("#tw_share").attr("href", encodedLink);
+    $("#tw_share_mobile").attr("href", encodedLink);
 
     var link = $("#go_share").attr("href");
     var encodedLink = link.split('+').join("%2B"); 
-    var link = $("#go_share").attr("href", encodedLink);
+    $("#go_share").attr("href", encodedLink);
+    $("#go_share_mobile").attr("href", encodedLink);
 
     var link = $("#mail_share").attr("href");
     var encodedLink = link.split('+').join("%2B"); 
-    var link = $("#mail_share").attr("href", encodedLink);
+    $("#mail_share").attr("href", encodedLink);
+    $("#mail_share_mobile").attr("href", encodedLink);
 	</script>
 
 </html>
