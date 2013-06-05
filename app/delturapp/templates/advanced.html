@@ -617,6 +617,19 @@
         $('#topokart-radio').click(function () {
             switchBgMap("topokart")
         });
+        
+        // Handle mobile case of choosing map type
+        $('#dropdown').change(function() {
+            if($(this).find('option:selected').val() == "turkart") {
+                jQuery("#turkart-radio").attr('checked', 'checked');
+            }
+            else if($(this).find('option:selected').val() == "skikart") {
+                jQuery("#skikart-radio").attr('checked', 'checked');
+            }
+            else {
+                jQuery("#topokart-radio").attr('checked', 'checked');         
+            }
+        });
 
 
  		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
