@@ -5,6 +5,7 @@ deltur.no
 
 
 - apt-get install python-lxml
+- apt-get install python-flask
 - pip install gpxpy
 - pip install requests
 - aptitude install python-shapely
