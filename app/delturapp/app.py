@@ -244,6 +244,9 @@ def infoexplore():
 @app.route('/info/priser')
 def infopriser():
     return render_template('infoside/plans.html')
+@app.route('/info/eksempler')
+def infoeksempler():
+    return render_template('infoside/eksempler.html')
 @app.route('/info/api')
 def infoapi():
     return render_template('infoside/api.html')

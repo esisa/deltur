@@ -65,10 +65,11 @@
 					
 					<div class="nav-collapse">
 						<ul class="nav">
-							<li><a href="http://deltur.no">deltur.no</a></li>
+							<li><a href="http://deltur.no">Tilbake til deltur.no</a></li>
 							<li><a href="/info">Info</a></li>
                             <li class="active"><a href="/info/features">Mer</a></li>
 							<li><a href="/info/priser">Priser</a></li>
+							<li><a href="/info/eksempler">Eksempler</a></li>
 							<li><a href="/info/api">API</a></li>
 							<li><a href="/info/faq">FAQ</a></li>
 							<li><a href="/info/kontakt">Kontakt</a></li>
@@ -117,18 +118,44 @@
 		<hr />
 
 		<div class="row">
+
+			<div class="span3">
+				<p>
+					<img rel="tooltip" title="Some title" alt="" class="thumbnail" src="{{ url_for('static', filename='infoside/img/tur.png') }}" width="200" />
+				</p>
+			</div>      	
+			<div class="span9">
+				<h3>Del turen din enkelt på deltur.no</h3>
+				<p>
+					Last opp din GPS-fil og del den raskt og enkelt på deltur.no. Du kan også velge avansert deling og dele punkter og bilder i tillegg til din GPS-fil.    
+				</p>
+				<p>
+					Du kan også "legge sammen" ulike turer med enkelt å bruke plusstegnet i URL'en slik som denne turen <a href="deltur.no/3+4+5">deltur.no/3+4+5</a>
+				</p>
+			
+			</div>
+
+		</div>
+
+		<hr />
+
+		<div class="row">
 			<div class="span8">
 				<h3>Del turen på sosiale medier</h3>
 				<p>
-					FOSD arose out of layer-based designs and levels of abstraction in network protocols and extensible database systems in the late-1980s [1]. 
+					Med deltur.no kan du vise alle dine venner hvor du har vært i dag!
 				</p>
 				<p>
-					A program was a stack of layers. Each layer added functionality to previously composed layers and different compositions of layers produced different programs. Not surprisingly, there was a need for a compact language to express such designs. Elementary algebra fit the bill: each layer was function (program transformation) that added new code to an existing program to produce a new program, and a program's design was modeled by an expression, i.e., a composition of transformations (layers). The figure below illustrates the stacking of layers h, j, and i (where h is on the bottom and i is on the top).
+					Nå trenger du ikke lenger forklare hvor du har vært på tur, hvor mange bakker du har løpt eller hvor du startet turen. All informasjon ligger i kartet
+					og du kan dele det med dine venner på Facebook, Twitter, Google+ eller på e-post. 
+				</p>
+				<p>
+					Alt kun et klikk unna. 
 				</p>
 			</div>
 			<div class="span4">
 				<p>
-					<img rel="tooltip" title="Some title" alt="" class="thumbnail fr" src="http://image.shutterstock.com/display_pic_with_logo/562921/99568811/stock-photo-mouse-connections-99568811.jpg" width="240" />
+					<img rel="tooltip" title="Del turen på sosiale medier" alt="" class="thumbnail fr" src="{{ url_for('static', filename='infoside/img/share.png') }}" width="240" />
 				</p>
 			</div>
 		</div>
@@ -139,16 +166,20 @@
 
 			<div class="span3">
 				<p>
-					<img rel="tooltip" title="Some title" alt="" class="thumbnail" src="http://image.shutterstock.com/display_pic_with_logo/183487/183487,1306438770,2/stock-vector-social-network-background-with-media-icons-78037456.jpg" width="200" />
+					<img rel="tooltip" title="Some title" alt="" class="thumbnail" src="{{ url_for('static', filename='infoside/img/embed.png') }}" width="200" />
 				</p>
 			</div>      	
 			<div class="span9">
 				<h3>Vis turen på egne nettsider</h3>
 				<p>
-					FOSD arose out of layer-based designs and levels of abstraction in network protocols and extensible database systems in the late-1980s [1]. 
+					Med deltur.no kan du dele dine turer enkelt på dine egne nettsider.  
 				</p>
 				<p>
-					A program was a stack of layers. Each layer added functionality to previously composed layers and different compositions of layers produced different programs. Not surprisingly, there was a need for a compact language to express such designs. Elementary algebra fit the bill: each layer was function (program transformation) that added new code to an existing program to produce a new program, and a program's design was modeled by an expression, i.e., a composition of transformations (layers). The figure below illustrates the stacking of layers h, j, and i (where h is on the bottom and i is on the top).
+					Alle turer på deltur.no kan deles på din egen nettside ved å kopiere en enkel kode som du limer inn på ditt eget nettsted. Det betyr at du svært 
+					enkelt kan tilby kart på alle dine turforslag eller vise turen du har gått på bloggen din. 
+				</p>
+				<p>
+					Velg sjøl størrelsen på kartet, resten skjer automatisk! 
 				</p>
 			</div>
 
@@ -160,15 +191,19 @@
 			<div class="span8">
 				<h3>Bruk deltur.no API som lagringsplass for dine turer</h3>
 				<p>
-					FOSD arose out of layer-based designs and levels of abstraction in network protocols and extensible database systems in the late-1980s [1]. 
+					Det er enkelt å implementere deltur.no i egne systemer gjennom bruk av deltur.no API. 
 				</p>
 				<p>
-					A program was a stack of layers. Each layer added functionality to previously composed layers and different compositions of layers produced different programs. Not surprisingly, there was a need for a compact language to express such designs. Elementary algebra fit the bill: each layer was function (program transformation) that added new code to an existing program to produce a new program, and a program's design was modeled by an expression, i.e., a composition of transformations (layers). The figure below illustrates the stacking of layers h, j, and i (where h is on the bottom and i is on the top).
+					deltur.no tilbyr et API der du kan lagre dine turer og vise de fram slik du ønsker det. Gjennom API'et kan du også laste ned turen i mange
+					ulike formater. 
+				</p>
+				<p>
+					Bruk deltur.no API gjennom ditt eget nettsystem og få et fullverdig lagringssystem for dine turer nesten gratis. Enkelt er det også! 
 				</p>
 			</div>
 			<div class="span4">
 				<p>
-					<img alt="" rel="tooltip" title="Some title" class="thumbnail fr" src="http://image.shutterstock.com/display_pic_with_logo/368671/368671,1296679547,7/stock-photo-background-image-of-d-70345660.jpg" width="240" />
+					<img alt="" rel="tooltip" title="Some title" class="thumbnail fr" src="{{ url_for('static', filename='infoside/img/api.png') }}" width="240" />
 				</p>
 			</div>
 		</div>
@@ -183,56 +218,23 @@
 				</p>
 			</div>      	
 			<div class="span9">
-				<h3>Bruk egne bakgrunnskart som passer med din profil</h3>
-				<p>
-					FOSD arose out of layer-based designs and levels of abstraction in network protocols and extensible database systems in the late-1980s [1]. 
-				</p>
-				<p>
-					A program was a stack of layers. Each layer added functionality to previously composed layers and different compositions of layers produced different programs. Not surprisingly, there was a need for a compact language to express such designs. Elementary algebra fit the bill: each layer was function (program transformation) that added new code to an existing program to produce a new program, and a program's design was modeled by an expression, i.e., a composition of transformations (layers). The figure below illustrates the stacking of layers h, j, and i (where h is on the bottom and i is on the top).
-				</p>
-			</div>
-
-		</div>
-
-		<hr />
-        
-		<div class="row">
-			<div class="span8">
 				<h3>Style om dine turer for å passe din profil</h3>
 				<p>
-					FOSD arose out of layer-based designs and levels of abstraction in network protocols and extensible database systems in the late-1980s [1]. 
+					Velg en kartløsning som ikke bryter med ditt eksisterende design. 
 				</p>
 				<p>
-					A program was a stack of layers. Each layer added functionality to previously composed layers and different compositions of layers produced different programs. Not surprisingly, there was a need for a compact language to express such designs. Elementary algebra fit the bill: each layer was function (program transformation) that added new code to an existing program to produce a new program, and a program's design was modeled by an expression, i.e., a composition of transformations (layers). The figure below illustrates the stacking of layers h, j, and i (where h is on the bottom and i is on the top).
-				</p>
-			</div>
-			<div class="span4">
-				<p>
-					<img alt="" rel="tooltip" title="Some title" class="thumbnail fr" src="http://image.shutterstock.com/display_pic_with_logo/368671/368671,1296679547,7/stock-photo-background-image-of-d-70345660.jpg" width="240" />
-				</p>
-			</div>
-		</div>
-
-		<hr />
-        
-		<div class="row">
-
-			<div class="span3">
-				<p>
-					<img rel="tooltip" title="Some title" alt="" class="thumbnail" src="http://image.shutterstock.com/display_pic_with_logo/183487/183487,1306438770,2/stock-vector-social-network-background-with-media-icons-78037456.jpg" width="200" />
-				</p>
-			</div>      	
-			<div class="span9">
-				<h3>Integrer deltur.no ved bruk av deltur.no API</h3>
-				<p>
-					FOSD arose out of layer-based designs and levels of abstraction in network protocols and extensible database systems in the late-1980s [1]. 
+					Hvorfor skal du legge til et kart på ditt eget nettsted som bryter fullstendig med din visuelle profil? Med deltur.no kan du style alt til å se 
+					akkurat slik du ønsker deg. Du velger sjøl hva slags type markører du vil bruke og hvilken farge linjene i kartet. Ikke bare det du kan også 
+					legge inn et eget bakgrunnskart i tillegg til de som finnes fra før av. 
 				</p>
 				<p>
-					A program was a stack of layers. Each layer added functionality to previously composed layers and different compositions of layers produced different programs. Not surprisingly, there was a need for a compact language to express such designs. Elementary algebra fit the bill: each layer was function (program transformation) that added new code to an existing program to produce a new program, and a program's design was modeled by an expression, i.e., a composition of transformations (layers). The figure below illustrates the stacking of layers h, j, and i (where h is on the bottom and i is on the top).
+					Resultatet er et kart som passer 100% med din visuelle profil!
 				</p>
 			</div>
 
 		</div>
+
+		
 
 		<hr />
         
