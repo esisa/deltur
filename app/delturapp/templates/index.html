@@ -10,7 +10,8 @@
 
     <!-- Le styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fileupload-ui.css') }}">
-    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <!--link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet"-->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <style type="text/css">
       body {
         padding-top: 70px;
@@ -33,7 +34,7 @@
       
 
       .form-signin {
-        max-width: 400px;
+        max-width: 500px;
         padding: 19px 29px 29px;
         margin: 0 auto 20px;
         background-color: #fff;
@@ -101,16 +102,15 @@
       
       
     </style>
-    <link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     
-   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-       <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-       <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
    
    <script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>   
    <script type="text/javascript" src="{{ url_for('static', filename='js/spin.js') }}"></script>
@@ -222,32 +222,34 @@
            Turen kan du vise p&aring; Facebook, Twitter, e-post eller din egen blogg. Ved deling godkjenner du at dataene er i <a data-toggle="modal" href="#mobileModal">public domain</a>. <br /><br />     
         </p>
         
-        
-        <div class="tabbable"> <!-- Only required for left/right tabs -->
-          <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab1" data-toggle="tab">Enkel deling</a></li>
-              <li class="hidden-phone"><a href="advanced/">Avansert deling</a></li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane active" id="tab1">
-                <div id="enkelTur">
+
+        <div id="enkelTur">
                     <!-- Vises på vanlig desktop -->
-                    <div class="hidden-phone">
+                    <div class="hidden-xs">
                         <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GOOGLE_DRIVE" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
                     </div>
 
                     <!-- Skjuler opplasting fra COMPUTER på Android/iOS siden det funka dårlig. -->
-                    <div class="visible-phone">
+                    <div class="visible-xs">
                         <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="DROPBOX,GMAIL,URL,EVERNOTE,FTP,GOOGLE_DRIVE" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
                     </div>
                 </div>
+        
+        <!--div class="tabbable"> 
+          <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab1" data-toggle="tab">Enkel deling</a></li>
+              <li class="hidden-xs"><a href="advanced/">Avansert deling</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                
               
             </div>
             <div class="tab-pane" id="tab2">
               <p id="avansertTur">Kommer!</p>
             </div>
           </div>
-        </div>
+        </div-->
         
         
         
@@ -266,13 +268,13 @@
         
         <!--h3  style="text-align: center;margin-top: 20px;"  class="form-signin-heading">velg bakgrunnskart</h3-->
         
-        <select id="dropdown" class="visible-phone" style="width: 200px">
+        <select id="dropdown" class="visible-xs" style="width: 200px">
           <option value="turkart">Turkart fra Turkompisen</option>
           <option value="skikart">Skikart fra Turkompisen</option>
           <option value="kartverket">Turkart fra Kartverket</option>
         </select>
         
-        <table  class="hidden-phone" id="maptable">
+        <table  class="hidden-xs" id="maptable">
             <tr>
                 <td style="width:100px;margin-left:50px;padding:10px;">
                     <span class="hint--bottom " data-hint="Velg turkart fra Turkompisen">
@@ -321,11 +323,12 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
+    <!--script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script-->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
     <script src="{{ url_for('static', filename='js/fileupload/vendor/jquery.ui.widget.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fileupload/jquery.iframe-transport.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fileupload/jquery.fileupload.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.tab.min.js') }}"></script>
+
     <script>
     $(function () {
         
