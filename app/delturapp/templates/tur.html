@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<!-- saved from url=(0063)http://twitter.github.com/bootstrap/examples/sticky-footer.html -->
-<html lang="en"><script id="tinyhippos-injected">if (window.top.require) { window.top.require("ripple/bootstrap").inject(window, document); }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>deltur.no</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,57 +10,56 @@
     
 
     <script type=text/javascript>
-  	    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
     
-    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-	<script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
     <script src="{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}"></script>
     <script src="{{ url_for('static', filename='js/rickshaw.js') }}"></script>
-	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
     
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-	
+    
      <!-- CSS -->
-	<!--link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css"-->
-	<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/graph.css">
-	<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/detail.css">
-	<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
-	<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
+    <!--link type="text/css" rel="stylesheet" href="http://jqueryui.com/themes/base/jquery.ui.all.css"-->
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/graph.css">
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/detail.css">
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
 
    
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
-	<!--[if lte IE 8]>
-		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
-	<![endif]-->
-    <link href="{{ url_for('static', filename='css/bootstrap_alt.css') }}" rel="stylesheet">
-	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+    
+    <!--link href="{{ url_for('static', filename='css/bootstrap_alt.css') }}" rel="stylesheet"-->
+    <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <style type="text/css">
     
-    	.rickshaw_graph .detail .x_label { display: none }
-    	.rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
-    	.detail_swatch { float: right; display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
-    	.rickshaw_graph .detail .date { color: #a0a0a0 }
-	
-    	#chart {
-    		position: relative;
-    		left: 0px;
+        .rickshaw_graph .detail .x_label { display: none }
+        .rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
+        .detail_swatch { float: right; display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
+        .rickshaw_graph .detail .date { color: #a0a0a0 }
+    
+        #chart {
+            position: relative;
+            left: 0px;
             /*width: 680px;*/
-    	}
-    	#y_axis {
-    		position: absolute;
-    		left: -40px;
-    		top: 0;
-    		bottom: 0;
-    		width: 40px;
-    	}
+        }
+        #y_axis {
+            position: absolute;
+            left: -40px;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+        }
 
         /* Sticky footer styles
         -------------------------------------------------- */
@@ -222,13 +222,13 @@
                 padding-right:8px;
             }
         }
-	  
+      
     </style>
-    <link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet">							   
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />	
+    <!--link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet"-->                            
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> 
     
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">	
-    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>							   
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">  
+    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>                              
   
     <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -278,117 +278,125 @@
         </ul>
     </nav>
       
-      <div id="downloadModal" class="modal hide fade">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h3>Last ned turen</h3>
-        </div>
-        <div class="modal-body">
-          <p id="placeDownload">
-              Steder: &nbsp;&nbsp;
-              <select id="placeSelect" class="input-small"></select>
-              &nbsp;&nbsp;&nbsp;&nbsp;<select id="placeDownloadType" class="input-small"><option>GPX</option><option>GeoJSON</option><option>OSM</option><option>CSV</option><option>KML</option></select>
-              &nbsp;&nbsp;&nbsp;<button id="downloadPlaceButton" class="btn btn-success" type="button">Last ned</button>
-          </p>
-          <p id="tripDownload">
-              Turer: &nbsp;&nbsp;&nbsp;&nbsp;
-              <select id="tripSelect" class="input-small"></select>
-              &nbsp;&nbsp;&nbsp;&nbsp;<select id="tripDownloadType" class="input-small"><option>GPX</option><option>GeoJSON</option><option>OSM</option><option>CSV</option><option>KML</option></select>
-              &nbsp;&nbsp;&nbsp;<button id="downloadTripButton" class="btn btn-success" type="button">Last ned</button>
-          </p>
-          <p>
-              Denne turen er satt sammen av turer og steder. Du kan sjøl velge formatet du ønsker å laste ned dataene i. 
-          </p>
-        </div>
-        <div class="modal-footer">
-          <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
-      </div>
+      <div id="downloadModal" class="modal fade">
+         <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Last ned turen</h3>
+                </div>
+                <div class="modal-body">
+                  <p id="placeDownload">
+                      Steder: &nbsp;&nbsp;
+                      <select id="placeSelect" class="input-small"></select>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<select id="placeDownloadType" class="input-small"><option>GPX</option><option>GeoJSON</option><option>OSM</option><option>CSV</option><option>KML</option></select>
+                      &nbsp;&nbsp;&nbsp;<button id="downloadPlaceButton" class="btn btn-success" type="button">Last ned</button>
+                  </p>
+                  <p id="tripDownload">
+                      Turer: &nbsp;&nbsp;&nbsp;&nbsp;
+                      <select id="tripSelect" class="input-small"></select>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<select id="tripDownloadType" class="input-small"><option>GPX</option><option>GeoJSON</option><option>OSM</option><option>CSV</option><option>KML</option></select>
+                      &nbsp;&nbsp;&nbsp;<button id="downloadTripButton" class="btn btn-success" type="button">Last ned</button>
+                  </p>
+                  <p>
+                      Denne turen er satt sammen av turer og steder. Du kan sjøl velge formatet du ønsker å laste ned dataene i. 
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+              </div>
+              </div>
+          </div>
       </div>
       
-      <div id="embedModal" class="modal hide fade">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h3>Embed</h3>
+    <div id="embedModal"  class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Embed</h3>
+                </div>
+                <div class="modal-body">
+                  <p>Kopier følgende kode for å legge til denne turen på din nettside:</p>
+        <pre>&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://deltur.no/{{idList}}/embed">&lt;/iframe&gt;</pre>
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-          <p>Kopier følgende kode for å legge til denne turen på din nettside:</p>
-<pre>&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://deltur.no/{{idList}}/embed">&lt;/iframe&gt;</pre>
-        </div>
-        <div class="modal-footer">
-          <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
-      </div>
-      </div>
-	  
+    </div>
+      
       
       
       
     <!-- Part 1: Wrap all page content here -->
     <div id="wrap">
-		
-		<a style="margin:10px;" id="button-turkart" class="btn btn-custom hidden-phone" href="{{ url_for('home') }}"><i class="icon-share-alt"></i> Del ny tur</a>
+        
+        <a style="margin:10px;" id="button-turkart" class="btn btn-custom hidden-phone" href="{{ url_for('home') }}"><i class="fa fa-share-square-o"></i> Del ny tur</a>
 
       <!-- Begin page content -->
       <div class="container">
         <div class="hidden-phone" style="float:left;">
             <span class="hint--top" data-hint="Last ned denne turen">
-    		  <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" href="#downloadModal"><i class="icon-arrow-down"></a></i>&nbsp;
+              <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" href="#downloadModal"><i class="fa fa-arrow-down"></a></i>&nbsp;
             </span>
-    		<span class="hint--top" data-hint="Legg kartet på eget nettsted">
-                <a id="embedButton" style="text-decoration: none;" data-toggle="modal" href="#embedModal"><i class="icon-signin"></a></i>&nbsp;
+            <span class="hint--top" data-hint="Legg kartet på eget nettsted">
+                <a id="embedButton" style="text-decoration: none;" data-toggle="modal" href="#embedModal"><i class="fa fa-map-marker"></a></i>&nbsp;
             </span>
         </div>
 
-		  <b class="hidden-phone" style="color:F8F8F8;font-size: 18px;">{{title}}</b>
-		  
-			<div style="font-size: 17px;" class="pull-right hidden-phone">
+          <b class="hidden-phone" style="color:F8F8F8;font-size: 18px;">{{title}}</b>
+          
+            <div style="font-size: 17px;" class="pull-right hidden-phone">
                  <span class="hint--top" data-hint="Del på Facebook">
-			         <a id="fb_share" name="fb_share" style="text-decoration: none;" href="https://www.facebook.com/sharer/sharer.php?u=http://deltur.no/{{idList}}" target="_new">
-                         <i class="icon-facebook"></i>&nbsp;
+                     <a id="fb_share" name="fb_share" style="text-decoration: none;" href="https://www.facebook.com/sharer/sharer.php?u=http://deltur.no/{{idList}}" target="_new">
+                         <i class="fa fa-facebook"></i>&nbsp;
                      </a>
                  </span>
                  <span class="hint--top" data-hint="Del på Twitter">
-			         <a id="tw_share" style="text-decoration: none;" href="https://twitter.com/intent/tweet?url=http://deltur.no/{{idList}}" target="_new">
-                         <i class="icon-twitter"></i>&nbsp;
+                     <a id="tw_share" style="text-decoration: none;" href="https://twitter.com/intent/tweet?url=http://deltur.no/{{idList}}" target="_new">
+                         <i class="fa fa-twitter"></i>&nbsp;
                      </a>
                  </span>
                  <span class="hint--top" data-hint="Del på Google+">
-			         <a id="go_share"  style="text-decoration: none;" href="https://plus.google.com/share?url=http://deltur.no/{{idList}}"  target="_new">
-                         <i class="icon-google-plus"></i>&nbsp;
+                     <a id="go_share"  style="text-decoration: none;" href="https://plus.google.com/share?url=http://deltur.no/{{idList}}"  target="_new">
+                         <i class="fa fa-google-plus"></i>&nbsp;
                      </a>
                  </span>
                  <span class="hint--top" data-hint="Del på e-post">
-			         <a id="mail_share" style="text-decoration: none;" href="mailto:?Subject=Se min tur&body=http://deltur.no/{{idList}}">
-                         <i class="icon-envelope-alt"></i>
+                     <a id="mail_share" style="text-decoration: none;" href="mailto:?Subject=Se min tur&body=http://deltur.no/{{idList}}">
+                         <i class="fa fa-envelope "></i>
                      </a>
                  </span>
-			</div>
+            </div>
 
-		<br>
-		
-		<div id="map">
+        <br>
+        
+        <div id="map">
             <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
             <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
             </a>
-		</div>
-		
-		<br>
-		
-		<div id="chart_container">
-			<div id="y_axis"></div>
-			<div id="chart"></div>
-			<div id="legend_container">
-				<div id="smoother" title="Smoothing"></div>
-				<div id="legend"></div>
-			</div>
-			<div id="slider"></div>
-		</div>
-		
-		<div style="color:F8F8F8; font-size: 12px;">
-			Utviklet av <a href="http://www.kresendo.no">kresendo.no</a>
-		</div>	
+        </div>
+        
+        <br>
+        
+        <div id="chart_container">
+            <div id="y_axis"></div>
+            <div id="chart"></div>
+            <div id="legend_container">
+                <div id="smoother" title="Smoothing"></div>
+                <div id="legend"></div>
+            </div>
+            <div id="slider"></div>
+        </div>
+        
+        <div style="color:F8F8F8; font-size: 12px;">
+            Utviklet av <a href="http://www.kresendo.no">kresendo.no</a>
+        </div>  
       </div>
-	  
-	  
+      
+      
 
       <!--div id="push"></div>
     </div>
@@ -399,9 +407,10 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
+    <!--script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script-->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
     
         $.fn.preload = function() {
@@ -410,7 +419,7 @@
             });
         }
     
-		var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
+        var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
 
         // Events
         //map.on('load', onLoadMap);
@@ -421,47 +430,47 @@
                 imgMarker.openPopup();
         }
 
-		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
+        map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
         
         /*if($('.container').width()>480) {
             L.control.scale({imperial:false, position: 'bottomleft'}).addTo(map);
         }*/
-		
-
-		skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
-			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
-
-		turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
-			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
-		
-		veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
-			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
         
-		topokart = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}", {
-			attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
+
+        skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
+
+        turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
+        
+        veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
+        
+        topokart = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}", {
+            attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
         
         var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
-			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
-			subdomains: ["1", "2", "3", "4"],
-			//scheme: "tms",
-			maxZoom: 18
-		});
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
         
 
         if({{mapType}}==0) {
@@ -479,18 +488,18 @@
         else if({{mapType}}==4) {
             map.addLayer(satellite);
         }
-		    
+            
 
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
         /*if(ids.length>1) {
             $('#downloadButton').hide();
         }*/
-		var myStyle = {
-		    "color": "#ff7800",
-		    "weight": 5,
-		    "opacity": 0.65
-		};
+        var myStyle = {
+            "color": "#ff7800",
+            "weight": 5,
+            "opacity": 0.65
+        };
         var geoObject;
         var markerGroup = new L.LayerGroup();
         var numLines = 0; var lineFeature;
@@ -503,10 +512,10 @@
         $.each(ids, function(index, value) {
             var id = value;
           
-    		
+            
             $.getJSON('/'+id+'/geojson', function (data) {
                 geoObject = [data];
-        		
+                
                 var line = true;
                 if(data.type=="Point") {
                     line = false;
@@ -527,25 +536,27 @@
                     lineFeature = geoObject;
                     
                     trip.addData(geoObject[0]);
-            		trip.on('mouseover', function(e) {
-            		    //alert(e.latlng);
+                    trip.on('mouseover', function(e) {
+                        //alert(e.latlng);
                         markerGroup.clearLayers(); 
                         //var latlng = new L.LatLng(e.latlng);
                         marker = new L.CircleMarker(e.latlng);
                         markerGroup.addLayer(marker);
-            		});
+                    });
                     featureBounds.extend(trip.getBounds());
                     
             
                     
                     var start = L.AwesomeMarkers.icon({
-                      icon: ' icon-play', 
-                      color: 'green'
+                      prefix: 'fa',
+                      icon: 'play', 
+                      markerColor: 'green'
                     });
                     
                     var stop = L.AwesomeMarkers.icon({
-                      icon: ' icon-stop', 
-                      color: 'red'
+                      prefix: 'fa',
+                      icon: 'stop', 
+                      markerColor: 'red'
                     });
                     
                     
@@ -573,8 +584,9 @@
                              .text(id)); 
                     
                     var picture = L.AwesomeMarkers.icon({
-                      icon: 'icon-picture', 
-                      color: 'blue'
+                      prefix: 'fa',
+                      icon: 'picture-o', 
+                      markerColor: 'blue'
                     });
                     $.getJSON('/'+id+'/metadata', function (metadata) {
                         numMarkers++;
@@ -591,21 +603,21 @@
                     });
                     
                 }
-        			
+                    
                 trip.setStyle(myStyle);
 
                 if(numLines==1) {
                     // Request elevation profile
                     // TODO: Remove when only point
             
-                   	$.ajax({
-                	      url: "/elev/elevationprofile.json",
-                	      dataType: 'json',
-                	      type: 'post',
-                	      contentType: "application/json",
-                	      data: JSON.stringify(lineFeature[0]),
-                	      success: setElevationProfile
-                	});
+                    $.ajax({
+                          url: "/elev/elevationprofile.json",
+                          dataType: 'json',
+                          type: 'post',
+                          contentType: "application/json",
+                          data: JSON.stringify(lineFeature[0]),
+                          success: setElevationProfile
+                    });
             
            
             
@@ -637,8 +649,8 @@
                 },300);
 
             });
-		
-		});
+        
+        });
         
         
     
@@ -647,8 +659,8 @@
     var graphData = new Array();
     function setElevationProfile(data) {
         // Get features    
-	    geoJson = data.features;
-			   
+        geoJson = data.features;
+               
         // Go through each point
         $.each(data.features, function(index, value) { 
             elev = value.properties.elev;
@@ -661,51 +673,51 @@
         });
         
         
-    	// instantiate our graph!
+        // instantiate our graph!
 
-    	var graph = new Rickshaw.Graph( {
-    		element: document.getElementById("chart"),
-    		width: $('.container').width(),
-    		height: 100,
-    		renderer: 'area',
+        var graph = new Rickshaw.Graph( {
+            element: document.getElementById("chart"),
+            width: $('.container').width(),
+            height: 100,
+            renderer: 'area',
             min: 'auto',
-    		series: [
-    			{
-    				color: "#F8F8F8",
-    				data: graphData,
-    				name: 'elevation'
-    			}
-    		]
-    	} );
-	
-    	/*
-    	var y_ticks = new Rickshaw.Graph.Axis.Y( {
-    		graph: graph,
-    		orientation: 'left',
-    		tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-    		element: document.getElementById('y_axis'),
-    	} );
-    	*/
+            series: [
+                {
+                    color: "#F8F8F8",
+                    data: graphData,
+                    name: 'elevation'
+                }
+            ]
+        } );
+    
+        /*
+        var y_ticks = new Rickshaw.Graph.Axis.Y( {
+            graph: graph,
+            orientation: 'left',
+            tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+            element: document.getElementById('y_axis'),
+        } );
+        */
 
-    	graph.render();
+        graph.render();
 
-    	var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-    		graph: graph,
-    		formatter: function(series, x, y) {
-    			var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
-    			var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
+        var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+            graph: graph,
+            formatter: function(series, x, y) {
+                var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
+                var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
                 var km = parseInt(x)/1000;
-    			var content =  "Meter over havet: " + parseInt(y) + '<br>' + "Antall km: "+ km +"km";
+                var content =  "Meter over havet: " + parseInt(y) + '<br>' + "Antall km: "+ km +"km";
                 
                 for(i=0; i<geoJson.length; i++) {
                     if(parseFloat(geoJson[i].properties.distance) == x) {
                         
                         markerGroup.clearLayers(); 
                         
-                    	var source = new Proj4js.Proj('EPSG:900913');    //source coordinates will be in Longitude/Latitude
-                    	var dest = new Proj4js.Proj('EPSG:4326');     //destination coordinates in LCC, south of France
-                    	var p = new Proj4js.Point(geoJson[i].geometry.coordinates[0], geoJson[i].geometry.coordinates[1]);  
-                    	Proj4js.transform(source, dest, p);      //do the transformation.  x and y are modified in place
+                        var source = new Proj4js.Proj('EPSG:900913');    //source coordinates will be in Longitude/Latitude
+                        var dest = new Proj4js.Proj('EPSG:4326');     //destination coordinates in LCC, south of France
+                        var p = new Proj4js.Point(geoJson[i].geometry.coordinates[0], geoJson[i].geometry.coordinates[1]);  
+                        Proj4js.transform(source, dest, p);      //do the transformation.  x and y are modified in place
                     
                         var latlng = new L.LatLng(p.y, p.x);
                         marker = new L.CircleMarker(latlng);
@@ -713,10 +725,10 @@
                     }
                 }
         
-    			return content;
-		
-    		}
-    	} );
+                return content;
+        
+            }
+        } );
     }
 
     
@@ -729,7 +741,7 @@
         var type = $("#tripDownloadType option:selected").text().toLowerCase();
         window.open("/" + id + "/" + type);
     }
-	
+    
     $('#downloadPlaceButton').click(function() {
         //console.log("Download place");
         var id = $("#placeSelect option:selected").text();
@@ -758,6 +770,6 @@
     var encodedLink = link.split('+').join("%2B"); 
     $("#mail_share").attr("href", encodedLink);
     $("#mail_share_mobile").attr("href", encodedLink);
-	</script>
+    </script>
 
 </html>
