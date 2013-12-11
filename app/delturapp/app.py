@@ -5,8 +5,10 @@ from flask import Response
 from flask import jsonify
 from flask import request
 from flask import redirect
+from flask import abort
 from werkzeug import secure_filename
 from werkzeug.routing import BaseConverter
+from jinja2 import TemplateNotFound
 
 import gpxpy
 import gpxpy.gpx
@@ -198,8 +200,15 @@ def getTripHTML(ids, mapType='turkart'):
 @app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>')
 def getTripEmbed(ids, mapType='turkart'):
     map = mapTypesList.index(mapType)
-    return render_template('embed.html', mapType=map, idList=ids)
 
+    embedType = request.args.get('embedType', '')
+    if embedType != '':
+        try:
+            return render_template('embeds/' + embedType + '.html', mapType=map, idList=ids)
+        except TemplateNotFound:
+            return render_template('404.html'), 404
+    else:
+        return render_template('embeds/index.html', mapType=map, idList=ids)
 
 
 @app.route('/del/kml/', methods = ['POST'])
