@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <!-- saved from url=(0063)http://twitter.github.com/bootstrap/examples/sticky-footer.html -->
-<html lang="en"><script id="tinyhippos-injected">if (window.top.require) { window.top.require("ripple/bootstrap").inject(window, document); }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>deltur.no</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,50 +11,20 @@
     
 
     <script type=text/javascript>
-  	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  	     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
     
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-	<script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
     <script src="{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}"></script>
-    <!--script src="js/rickshaw.js"></script-->
 	<script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
-    
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>   
 
 
-   
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
-	
-    <!--link href="{{ url_for('static', filename='css/bootstrap_alt.css') }}" rel="stylesheet"-->
     <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.min.css">
 	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <style type="text/css">
-    
-        	.rickshaw_graph .detail .x_label { display: none }
-        	.rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
-        	.detail_swatch { float: right; display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
-        	.rickshaw_graph .detail .date { color: #a0a0a0 }
-		
-        	#chart {
-        		position: relative;
-        		left: 0px;
-                width: 680px;
-        	}
-        	#y_axis {
-        		position: absolute;
-        		left: -40px;
-        		top: 0;
-        		bottom: 0;
-        		width: 40px;
-        	}
-
-          /* Sticky footer styles
-          -------------------------------------------------- */
 
           html,
           body {
@@ -60,85 +32,26 @@
             /* The html and body elements cannot have any padding or margin. */
           }
 
-          /* Wrapper for page content to push down footer */
-          #wrap {
-            min-height: 100%;
-            height: auto !important;
-            height: 100%;
-            /* Negative indent footer by it's height */
-            margin: 0 auto -60px;
-          }
-
-         
-	  
-          /* Lastly, apply responsive CSS fixes as necessary */
-          @media (max-width: 767px) {
-            #footer {
-              margin-left: -20px;
-              margin-right: -20px;
-              padding-left: 20px;
-              padding-right: 20px;
-            }
-          }
-
-
-
-          /* Custom page CSS
-          -------------------------------------------------- */
-          /* Not required for template or sticky footer method. */
-
-          .container {
-            width: auto;
-            max-width: 680px;
-    		margin-top: 30px;
-          }
-          .container .credit {
-            margin: 20px 0;
-          }
-	  
-    	  .btn-custom {
-    	    background-color: hsl(214, 37%, 28%) !important;
-    	    background-repeat: repeat-x;
-    	    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7a99c1", endColorstr="#2c4361");
-    	    background-image: -khtml-gradient(linear, left top, left bottom, from(#7a99c1), to(#2c4361));
-    	    background-image: -moz-linear-gradient(top, #7a99c1, #2c4361);
-    	    background-image: -ms-linear-gradient(top, #7a99c1, #2c4361);
-    	    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7a99c1), color-stop(100%, #2c4361));
-    	    background-image: -webkit-linear-gradient(top, #7a99c1, #2c4361);
-    	    background-image: -o-linear-gradient(top, #7a99c1, #2c4361);
-    	    background-image: linear-gradient(#7a99c1, #2c4361);
-    	    border-color: #2c4361 #2c4361 hsl(214, 37%, 19.5%);
-    	    color: #fff !important;
-    	    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.56);
-    	    -webkit-font-smoothing: antialiased;
-    	  }
-      
-          label {
-              display: inline-block;
-              width: 5em;
-          }
-	  
     </style>
-
-						   
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> 		
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">	
-    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>		
+				
+    	
+    	
     
     <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-40003995-1']);
+        _gaq.push(['_trackPageview']);
 
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-40003995-1']);
-      _gaq.push(['_trackPageview']);
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>					   
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>							   
 </head>
 
 <body>
@@ -150,28 +63,18 @@
     </div>
 
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
-
     <script type="text/javascript">
 
-    $.fn.preload = function() {
-        this.each(function(){
-            $('<img/>')[0].src = this;
-        });
-    }
+        $.fn.preload = function() {
+            this.each(function(){
+                $('<img/>')[0].src = this;
+            });
+        }
 
-
-    	var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
+    	var map = new L.Map('map', {keyboard: true, attributionControl: true});
 
     	map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
-        
-        /*if($('.container').width()>480) {
-            L.control.scale({imperial:false, position: 'bottomleft'}).addTo(map);
-        }*/
-    	
+    
 
     	skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
     		attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
@@ -215,226 +118,111 @@
         }
     	    
 
-    	
-    	/*
-    	var baseMaps = {
-    	    "Turkart": turkart,
-    	    "Skikart": skikart
-    	};
-    	L.control.layers(baseMaps).addTo(map);
-    	*/
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
-        /*if(ids.length>1) {
-            $('#downloadButton').hide();
-        }*/
-    		var myStyle = {
-    		    "color": "#ff7800",
-    		    "weight": 5,
-    		    "opacity": 0.65
-    		};
-            var geoObject;
-            var markerGroup = new L.LayerGroup();
-            var numLines = 0; var lineFeature;
-            var trip = L.geoJson();
-            trip.addTo(map);
-            var featureBounds = new L.LatLngBounds();
-            
-            $.each(ids, function(index, value) {
-                var id = value;
-          
-    		
-                $.getJSON('/'+id+'/geojson', function (data) {
-                    geoObject = [data];
-        		
-                    var line = true;
-                    if(data.type=="Point") {
-                        line = false;
-                    }
-                
-                    map.addLayer(markerGroup);
-                    var marker;
-                    if(line) {
-                        numLines++;
-                        lineFeature = geoObject;
-                    
-                        trip.addData(geoObject[0]);
-                		trip.on('mouseover', function(e) {
-                		    //alert(e.latlng);
-                            markerGroup.clearLayers(); 
-                            //var latlng = new L.LatLng(e.latlng);
-                            marker = new L.CircleMarker(e.latlng);
-                            markerGroup.addLayer(marker);
-                		});
-                        featureBounds.extend(trip.getBounds());
-                    
-            
-                    
-                        var start = L.AwesomeMarkers.icon({
-                          prefix: 'fa',
-                          icon: 'play', 
-                          markerColor: 'green'
-                        });
-                        
-                        var stop = L.AwesomeMarkers.icon({
-                          prefix: 'fa',
-                          icon: 'stop', 
-                          markerColor: 'red'
-                        });
-                        
-                    
-                        /*var marker = L.marker([lineFeature[0].coordinates
-                            [lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1]
-                            [1], 
-                                                                             lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1][0]], {icon: stop});
-                        
-                            */
-                        var marker = L.marker([lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][1], lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][0]], {icon: stop});
-                        marker.addTo(map).bindPopup('Slutt');
-                    
-                        // Set start and stop marker
-                        var marker = L.marker([lineFeature[0].coordinates[0][1], lineFeature[0].coordinates[0][0]], {icon: start});
-                        marker.addTo(map).bindPopup('Start');
-                    
-                    }
-                    else {
-                    
-                        var picture = L.AwesomeMarkers.icon({
-                          prefix: 'fa',
-                          icon: 'picture-o', 
-                          markerColor: 'blue'
-                        });
-                        $.getJSON('/'+id+'/metadata', function (metadata) {
-                            var marker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
-                            marker.addTo(map).bindPopup('<h3 id="popupText">'+metadata.title+'</h3><img width="250" src="'+ metadata.url +'"><br><div id="popupText">' + metadata.description + '</div>');
-                            $([metadata.url]).preload(); // Preload image
-                            featureBounds.extend(marker.getLatLng());
-                        });
-                    
-                    }
-        			
-                    trip.setStyle(myStyle);
-                
-                    if(numLines==1) {
-                        // Request elevation profile
-                        // TODO: Remove when only point
-            
-                       	$.ajax({
-                    	      url: "/elev/elevationprofile.json",
-                    	      dataType: 'json',
-                    	      type: 'post',
-                    	      contentType: "application/json",
-                    	      data: JSON.stringify(lineFeature[0]),
-                    	      success: setElevationProfile
-                    	});
-            
-           
-            
-                    }
-            
-                    // TODO: Rewrite
-                    setTimeout(function() {
-                            map.fitBounds(featureBounds);
-                            setTimeout(function() {
-                                if(numLines==0 && map.getZoom() > 11) {
-                                        map.setZoom(11);
-                                }
-                                
-                        
-                                },300);
-                        },300);
-                    
-            
-
-                });
-    	
-    		});
         
-        
+    	var myStyle = {
+            "color": "#ff7800",
+            "weight": 5,
+            "opacity": 0.65
+        };
+
+        var geoObject;
+        var markerGroup = new L.LayerGroup();
+        var numLines = 0;
+        var lineFeature;
+        var trip = L.geoJson();
+        trip.addTo(map);
+        var featureBounds = new L.LatLngBounds();
+
+        $.each(ids, function (index, value) {
+            var id = value;
 
 
+            $.getJSON('/' + id + '/geojson', function (data) {
+                geoObject = [data];
 
-
-
-        var graphData = new Array();
-        function setElevationProfile(data) {
-            // Get features    
-    	    geoJson = data.features;
-    		   
-            // Go through each point
-            $.each(data.features, function(index, value) { 
-                elev = value.properties.elev;
-                // Check for negative values. The graph does not draw null values
-                if(elev < 0) { 
-                    elev = null;
+                var line = true;
+                if (data.type == "Point") {
+                    line = false;
                 }
-                tmp = {x:parseFloat(value.properties.distance), y:parseFloat(elev)};
-                graphData.push(tmp);
-            });
-        
-        
-        	// instantiate our graph!
 
-        	var graph = new Rickshaw.Graph( {
-        		element: document.getElementById("chart"),
-        		width: $('.container').width(),
-        		height: 100,
-        		renderer: 'area',
-                min: 'auto',
-        		series: [
-        			{
-        				color: "#F8F8F8",
-        				data: graphData,
-        				name: 'elevation'
-        			}
-        		]
-        	} );
+                map.addLayer(markerGroup);
+                var marker;
+                if (line) {
+                    numLines++;
+                    lineFeature = geoObject;
 
-        	/*
-        	var y_ticks = new Rickshaw.Graph.Axis.Y( {
-        		graph: graph,
-        		orientation: 'left',
-        		tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-        		element: document.getElementById('y_axis'),
-        	} );
-        	*/
+                    trip.addData(geoObject[0]);
 
-        	graph.render();
+                    featureBounds.extend(trip.getBounds());
 
-        	var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-        		graph: graph,
-        		formatter: function(series, x, y) {
-        			var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
-        			var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
-                    var km = parseInt(x)/1000;
-        			var content =  "Meter over havet: " + parseInt(y) + '<br>' + "Antall km: "+ km +"km";
-                
-                    for(i=0; i<geoJson.length; i++) {
-                        if(parseFloat(geoJson[i].properties.distance) == x) {
-                        
-                            markerGroup.clearLayers(); 
-                        
-                        	var source = new Proj4js.Proj('EPSG:900913');    //source coordinates will be in Longitude/Latitude
-                        	var dest = new Proj4js.Proj('EPSG:4326');     //destination coordinates in LCC, south of France
-                        	var p = new Proj4js.Point(geoJson[i].geometry.coordinates[0], geoJson[i].geometry.coordinates[1]);  
-                        	Proj4js.transform(source, dest, p);      //do the transformation.  x and y are modified in place
-                    
-                            var latlng = new L.LatLng(p.y, p.x);
-                            marker = new L.CircleMarker(latlng);
-                            markerGroup.addLayer(marker);
+
+
+                    var start = L.AwesomeMarkers.icon({
+                        prefix: 'fa',
+                        icon: 'play',
+                        markerColor: 'green'
+                    });
+
+                    var stop = L.AwesomeMarkers.icon({
+                        prefix: 'fa',
+                        icon: 'stop',
+                        markerColor: 'red'
+                    });
+
+
+                    var marker = L.marker([lineFeature[0].coordinates[lineFeature[0].coordinates.length - 1][1], lineFeature[0].coordinates[lineFeature[0].coordinates.length - 1][0]], {
+                        icon: stop
+                    });
+                    marker.addTo(map).bindPopup('Slutt');
+
+                    // Set start and stop marker
+                    var marker = L.marker([lineFeature[0].coordinates[0][1], lineFeature[0].coordinates[0][0]], {
+                        icon: start
+                    });
+                    marker.addTo(map).bindPopup('Start');
+
+                } else {
+
+                    var picture = L.AwesomeMarkers.icon({
+                        prefix: 'fa',
+                        icon: 'picture-o',
+                        markerColor: 'blue'
+                    });
+                    $.getJSON('/' + id + '/metadata', function (metadata) {
+                        var marker = L.marker([data.coordinates[1], data.coordinates[0]], {
+                            icon: picture
+                        });
+                        marker.addTo(map).bindPopup('<h3 id="popupText">' + metadata.title + '</h3><img width="250" src="' + metadata.url + '"><br><div id="popupText">' + metadata.description + '</div>');
+                        $([metadata.url]).preload(); // Preload image
+                        featureBounds.extend(marker.getLatLng());
+                    });
+
+                }
+
+                trip.setStyle(myStyle);
+
+
+
+                // TODO: Rewrite
+                setTimeout(function () {
+                    map.fitBounds(featureBounds);
+                    setTimeout(function () {
+                        if (numLines == 0 && map.getZoom() > 11) {
+                            map.setZoom(11);
                         }
-                    }
+
+
+                    }, 300);
+                }, 300);
+
+
+
+            });
+
+        });
         
-        			return content;
-    	
-        		}
-        	} );
-        }
-
-
-    	
-
-
 
     </script>
 
