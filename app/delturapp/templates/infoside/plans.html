@@ -12,7 +12,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 	<!-- Custom css -->
-	<link href="{{ url_for('static', filename='infoside/css/style.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='infoside/css/style.uncompressed.css') }}" rel="stylesheet">
 
 	<link href="{{ url_for('static', filename='infoside/css/font-awesome/font-awesome.css') }}" rel="stylesheet">
 	<!--[if IE 7]>
@@ -96,18 +96,18 @@
 	<!-- Example pricing -->
 	<div class="row pricing">
 
-		<div class="span4">
+		<div class="span3">
 			<div class="well">
 				<h2>Gratis</h2>
 				<ul>
 					<li>&#10004; Del og miks turer</li>
                     <li>&#10004; Embedde tur på eget nettsted</li>
 					<li>&#10004; 10 000 kall til API</li>
-                    <li>&#10004; Tur tilgjengelig i 45 dager</li>
+                    <li>&#10004; Tur tilgjengelig i 40 dager</li>
 					<!--li>&#10006; Bruke egne kart</li>
 					<li>&#10006; Style turer med egne farger</li-->
 				</ul>
-				<p>Ved bruk av gratisversjonen av deltur.no så er turer tilgjengelig i 45 dager. Perfekt for å dele en tur på Facebook eller Twitter eller egen mikroblogg. </p>
+				<p>Ved bruk av gratisversjonen av deltur.no så er turer tilgjengelig i 40 dager. Perfekt for å dele en tur på Facebook, Twitter eller egen mikroblogg. </p>
 				<hr />
 				<h3 class="ac">Gratis</h3>
 				<hr />
@@ -116,7 +116,7 @@
 				</p>
 			</div>
 		</div>
-		<div class="span4 most-popular">
+		<div class="span3 most-popular">
 			<div class="well">
 				<h2>Pro</h2>
 				<p><span>POPULÆR</span></p>
@@ -135,7 +135,7 @@
 				</p>
 			</div>
 		</div>
-		<div class="span4">
+		<div class="span3">
 			<div class="well">
 				<h2>Pro+</h2>
 				<ul>
@@ -145,9 +145,25 @@
                     <li>&#10004; Ingen logo i kartet</li>
                     <li>&#10004; Sett en tur privat</li>
 				</ul>          
-				<p>deltur.no Pro+ gir deg enda flere kall til API'et, ingen logo i kartet og du kan sette et tur til privat slik at bare den som har kontotilgang kan se på turen. Du kan også style turen slik du vil og endre bakgrunnskart. </p>
+				<p>deltur.no Pro+ gir deg enda flere kall til API'et, ingen logo i kartet og du kan sette et tur til privat slik at bare den som har kontotilgang kan se på turen. Du kan også style turen slik du vil og bruke eget bakgrunnskart. </p>
 				<hr />
 				<h3 class="ac">99kr per måned</h3>
+				<hr />
+				<p class="ac">
+					<a class="btn btn-success btn-large" href="#">Registrer deg &raquo;</a>
+				</p>
+			</div>
+		</div>
+		<div class="span3">
+			<div class="well">
+				<h2>Ekspert</h2>
+				<ul>
+					<li>&#10004; Ingen begrensninger på bruk av API</li>
+					<li>&#10004; Bruk egne visning-HTML</li>
+				</ul>          
+				<p>deltur.no Ekspert gir ingen begrensninger på kall til API'et. Og i tillegg til å style turene og bruke eget bakgrunnskart så kan du også bruke et tilpasset visning-HTML. Du kan bruke <a href="">standard visninger</a> eller så kan deltur.no lage din egen spesielle visning.  </p>
+				<hr />
+				<h3 class="ac"><a href="{{ url_for('infokontakt') }}">Kontakt for pris!</a></h3>
 				<hr />
 				<p class="ac">
 					<a class="btn btn-success btn-large" href="#">Registrer deg &raquo;</a>
@@ -184,14 +200,14 @@
 			<div class="container">
 				<div class="row">
 					<div class="span4">
-						&copy; 2013 Kresendo
+						&copy; 2014 Kresendo
 					</div>
 					<div class="span4">
 						
 					</div>
 					<div class="span4">
 						<i class="icon-envelope"></i> &nbsp; 
-						<a href="mailto:post@kresendo.no">post@kresendo.no</a>
+						<a href="mailto:espen@kresendo.no">espen@kresendo.no</a>
 					</div>
 				</div> <!-- end .row -->		
 			</div> <!-- end .container -->		

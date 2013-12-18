@@ -480,6 +480,7 @@ footer input[type=submit].btn {
 	background:#fff;
 	border:1px solid #ccc;
 	box-shadow:0 0 10px rgba(0,0,0,0.1);
+	height: 600px;
 }
 .pricing h2 {
 	font-size:30px;
@@ -487,7 +488,7 @@ footer input[type=submit].btn {
 	color:#0085CC;
 }
 .pricing .most-popular {
-	margin-top:-15px;
+	/*margin-top:-15px;*/
 }
 .most-popular {
 	position: relative;
