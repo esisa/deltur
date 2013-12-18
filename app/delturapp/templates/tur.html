@@ -333,11 +333,13 @@
     <!-- Part 1: Wrap all page content here -->
     <div id="wrap">
         
-        <a style="margin:10px;" id="button-turkart" class="btn btn-custom hidden-phone" href="{{ url_for('home') }}"><i class="fa fa-share-square-o"></i> Del ny tur</a>
+    <div class="hidden-xs">
+        <a style="margin:10px;" id="button-turkart" class="btn btn-custom" href="{{ url_for('home') }}"><i class="fa fa-share-square-o"></i> Del ny tur</a>
+    </div>
 
       <!-- Begin page content -->
       <div class="container">
-        <div class="hidden-phone" style="float:left;">
+        <div class="hidden-xs" style="float:left;">
             <span class="hint--top" data-hint="Last ned denne turen">
               <a id="downloadButton" style="text-decoration: none;" data-toggle="modal" href="#downloadModal"><i class="fa fa-arrow-down"></a></i>&nbsp;
             </span>
@@ -346,9 +348,10 @@
             </span>
         </div>
 
-          <b class="hidden-phone" style="color:F8F8F8;font-size: 18px;">{{title}}</b>
+        
+          <b  style="color:F8F8F8;font-size: 18px;">{{title}}</b>
           
-            <div style="font-size: 17px;" class="pull-right hidden-phone">
+            <div style="font-size: 17px;" class="pull-right hidden-xs">
                  <span class="hint--top" data-hint="Del på Facebook">
                      <a id="fb_share" name="fb_share" style="text-decoration: none;" href="https://www.facebook.com/sharer/sharer.php?u=http://deltur.no/{{idList}}" target="_new">
                          <i class="fa fa-facebook"></i>&nbsp;
