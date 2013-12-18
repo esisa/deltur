@@ -191,7 +191,7 @@ def createGeoJSONTrip():
 
 @app.route('/<regex("[0-9+]+"):ids>')
 @app.route('/<regex("[0-9+]+"):ids>/<string:mapType>')
-def getTripHTML(ids, mapType='turkart'):
+def getTripHTML(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
     return render_template('tur.html', mapType=map, idList=ids)
 
@@ -199,7 +199,7 @@ def getTripHTML(ids, mapType='turkart'):
     
 @app.route('/<regex("[0-9+]+"):ids>/embed')
 @app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>')
-def getTripEmbed(ids, mapType='turkart'):
+def getTripEmbed(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
 
     embedType = request.args.get('embedType', '')
