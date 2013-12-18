@@ -349,10 +349,10 @@
                 
                 // Check maptype
                 var maptype = turkart;
-                if(jQuery("#turkart-radio").attr('checked') == 'checked') {
+                if(jQuery("#turkart-radio").is(":checked")) {
                     maptype = "turkart";
                 }
-                else if(jQuery("#skikart-radio").attr('checked') == 'checked') {
+                else if(jQuery("#skikart-radio").is(":checked")) {
                     maptype = "skikart";
                 }
                 else {
