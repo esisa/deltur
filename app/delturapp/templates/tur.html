@@ -348,7 +348,7 @@
             </span>
         </div>
 
-        
+
           <b  style="color:F8F8F8;font-size: 18px;">{{title}}</b>
           
             <div style="font-size: 17px;" class="pull-right hidden-xs">
@@ -461,8 +461,8 @@
             maxZoom: 18
         });
         
-        topokart = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}", {
-            attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
+        topokart = new L.TileLayer("http://kart{s}.turkompisen.no/cache/turkart_simple/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
             subdomains: ["1", "2", "3", "4"],
             //scheme: "tms",
             maxZoom: 18
@@ -474,6 +474,15 @@
             //scheme: "tms",
             maxZoom: 18
         });
+
+        var kartverket = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}", {
+            attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
+
+
         
 
         if({{mapType}}==0) {
@@ -490,6 +499,9 @@
         }
         else if({{mapType}}==4) {
             map.addLayer(satellite);
+        }
+        else if({{mapType}}==5) {
+            map.addLayer(kartverket);
         }
             
 

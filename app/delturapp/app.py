@@ -36,6 +36,7 @@ app.url_map.converters['regex'] = RegexConverter
 # 2 = skikart
 # 3 = kartverket
 # 4 = satellitt
+# 4 = kartverket
 
 pg_db = "deltur"
 pg_host = "localhost"
@@ -43,7 +44,7 @@ pg_user = "deltur"
 pg_passwd = "deltur._01"
 pg_port = "5432"
 
-mapTypesList = ['turkart','skikart','veikart','topokart', 'satellitt']
+mapTypesList = ['turkart','skikart','veikart','topokart', 'satellitt', 'kartverket']
 
 ### READ ###
 

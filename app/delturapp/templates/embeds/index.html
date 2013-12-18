@@ -76,33 +76,50 @@
     	map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
     
 
-    	skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
-    		attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-    		subdomains: ["1", "2", "3", "4"],
-    		//scheme: "tms",
-    		maxZoom: 18
-    	});
+    	 skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
 
-    	turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
-    		attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-    		subdomains: ["1", "2", "3", "4"],
-    		//scheme: "tms",
-    		maxZoom: 18
-    	});
-    	
-    	veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
-    		attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
-    		subdomains: ["1", "2", "3", "4"],
-    		//scheme: "tms",
-    		maxZoom: 18
-    	});
+        turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
         
-    	topokart = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}", {
-    		attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
-    		subdomains: ["1", "2", "3", "4"],
-    		//scheme: "tms",
-    		maxZoom: 18
-    	});
+        veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
+        
+        topokart = new L.TileLayer("http://kart{s}.turkompisen.no/cache/turkart_simple/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
+        
+        var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
+
+        var kartverket = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}", {
+            attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
+
+
+        
 
         if({{mapType}}==0) {
             map.addLayer(turkart);
@@ -115,6 +132,12 @@
         }
         else if({{mapType}}==3) {
             map.addLayer(topokart);
+        }
+        else if({{mapType}}==4) {
+            map.addLayer(satellite);
+        }
+        else if({{mapType}}==5) {
+            map.addLayer(kartverket);
         }
     	    
 

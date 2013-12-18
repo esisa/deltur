@@ -269,33 +269,33 @@
         <!--h3  style="text-align: center;margin-top: 20px;"  class="form-signin-heading">velg bakgrunnskart</h3-->
         
         <select id="dropdown" class="visible-xs" style="width: 200px">
+          <option value="kartverket">Enkelt kart fra Turkompisen</option>
           <option value="turkart">Turkart fra Turkompisen</option>
           <option value="skikart">Skikart fra Turkompisen</option>
-          <option value="kartverket">Turkart fra Kartverket</option>
         </select>
         
         <table  class="hidden-xs" id="maptable">
             <tr>
                 <td style="width:100px;margin-left:50px;padding:10px;">
-                    <span class="hint--bottom " data-hint="Velg turkart fra Turkompisen">
+                    <span class="hint--bottom " data-hint="Velg enkelt kart fra Turkompisen">
+                        <img id="topokart" alt="Kart fra Kartverket" title="Kart fra Kartverket" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}">
+                    </span>
+                </td>
+                <td style="width:100px;padding:10px;">
+                    <span class="hint--bottom" data-hint="Velg turkart fra Turkompisen">
                         <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/turkart.png') }}">
                     </span>
                 </td>
                 <td style="width:100px;padding:10px;">
                     <span class="hint--bottom" data-hint="Velg skikart fra Turkompisen">
-                        <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart.png') }}">
-                    </span>
-                </td>
-                <td style="width:100px;padding:10px;">
-                    <span class="hint--bottom" data-hint="Velg turkart fra Kartverket">
-                        <img  id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}">
+                        <img  id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart.png') }}">
                     </span>
                 </td>
             </tr>
             <tr>
-                <td style="width:100px;"><input style="margin-left:40px;" id="turkart-radio" name="karttype" type="radio" checked></td>
+                <td style="width:100px;"><input style="margin-left:40px;" id="topokart-radio" name="karttype" type="radio" checked></td>
+                <td style="width:100px;"><input style="margin-left:40px;" id="turkart-radio" name="karttype" type="radio"></td>
                 <td style="width:100px;"><input style="margin-left:40px;" id="skikart-radio" name="karttype" type="radio"></td>
-                <td style="width:100px;"><input style="margin-left:40px;" id="topokart-radio" name="karttype" type="radio"></td>
             </tr>
         </table>
        
@@ -379,25 +379,25 @@
         
         // Check if mapped is clicked
         $('#turkart').click(function () {
-            jQuery("#turkart-radio").attr('checked', 'checked');
+            jQuery("#turkart-radio").prop("checked", true);
         });
         $('#skikart').click(function () {
-            jQuery("#skikart-radio").attr('checked', 'checked');
+            jQuery("#skikart-radio").prop("checked", true);
         });
         $('#topokart').click(function () {
-            jQuery("#topokart-radio").attr('checked', 'checked');
+            jQuery("#topokart-radio").prop("checked", true);
         });
  
         // Handle mobile case of choosing map type
         $('#dropdown').change(function() {
             if($(this).find('option:selected').val() == "turkart") {
-                jQuery("#turkart-radio").attr('checked', 'checked');
+                jQuery("#turkart-radio").prop("checked", true);
             }
             else if($(this).find('option:selected').val() == "skikart") {
-                jQuery("#skikart-radio").attr('checked', 'checked');
+                jQuery("#skikart-radio").prop("checked", true);
             }
             else {
-                jQuery("#topokart-radio").attr('checked', 'checked');         
+                jQuery("#topokart-radio").prop("checked", true);         
             }
         });
     });
