@@ -18,19 +18,27 @@
     <script src="{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>   
+    <script src="{{ url_for('static', filename='js/lib/L.Control.Sidebar.js') }}"></script> 
+     <script src="{{ url_for('static', filename='js/custom_lib/L.Control.MarkerList.js') }}"></script> 
 
 
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom_lib/L.Control.MarkerList.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lib/L.Control.Sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
-    <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <style type="text/css">
 
           html,
           body {
             height: 100%;
+            margin: 0;
             /* The html and body elements cannot have any padding or margin. */
           }
+
+
+       
 
     </style>
                 
@@ -63,6 +71,26 @@
     </div>
 
 
+
+    <div id="sidebar">
+         <!--ul class="fa-ul">
+          <li><i class="fa-li fa fa-map-marker"></i>Holtevannet</li>
+          <li><i class="fa-li fa fa-map-marker"></i>Bjønnåsen</li>
+          <li><i class="fa-li fa fa-map-marker"></i>to replace</li>
+          <li><i class="fa-li fa fa-map-marker"></i>default bullets in lists</li>
+        </ul-->
+        <!--ol>
+            <li>Holtevannet</li>
+            <li>Bjønnåsen</li>
+        </ol-->
+        <ol class="rectangle-list">
+            <li><a href="javascript:void(0)">Holtevannet</a></li>
+            <li><a href="javascript:void(0)">Bjønnåsen</a></li>
+            <li><a href="javascript:void(0)">Fiskervannet</a>                  
+        </ol>
+    </div>
+
+
     <script type="text/javascript">
 
         $.fn.preload = function() {
@@ -71,9 +99,18 @@
             });
         }
 
+
         var map = new L.Map('map', {keyboard: true, attributionControl: true});
 
         map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
+
+
+        // Create sidebar
+        var sidebar = L.control.sidebar('sidebar', {
+            position: 'right'
+        });
+
+        map.addControl(sidebar);
     
 
         skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
@@ -208,9 +245,18 @@
                 // TODO: Rewrite
                 setTimeout(function () {
                     map.fitBounds(featureBounds);
+                    
+                    /* Uncomment to load marker list at opening of page */
+                    /*setTimeout(function () {
+                                sidebar.show();
+                            }, 500);
+                    */
+
                     setTimeout(function () {
                         if (numLines == 0 && map.getZoom() > 11) {
                             map.setZoom(11);
+
+
                         }
 
 
@@ -222,6 +268,12 @@
             });
 
         });
+
+
+    // Add marker list control
+    var markerList = new L.Control.MarkerList({});
+    map.addControl(markerList);
+        
         
 
     </script>
