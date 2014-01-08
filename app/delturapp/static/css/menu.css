@@ -6,7 +6,6 @@ body{
       font: 13px/27px Arial,sans-serif;
       color:#e4ebf8;
       height:30px;
-      background: url(back.gif) repeat-x;
 }
 .menu a:hover{
     color:white;
