@@ -265,6 +265,7 @@
       
     </style>
    
+   <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
    
    <!--link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" /-->
@@ -486,12 +487,12 @@
 			</header>
 			<section>
 				<ul id="da-thumbs" class="da-thumbs">
-					<!--li>
+					<li>
 						<a class="img" href="javascript:void(0)" >
 							<img src="{{ url_for('static', filename='img/a2.jpg') }}" width="166" height="120" />
 							<div><span>Klikk for å endre plassering i kartet</span></div>
 						</a>
-					</li-->
+					</li>
 					<li id="addImg_li">
 						<a id="addImg" href="javascript:void(0)">
 							<img src="{{ url_for('static', filename='img/empty_plus.png') }}" width="166" height="120" />
@@ -647,11 +648,24 @@
         }
     }
 
+    var emptyIcon = L.AwesomeMarkers.icon({
+          prefix: 'fa',
+          icon: 'map-marker', 
+          markerColor: 'blue'
+    });
+    var pictureIcon = L.AwesomeMarkers.icon({
+          prefix: 'fa',
+          icon: 'picture-o', 
+          markerColor: 'blue'
+    });
+                
+
     var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
     var drawnItems;
     var layer;
     var numMarkers  = 0;
     var markerInfo = Array();
+    var drawControl;
     $(function () {
 
         // Handlers for clicking map or radio buttons below map
@@ -732,28 +746,31 @@
         
         
         drawnItems = new L.FeatureGroup();
-    		map.addLayer(drawnItems);
+		map.addLayer(drawnItems);
 
-    		var drawControl = new L.Control.Draw({
-                //position: 'topright',
-    			draw: {
-    				position: 'topleft',
-                    polygon: false,
-    				polyline: false, /*{
-    					title: 'Tegn en tur',
-    					shapeOptions: {
-    						color: '#ff7800'
-    					}
-    				},*/
-    				circle: false,
-                    marker: true,
-                    rectangle: false
-    			},
-    			edit: {
-    				featureGroup: drawnItems,
-                    remove: false
-    			}
-    		});
+
+		drawControl = new L.Control.Draw({
+            //position: 'topright',
+			draw: {
+				position: 'topleft',
+                polygon: false,
+				polyline: false, /*{
+					title: 'Tegn en tur',
+					shapeOptions: {
+						color: '#ff7800'
+					}
+				},*/
+				circle: false,
+                marker: {
+                    icon: emptyIcon
+                },
+                rectangle: false
+			},
+			edit: {
+				featureGroup: drawnItems,
+                remove: false
+			}
+		});
     	map.addControl(drawControl);
 
 
@@ -1032,17 +1049,25 @@
                 var imgSrc = $(this).find('img').attr('src');
                 activeImgId = $(this).find('img').attr('id');
 
+
                 $('#currentImg').html(imgSrc);
 
                 $('#imageNotification').miniNotification();
                 marker = new L.Draw.Marker(map, {
-                    title: 'Add a marker'
+                    title: 'Add a marker',
+                    icon: pictureIcon
                 });
 
         
                 marker.addHooks();
                 map.on('mousedown', function(e) {
                     setTimeout('marker.removeHooks()', 200);
+                    // Change back to default marker
+                    drawControl.setDrawingOptions({
+                        marker: {
+                            icon: emptyIcon
+                        }
+                    });
                 });
             });
         }
