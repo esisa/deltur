@@ -10,7 +10,7 @@
 
     <!-- Le styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fileupload-ui.css') }}">
-    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <link href='http://fonts.googleapis.com/css?family=Alegreya+SC:700,400italic' rel='stylesheet' type='text/css' />
     
     
@@ -22,7 +22,7 @@
       }
 
       .form-signin {
-        max-width: 1000px;
+        max-width: 1050px;
         padding: 19px 29px 29px;
         margin: 0 auto 20px;
         background-color: #fff;
@@ -258,38 +258,33 @@
       }
       
     </style>
-   <link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet">
+   
    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
    
-<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.css" />
-<!--link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" /-->
+   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
 
-<!--[if lte IE 8]>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
-<![endif]-->
 
-<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
+
+   <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     
-   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
    
    
-   
+   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
    <script src="{{ url_for('static', filename='js/modernizr.custom.97074.js') }}"></script>
-   <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-   <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
    
    
    <script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>   
    <script type="text/javascript" src="{{ url_for('static', filename='js/spin.js') }}"></script>
    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/miniNotification.js') }}"></script>
    
-   <!--script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script-->
-   <script type="text/javascript" src="http://leaflet.github.io/Leaflet.draw/lib/leaflet/leaflet.js"></script>
+   <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
    
    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>
    <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
@@ -334,62 +329,85 @@
         <p>Klikk i kartet hvor bildet er tatt. </p>
       </div>
       
-      <div id="mobileModal" class="modal hide">
-         <div class="modal-header">
-           <a class="close" data-dismiss="modal" >&times;</a>
-           <h3>deltur.no - Public domain</h3>
-         </div>
-         <div class="modal-body">
-          <p>
-              All data som lastes opp til deltur.no er i såkalt <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.no">public domain</a> . Det betyr at alle fritt kan gjenbruke dataene, endre de og republisere de. 
-          </p>
-                  
-          <p>
-              Faktisk oppfordrer deltur.no til å gjenbruke dataene til bruk i f. eks. <a href="http://www.osm.org">OpenStreetMap</a>  
-          </p>
-    
-          <p>
-              Alle data kan lastes ned <a href="data/">her</a> eller hentes ved kart <a href="kart/">her</a>.  
-          </p>
-                  
-          <p>
-              Liker du ikke at dataene er fritt tilgjengelig så ikke bruk deltur.no. 
-          </p>
-                  
-                  
-          </div>  
-         <div class="modal-footer">
-           <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
-       </div>
-     </div>
+      <div id="mobileModal" class="modal fade">
+         <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <a class="close" data-dismiss="modal" >&times;</a>
+                   <h3>deltur.no - Public domain</h3>
+                 </div>
+                 <div class="modal-body">
+                  <p>
+                      All data som lastes opp til deltur.no er i såkalt <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.no">public domain</a> . Det betyr at alle fritt kan gjenbruke dataene, endre de og republisere de. 
+                  </p>
+                          
+                  <p>
+                      Faktisk oppfordrer deltur.no til å gjenbruke dataene til bruk i f. eks. <a href="http://www.osm.org">OpenStreetMap</a>  
+                  </p>
+            
+                  <p>
+                      Alle data kan lastes ned <a href="data/">her</a> eller hentes ved kart <a href="kart/">her</a>.  
+                  </p>
+                          
+                  <p>
+                      Liker du ikke at dataene er fritt tilgjengelig så ikke bruk deltur.no. 
+                  </p>
+                          
+                          
+                  </div>  
+                 <div class="modal-footer">
+                   <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+               </div>
+             </div>
+          </div>
+    </div>
              
-     <div id="markerInfo" class="modal hide fade">
-       <div class="modal-header">
-         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-         <h3>Stedsinformasjon</h3>
-       </div>
-       <div class="modal-body">
-         
-         
-           <form class="form-horizontal">
-             <div class="control-group">
-               <label class="control-label" for="inputTittel">Tittel</label>
-               <div class="controls">
-                 <input type="text" id="inputTittel" placeholder="Tittel">
-               </div>
+     <div id="markerInfo" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h3>Stedsinformasjon</h3>
              </div>
-             <div class="control-group">
-               <label class="control-label" for="inputBeskrivelse">Beskrivelse</label>
-               <div class="controls">
-                   <textarea id="inputBeskrivelse" placeholder="Beskrivelse" rows="3"></textarea>
-               </div>
+             <div class="modal-body">
+               
+               
+                 <form class="form-horizontal" role="form">
+
+                  <div class="form-group">
+                    <label for="inputTittel" class="col-sm-2 control-label">Tittel</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputTittel" placeholder="Tittel">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputBeskrivelse" class="col-sm-2 control-label">Beskrivelse</label>
+                    <div class="col-sm-10">
+                      <textarea id="inputBeskrivelse" class="form-control" rows="3"></textarea>
+                    </div>
+                  </div>
+                  
+
+                   <!--div class="control-group">
+                     <label class="control-label" for="inputTittel">Overskrift</label>
+                     <div class="controls">
+                       <input type="text" id="inputTittel" placeholder="Tittel">
+                     </div>
+                   </div>
+                   <div class="control-group">
+                     <label class="control-label" for="inputBeskrivelse">Beskrivelse</label>
+                     <div class="controls">
+                         <textarea id="inputBeskrivelse" placeholder="Beskrivelse" rows="3"></textarea>
+                     </div>
+                   </div-->
+                 </form>
              </div>
-           </form>
-       </div>
-       <div class="modal-footer">
-         <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-primary">Lagre</a>
-       </div>
-     </div>     
+             <div class="modal-footer">
+               <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-primary">Lagre</a>
+             </div>
+           </div>    
+        </div>
+    </div> 
 
       
              
@@ -444,36 +462,38 @@
         </div>
 		
         
-        <select id="dropdown" class="visible-phone" style="width: 200px">
+        <select id="dropdown" class="visible-xs" style="width: 200px">
+          <option value="kartverket">Enkelt kart fra Turkompisen </option>
           <option value="turkart">Turkart fra Turkompisen</option>
           <option value="skikart">Skikart fra Turkompisen</option>
-          <option value="kartverket">Turkart fra Kartverket</option>
         </select>
-        
-        <table  class="hidden-phone" id="maptable">
+
+        <table  class="hidden-xs" id="maptable">
             <tr>
                 <td class="maptypes">
-                    <span class="hint--bottom " data-hint="Velg turkart fra Turkompisen">
-                        <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" src="{{ url_for('static', filename='img/turkart_big.png') }}">
+                    <span class="hint--bottom " data-hint="Velg enkelt topografisk kart uten merka stier/skiløyper">
+                        <img id="topokart" alt="Kart fra Kartverket" title="Enkelt topografisk kart" class="img-rounded" width="115" src="{{ url_for('static', filename='img/topokart_big.png') }}">
                     </span>
                 </td>
                 <td class="maptypes">
-                    <span class="hint--bottom " data-hint="Velg skikart fra Turkompisen">
-                        <img id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" src="{{ url_for('static', filename='img/skikart_big.png') }}">
+                    <span class="hint--bottom" data-hint="Velg turkart fra Turkompisen med merka stier">
+                        <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/turkart_big.png') }}">
                     </span>
                 </td>
                 <td class="maptypes">
-                    <span class="hint--bottom " data-hint="Velg turkart fra Kartverket">
-                        <img id="topokart" alt="Turkart fra Kartverket" title="Turkart fra Kartverket" class="img-rounded" src="{{ url_for('static', filename='img/kartverket_big.png') }}">
+                    <span class="hint--bottom" data-hint="Velg skikart fra Turkompisen med skiløyper">
+                        <img  id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart_big.png') }}">
                     </span>
                 </td>
             </tr>
             <tr>
-                <td><input class="mapButton" id="turkart-radio" name="karttype" type="radio" checked></td>
+                <td><input class="mapButton" id="topokart-radio" name="karttype" type="radio" checked></td>
+                <td><input class="mapButton" id="turkart-radio" name="karttype" type="radio"></td>
                 <td><input class="mapButton" id="skikart-radio" name="karttype" type="radio"></td>
-                <td><input class="mapButton" id="topokart-radio" name="karttype" type="radio"></td>
             </tr>
         </table>
+        
+        
        
         <button id="delturbutton" class="btn btn-large btn-primary" type="submit" disabled>Del turen</button><br>
         
@@ -499,7 +519,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fileupload/vendor/jquery.ui.widget.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fileupload/jquery.iframe-transport.js') }}"></script>
@@ -594,26 +613,27 @@
 
         // Handlers for clicking map or radio buttons below map
         $('#turkart').click(function () {
-            jQuery("#turkart-radio").attr('checked', 'checked');
+            jQuery("#turkart-radio").prop("checked", true);
             switchBgMap("turkart")
         });
         $('#turkart-radio').click(function () {
             switchBgMap("turkart")
         });
         $('#skikart').click(function () {
-            jQuery("#skikart-radio").attr('checked', 'checked');
+            jQuery("#skikart-radio").prop("checked", true);
             switchBgMap("skikart")
         });
         $('#skikart-radio').click(function () {
             switchBgMap("skikart")
         });
         $('#topokart').click(function () {
-            jQuery("#topokart-radio").attr('checked', 'checked');
+            jQuery("#topokart-radio").prop("checked", true);
             switchBgMap("topokart")
         });
         $('#topokart-radio').click(function () {
             switchBgMap("topokart")
         });
+
 
         // Handle mobile case of choosing map type
         $('#dropdown').change(function() {
@@ -653,12 +673,12 @@
  			maxZoom: 18
  		});
         
- 		topokart = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}", {
- 			attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
- 			subdomains: ["1", "2", "3", "4"],
- 			//scheme: "tms",
- 			maxZoom: 18
- 		});
+ 		topokart = new L.TileLayer("http://kart{s}.turkompisen.no/cache/turkart_simple/{z}/{x}/{y}.png", {
+            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
+            subdomains: ["1", "2", "3", "4"],
+            //scheme: "tms",
+            maxZoom: 18
+        });
         
          var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
  			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
@@ -667,7 +687,7 @@
  			maxZoom: 18
  		});
 
-        map.addLayer(turkart);
+        map.addLayer(topokart);
         
         
         

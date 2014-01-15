@@ -187,34 +187,38 @@
        </div>
      </div>
       
-      <div id="mobileModal" class="modal hide">
-         <div class="modal-header">
-           <a class="close" data-dismiss="modal" >&times;</a>
-           <h3>deltur.no - Public domain</h3>
-         </div>
-         <div class="modal-body">
-          <p>
-              All data som lastes opp til deltur.no er i såkalt <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.no">public domain</a> . Det betyr at alle fritt kan gjenbruke dataene, endre de og republisere de. 
-          </p>
-                  
-          <p>
-              Faktisk oppfordrer deltur.no til å gjenbruke dataene til bruk i f. eks. <a href="http://www.osm.org">OpenStreetMap</a>  
-          </p>
-    
-          <p>
-              Alle data kan lastes ned <a href="data/">her</a> eller hentes ved kart <a href="kart/">her</a>.  
-          </p>
-                  
-          <p>
-              Liker du ikke at dataene er fritt tilgjengelig så ikke bruk deltur.no. 
-          </p>
-                  
-                  
-          </div>  
-         <div class="modal-footer">
-           <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
-       </div>
-     </div>
+      <div id="mobileModal" class="modal fade">
+         <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <a class="close" data-dismiss="modal" >&times;</a>
+                   <h3>deltur.no - Public domain</h3>
+                 </div>
+                 <div class="modal-body">
+                  <p>
+                      All data som lastes opp til deltur.no er i såkalt <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.no">public domain</a> . Det betyr at alle fritt kan gjenbruke dataene, endre de og republisere de. 
+                  </p>
+                          
+                  <p>
+                      Faktisk oppfordrer deltur.no til å gjenbruke dataene til bruk i f. eks. <a href="http://www.osm.org">OpenStreetMap</a>  
+                  </p>
+            
+                  <p>
+                      Alle data kan lastes ned <a href="data/">her</a> eller hentes ved kart <a href="kart/">her</a>.  
+                  </p>
+                          
+                  <p>
+                      Liker du ikke at dataene er fritt tilgjengelig så ikke bruk deltur.no. 
+                  </p>
+                          
+                          
+                  </div>  
+                 <div class="modal-footer">
+                   <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+               </div>
+             </div>
+          </div>
+    </div>
              
              
              
@@ -243,6 +247,8 @@
                         <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="DROPBOX,GMAIL,URL,EVERNOTE,FTP,GOOGLE_DRIVE" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
                     </div>
                 </div>
+
+            <p style="text-align: center; font-size:12px;"><br><a href="advanced">Eller bruk avansert opplasting</a><p>
         
         <!--div class="tabbable"> 
           <ul class="nav nav-tabs">
@@ -278,7 +284,7 @@
         <!--h3  style="text-align: center;margin-top: 20px;"  class="form-signin-heading">velg bakgrunnskart</h3-->
         
         <select id="dropdown" class="visible-xs" style="width: 200px">
-          <option value="kartverket">Enkelt kart fra Turkompisen60 </option>
+          <option value="kartverket">Enkelt kart fra Turkompisen </option>
           <option value="turkart">Turkart fra Turkompisen</option>
           <option value="skikart">Skikart fra Turkompisen</option>
         </select>
@@ -286,17 +292,17 @@
         <table  class="hidden-xs" id="maptable">
             <tr>
                 <td style="width:100px;margin-left:50px;padding:10px;">
-                    <span class="hint--bottom " data-hint="Velg enkelt topografisk kart">
-                        <img id="topokart" alt="Kart fra Kartverket" title="Kart fra Kartverket" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}">
+                    <span class="hint--bottom " data-hint="Velg enkelt topografisk kart uten merka stier/skiløyper">
+                        <img id="topokart" alt="Kart fra Kartverket" title="Enkelt topografisk kart" class="img-rounded" width="115" src="{{ url_for('static', filename='img/kartverket.png') }}">
                     </span>
                 </td>
                 <td style="width:100px;padding:10px;">
-                    <span class="hint--bottom" data-hint="Velg turkart fra Turkompisen">
+                    <span class="hint--bottom" data-hint="Velg turkart fra Turkompisen med merka stier">
                         <img id="turkart" alt="Turkart fra Turkompisen" title="Turkart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/turkart.png') }}">
                     </span>
                 </td>
                 <td style="width:100px;padding:10px;">
-                    <span class="hint--bottom" data-hint="Velg skikart fra Turkompisen">
+                    <span class="hint--bottom" data-hint="Velg skikart fra Turkompisen med skiløyper">
                         <img  id="skikart" alt="Skikart fra Turkompisen" title="Skikart fra Turkompisen" class="img-rounded" width="115" src="{{ url_for('static', filename='img/skikart.png') }}">
                     </span>
                 </td>
