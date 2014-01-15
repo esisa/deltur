@@ -261,11 +261,20 @@
    
    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
    
-   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+   <!--link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" /-->
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.0/mapbox.js'></script>
+  <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.0/mapbox.css' rel='stylesheet' />
+  <link rel='stylesheet' href='http://www.mapbox.com/mapbox.js/assets/leaflet.draw.css' />
+<!--[if lte IE 8]>
+  <link rel="stylesheet" href="/mapbox.js/assets/leaflet.draw.ie.css" />
+<![endif]-->
+<script src='http://www.mapbox.com/mapbox.js/assets/leaflet.draw.js'></script>
+   
 
 
 
-   <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
+
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -284,15 +293,18 @@
    <script type="text/javascript" src="{{ url_for('static', filename='js/spin.js') }}"></script>
    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/miniNotification.js') }}"></script>
    
-   <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+   <!--script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script-->
    
    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>
-   <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
+   
    
     <script src="https://raw.github.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
-   
+
+     <!--link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
+     <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script-->
+       
    
    
    <script>
@@ -328,6 +340,31 @@
       <div id="imageNotification">
         <p>Klikk i kartet hvor bildet er tatt. </p>
       </div>
+
+       <div id="termsModal" class="modal fade">
+         <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <a class="close" data-dismiss="modal" >&times;</a>
+                   <h3>deltur.no - Kartrettigheter</h3>
+                 </div>
+                 <div class="modal-body">
+                  <p>
+                      Turkompisen baserer seg hovedsakelig på data fra <a target="_blank" href="http://osm.org">© OpenStreetMap</a>.
+
+                  <p>
+                  </p>
+                      I tillegg finner du data fra <a target="_blank" href="http://kartverket.no">© Kartverket</a> og <a target="_blank" href="http://skogoglandskap.no">Skog og landskap</a>. 
+                  </p>
+                          
+                       
+                  </div>  
+                 <div class="modal-footer">
+                   <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+               </div>
+             </div>
+          </div>
+    </div>
       
       <div id="mobileModal" class="modal fade">
          <div class="modal-dialog">
@@ -366,7 +403,7 @@
       <div class="modal-dialog">
           <div class="modal-content">
              <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button-->
                <h3>Stedsinformasjon</h3>
              </div>
              <div class="modal-body">
@@ -443,13 +480,13 @@
 			</header>
 			<section>
 				<ul id="da-thumbs" class="da-thumbs">
-					<li>
+					<!--li>
 						<a class="img" href="javascript:void(0)" >
 							<img src="{{ url_for('static', filename='img/a2.jpg') }}" width="166" height="120" />
 							<div><span>Klikk for å endre plassering i kartet</span></div>
 						</a>
-					</li>
-					<li>
+					</li-->
+					<li id="addImg_li">
 						<a id="addImg" href="javascript:void(0)">
 							<img src="{{ url_for('static', filename='img/empty_plus.png') }}" width="166" height="120" />
 							<div><span>&nbsp;&nbsp;&nbsp;&nbsp;Legg til bilde...</span></div>
@@ -653,40 +690,46 @@
 		
 
  		skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
- 			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
  			subdomains: ["1", "2", "3", "4"],
  			//scheme: "tms",
  			maxZoom: 18
  		});
 
  		turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
- 			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
  			subdomains: ["1", "2", "3", "4"],
  			//scheme: "tms",
  			maxZoom: 18
  		});
 		
  		veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
- 			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
  			subdomains: ["1", "2", "3", "4"],
  			//scheme: "tms",
  			maxZoom: 18
  		});
         
  		topokart = new L.TileLayer("http://kart{s}.turkompisen.no/cache/turkart_simple/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
             subdomains: ["1", "2", "3", "4"],
             //scheme: "tms",
             maxZoom: 18
         });
         
          var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
- 			attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
  			subdomains: ["1", "2", "3", "4"],
  			//scheme: "tms",
  			maxZoom: 18
  		});
 
+
+      // Seems like attribution is not correctly pulled from tilejson so we do it manually
+      if ( $(window).width() < 800) {
+          map.attributionControl.addAttribution('<a data-toggle="modal" href="#termsModal">Kartrettigheter</a>');
+      }
+      else
+      {
+          map.attributionControl.addAttribution('<a target="_blank" href="http://skogoglandskap.no">Skog og landskap</a>');
+          map.attributionControl.addAttribution('<a target="_blank" href="http://kartverket.no">© Kartverket</a>');
+          map.attributionControl.addAttribution('<a target="_blank" href="http://osm.org">© OpenStreetMap-bidragsytere</a>');
+      } 
         map.addLayer(topokart);
         
         
@@ -731,6 +774,10 @@
 
                 // When users clicks save in modal
                 $('#lagrePopup').click(function () {
+
+                    // Remove image from stack. Check if there is room left for the add image element
+                    $('#'+activeImgId).remove();
+                    showRemoveAddImageElement();
                     
                     // Get data to populate popup
                     var imgSrc = $('#currentImg').html();
@@ -886,6 +933,7 @@
         }); 
 
     
+        var imgNum = 1; // Used as id on images
         $('#addImg').click(function () {
             
             filepicker.pickAndStore(
@@ -898,8 +946,11 @@
                     console.log(JSON.stringify(fpfiles));
                     
                     // Add to list
-                    $('#da-thumbs').prepend('<li><a class="img" href="javascript:void(0)"><img  src="'+fpfiles[0].url+'"  width="166" height="146" /><div><span>Klikk for å plassere i kartet</span></div></a></li>')
+                    $('#da-thumbs').prepend('<li class="imageStack" id="imageNum'+imgNum+'"><a class="img" href="javascript:void(0)"><img id="imageNum'+imgNum+'" src="'+fpfiles[0].url+'"  width="166" height="120" /><div><span>Klikk for å plassere i kartet</span></div></a></li>');
+                    imgNum++;
                     setImageOnClick();
+
+                    showRemoveAddImageElement();
                 },
                 function(FPError){
                     console.log(FPError.toString());
@@ -907,6 +958,18 @@
             });
         
         });
+
+        function showRemoveAddImageElement() {
+            var pageWidth = document.body.clientWidth;
+            var numberOfImagesInStack = $('.imageStack').length;
+            var imgWidth = 166;
+            if(pageWidth-(numberOfImagesInStack+1)*imgWidth< 150 ) {
+                $('#addImg_li').hide()
+            }
+            else {
+                $('#addImg_li').show()
+            }
+        }
             
         function getActiveMaptype() {
             var maptype = "turkart"; // Default maptype
@@ -965,10 +1028,13 @@
         }
             
         var marker;   
+        var activeImgId; // Keeps track of id so we can remove the element when added to map
         function setImageOnClick() {
             $('.img').click(function (event) {
             
                 var imgSrc = $(this).find('img').attr('src');
+                activeImgId = $(this).find('img').attr('id');
+
                 $('#currentImg').html(imgSrc);
 
                 $('#imageNotification').miniNotification();

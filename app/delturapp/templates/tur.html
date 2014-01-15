@@ -306,6 +306,32 @@
             <li><a href="http://deltur.no">Del ny tur</a></li>      
         </ul>
     </nav>
+
+
+    <div id="termsModal" class="modal fade">
+         <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                   <a class="close" data-dismiss="modal" >&times;</a>
+                   <h3>deltur.no - Kartrettigheter</h3>
+                 </div>
+                 <div class="modal-body">
+                  <p>
+                      Turkompisen baserer seg hovedsakelig på data fra <a target="_blank" href="http://osm.org">© OpenStreetMap</a>.
+
+                  <p>
+                  </p>
+                      I tillegg finner du data fra <a target="_blank" href="http://kartverket.no">© Kartverket</a> og <a target="_blank" href="http://skogoglandskap.no">Skog og landskap</a>. 
+                  </p>
+                          
+                       
+                  </div>  
+                 <div class="modal-footer">
+                   <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+               </div>
+             </div>
+          </div>
+    </div>
       
       <div id="downloadModal" class="modal fade">
          <div class="modal-dialog">
@@ -470,46 +496,51 @@
         
 
         skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
             subdomains: ["1", "2", "3", "4"],
             //scheme: "tms",
             maxZoom: 18
         });
 
         turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
             subdomains: ["1", "2", "3", "4"],
             //scheme: "tms",
             maxZoom: 18
         });
         
         veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
             subdomains: ["1", "2", "3", "4"],
             //scheme: "tms",
             maxZoom: 18
         });
         
         topokart = new L.TileLayer("http://kart{s}.turkompisen.no/cache/turkart_simple/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
             subdomains: ["1", "2", "3", "4"],
             //scheme: "tms",
             maxZoom: 18
         });
         
         var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
             subdomains: ["1", "2", "3", "4"],
             //scheme: "tms",
             maxZoom: 18
         });
 
         var kartverket = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}", {
-            attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
             subdomains: ["1", "2", "3", "4"],
             //scheme: "tms",
             maxZoom: 18
         });
+
+         // Seems like attribution is not correctly pulled from tilejson so we do it manually
+          if ( $(window).width() < 800) {
+              map.attributionControl.addAttribution('<a data-toggle="modal" href="#termsModal">Kartrettigheter</a>');
+          }
+          else
+          {
+              map.attributionControl.addAttribution('<a target="_blank" href="http://skogoglandskap.no">Skog og landskap</a>');
+              map.attributionControl.addAttribution('<a target="_blank" href="http://kartverket.no">© Kartverket</a>');
+              map.attributionControl.addAttribution('<a target="_blank" href="http://osm.org">© OpenStreetMap-bidragsytere</a>');
+          } 
 
 
         
@@ -639,7 +670,7 @@
                     });
                     $.getJSON('/'+id+'/metadata', function (metadata) {
                         numMarkers++;
-                        console.log(metadata.url);
+
                         if(metadata.url != "")
                             imgMarker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
                         else
@@ -692,7 +723,9 @@
                     
 
                     map.fitBounds(featureBounds);
+                    
                     setTimeout(function() {
+                        map.zoomOut();
                         if(numLines==0 && map.getZoom() > 11) {
                                 map.setZoom(11);
                         }   
