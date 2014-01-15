@@ -61,6 +61,19 @@
             width: 40px;
         }
 
+        #popupText_title {
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-weight: 500;
+            color: black;
+            font-size: 24px;
+            text-shadow: 0px 0px 0 rgba(0, 0, 0, 0.3);
+        }
+        #popupText_description {
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            color: black;
+            font-size: 12px;
+        }
+
         /* Sticky footer styles
         -------------------------------------------------- */
 
@@ -637,7 +650,7 @@
                         if(imgWidth>250)
                             imgWidth = 250;
                         
-                        imgMarker.addTo(map).bindPopup('<h3 id="popupText" style="width:'+imgWidth+'px">'+metadata.title+'</h3><img width="'+imgWidth+'" src="'+ metadata.url +'"><br><div id="popupText" style="width:'+imgWidth+'px">' + metadata.description + '</div>');
+                        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+metadata.title+'</h3><img width="'+imgWidth+'" src="'+ metadata.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + metadata.description + '</div>');
                         $([metadata.url]).preload(); // Preload image
                         featureBounds.extend(imgMarker.getLatLng());
                     });
