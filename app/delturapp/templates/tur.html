@@ -619,9 +619,18 @@
                       icon: 'picture-o', 
                       markerColor: 'blue'
                     });
+                    var emptyIcon = L.AwesomeMarkers.icon({
+                      prefix: 'fa',
+                      icon: 'map-marker', 
+                      markerColor: 'blue'
+                    });
                     $.getJSON('/'+id+'/metadata', function (metadata) {
                         numMarkers++;
-                        imgMarker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
+                        console.log(metadata.url);
+                        if(metadata.url != "")
+                            imgMarker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
+                        else
+                            imgMarker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: emptyIcon});
                         var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
                         
                         // Make sure the image is never larger than 250 px
