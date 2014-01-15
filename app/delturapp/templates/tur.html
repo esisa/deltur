@@ -495,36 +495,28 @@
             L.control.scale({imperial:false, position: 'bottomleft'}).addTo(map);
         }*/
         
-
-        skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
+        var skikart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/skikart.json') }}', {
+            detectRetina: true,
+            // if retina is detected, this layer is used instead
+            retinaVersion: '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}'
         });
 
-        turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
+        var turkart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/turkart.json') }}', {
+            detectRetina: true,
+            // if retina is detected, this layer is used instead
+            retinaVersion: '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}'
         });
         
-        veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
+        var veikart = L.mapbox.tileLayer('esisa.map-0tz2sd3q');
+        
+        var topokart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/topokart.json') }}', {
+            detectRetina: true,
+            // if retina is detected, this layer is used instead
+            retinaVersion: '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}'
         });
         
-        topokart = new L.TileLayer("http://kart{s}.turkompisen.no/cache/turkart_simple/{z}/{x}/{y}.png", {
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
-        
-        var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
+        var satellite = L.mapbox.tileLayer('esisa.map-0s7gv7xn');
+
 
         var kartverket = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}", {
             subdomains: ["1", "2", "3", "4"],

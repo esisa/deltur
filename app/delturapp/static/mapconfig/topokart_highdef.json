@@ -1,0 +1,15 @@
+{
+    "attribution": "",
+    "bounds": [-180, -85, 180, 85],
+    "center": [59, 10, 3],
+    "geocoder": "http://a.tiles.mapbox.com/v3/mapbox.mapbox-streets/geocode/{query}.jsonp",
+    "id": "turkompisen.turkart",
+    "maxzoom": 18,
+    "minzoom": 0,
+    "name": "Turkompisen turkart simple highdef",
+    "private": true,
+    "scheme": "xyz",
+    "tilejson": "2.0.0",
+    "tiles": ["http://kart1.turkompisen.no/cache/turkart_simple_highdef/{z}/{x}/{y}.png", "http://kart2.turkompisen.no/cache/turkart_simple_highdef/{z}/{x}/{y}.png", "http://kart3.turkompisen.no/cache/turkart_simple_highdef/{z}/{x}/{y}.png", "http://kart4.turkompisen.no/cache/turkart_simple_highdef/{z}/{x}/{y}.png"],
+    "webpage": "http://www.turkompisen.no"
+}

@@ -384,16 +384,16 @@
                       All data som lastes opp til deltur.no er i såkalt <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.no">public domain</a> . Det betyr at alle fritt kan gjenbruke dataene, endre de og republisere de. 
                   </p>
                           
-                  <p>
+                  <!--p>
                       Faktisk oppfordrer deltur.no til å gjenbruke dataene til bruk i f. eks. <a href="http://www.osm.org">OpenStreetMap</a>  
                   </p>
             
                   <p>
                       Alle data kan lastes ned <a href="data/">her</a> eller hentes ved kart <a href="kart/">her</a>.  
-                  </p>
+                  </p-->
                           
                   <p>
-                      Liker du ikke at dataene er fritt tilgjengelig så ikke bruk deltur.no. 
+                      Ønsker du å beholde dine data private så kan du det ved å oppgradere til et <a href="{{ url_for('infopriser') }}">premium abonnementene</a>. 
                   </p>
                           
                           
@@ -695,35 +695,26 @@
  		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
 		
 
- 		skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
- 			subdomains: ["1", "2", "3", "4"],
- 			//scheme: "tms",
- 			maxZoom: 18
- 		});
+ 		skikart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/skikart.json') }}', {
+            detectRetina: true,
+            // if retina is detected, this layer is used instead
+            retinaVersion: '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}'
+        });
 
- 		turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
- 			subdomains: ["1", "2", "3", "4"],
- 			//scheme: "tms",
- 			maxZoom: 18
- 		});
-		
- 		veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
- 			subdomains: ["1", "2", "3", "4"],
- 			//scheme: "tms",
- 			maxZoom: 18
- 		});
+ 		turkart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/turkart.json') }}', {
+            detectRetina: true,
+            // if retina is detected, this layer is used instead
+            retinaVersion: '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}'
+        });
+
         
- 		topokart = new L.TileLayer("http://kart{s}.turkompisen.no/cache/turkart_simple/{z}/{x}/{y}.png", {
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
+ 		topokart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/topokart.json') }}', {
+            detectRetina: true,
+            // if retina is detected, this layer is used instead
+            retinaVersion: '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}'
         });
         
-         var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
- 			subdomains: ["1", "2", "3", "4"],
- 			//scheme: "tms",
- 			maxZoom: 18
- 		});
+       
 
 
       // Seems like attribution is not correctly pulled from tilejson so we do it manually
