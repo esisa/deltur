@@ -18,19 +18,8 @@ var delturLine = function () {
     var title;
     var description;
     var status = 0;
-
-    var style = {
-    	"width": 5,
-    	"color": "#ff7800",
-    	"opacity": 0.65,
-    	"endIcon": false,
-    	"startIcon": true,
-    	"popup": false,
-    	"label": {
-    		"static": false,
-    		"text": ""
-    	}
-    }
+    var trip = L.geoJson();
+    var style;
 
     this.init = function (_url) {  //public
 
@@ -92,7 +81,16 @@ var delturLine = function () {
         uploadStyle();
     };
 
+    this.updateRendering = function (_map) {  //public
+    	_map.removeLayer(trip);
+    	addToMap(_map);
+    }
+
     this.renderToMap = function (_map) {  //public
+    	addToMap(_map);
+    }
+
+    var addToMap = function (_map) {  // private
 
     	var lineStyle = {
             "color": style.color,
@@ -105,7 +103,6 @@ var delturLine = function () {
     		geoObject = [data];
 
     		// Create geojson object, add to map and add line to it
-    		var trip = L.geoJson();
     		trip.addTo(_map);
     		trip.addData(geoObject[0]);
 
