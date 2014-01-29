@@ -14,11 +14,31 @@ CREATE SEQUENCE common_trip_id_seq;
 drop table if exists trips;
 create table trips(
     id int4 DEFAULT nextval('common_trip_id_seq') NOT NULL,
+
     title varchar(50),
     dato timestamp,
     token varchar(50)
 );
 SELECT AddGeometryColumn ('public','trips','geo',4326,'MULTILINESTRING',2);
+ALTER TABLE trips ADD COLUMN description varchar(500);
+ALTER TABLE trips ADD COLUMN style_color varchar(20);
+ALTER TABLE trips ADD COLUMN style_width float;
+ALTER TABLE trips ADD COLUMN style_opacity float;
+ALTER TABLE trips ADD COLUMN style_start_icon boolean;
+ALTER TABLE trips ADD COLUMN style_end_icon boolean;
+ALTER TABLE trips ADD COLUMN style_popup boolean;
+ALTER TABLE trips ADD COLUMN style_label_static boolean;
+ALTER TABLE trips ADD COLUMN style_label_text varchar(30);
+ALTER TABLE ONLY trips ALTER COLUMN title SET DEFAULT '';
+ALTER TABLE ONLY trips ALTER COLUMN description SET DEFAULT '';
+ALTER TABLE ONLY trips ALTER COLUMN style_color SET DEFAULT '#ff7800';
+ALTER TABLE ONLY trips ALTER COLUMN style_width SET DEFAULT 5;
+ALTER TABLE ONLY trips ALTER COLUMN style_opacity SET DEFAULT 0.65;
+ALTER TABLE ONLY trips ALTER COLUMN style_start_icon SET DEFAULT false;
+ALTER TABLE ONLY trips ALTER COLUMN style_end_icon SET DEFAULT false;
+ALTER TABLE ONLY trips ALTER COLUMN style_popup SET DEFAULT false;
+ALTER TABLE ONLY trips ALTER COLUMN style_label_static SET DEFAULT false;
+ALTER TABLE ONLY trips ALTER COLUMN style_label_text SET DEFAULT '';
 
 drop view if exists trips_v;
 create view trips_v as 
@@ -36,3 +56,19 @@ create table points(
     token varchar(50)
 );
 SELECT AddGeometryColumn ('public','points','geo',4326,'POINT',2);
+ALTER TABLE points ADD COLUMN markercolor varchar(20);
+ALTER TABLE points ADD COLUMN markersymbol varchar(3);
+ALTER TABLE points ADD COLUMN markerpopup boolean;
+ALTER TABLE points ADD COLUMN markerlabel_static boolean;
+ALTER TABLE points ADD COLUMN markerlabel_text varchar(30);
+ALTER TABLE ONLY points ALTER COLUMN title SET DEFAULT '';
+ALTER TABLE ONLY points ALTER COLUMN url SET DEFAULT '';
+ALTER TABLE ONLY points ALTER COLUMN description SET DEFAULT '';
+ALTER TABLE ONLY points ALTER COLUMN markerType SET DEFAULT 'simple';
+ALTER TABLE ONLY points ALTER COLUMN markercolor SET DEFAULT 'blue';
+ALTER TABLE ONLY points ALTER COLUMN markerpopup SET DEFAULT true;
+ALTER TABLE ONLY points ALTER COLUMN markerlabel_static SET DEFAULT false;
+ALTER TABLE ONLY points ALTER COLUMN markerlabel_text SET DEFAULT '';
+
+
+

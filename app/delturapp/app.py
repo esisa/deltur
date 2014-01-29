@@ -366,7 +366,8 @@ def getPointMetadataFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select url, description, title, markerType from points where id=%s"
+    sql_string = "Select url, description, title, markerType, markersymbol, markerpopup, markerlabel_static, markerlabel_text from points where id=%s"
+    print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();
@@ -376,7 +377,15 @@ def getPointMetadataFromDB(id):
             'url':res[0],
             'description':res[1],
             'title': res[2],
-            'markerType':res[3]
+            'style:': {
+                'markerType':res[3],
+                'markersymbol':res[4],
+                'markerpopup':res[5],
+                'label': {
+                    'static':res[6],
+                    'text':res[7]
+                }
+            }
         }
     js = json.dumps(data)
     
@@ -393,14 +402,27 @@ def getLineMetadataFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select title from trips where id=%s"
+    sql_string = "Select title, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_static, style_label_text from trips where id=%s"
+    print sql_string
     cursor.execute(sql_string, (id,))
-    res = cursor.fetchone()[0]
+    res = cursor.fetchone()
     conn.commit();
     
     data = {
             'id': id,
-            'title': res[0]
+            'title': res[0],
+            'style:': {
+                'color':res[1],
+                'width':res[2],
+                'opacity':res[3],
+                'start_icon':res[4],
+                'end_icon':res[5],
+                'popup':res[6],
+                'label': {
+                    'static':res[7],
+                    'text':res[8]
+                }
+            }
         }
     js = json.dumps(data)
     
