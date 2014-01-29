@@ -298,6 +298,7 @@
   <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>
 
 
+
   <script src="https://raw.github.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
@@ -326,6 +327,8 @@
          })();
          
        </script>
+
+    <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
    
    
    
@@ -467,7 +470,7 @@
         
         <div id="enkelTur">
             <!-- Vises på vanlig desktop -->
-            <input id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX();" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GOOGLE_DRIVE" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
+            <input id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX(event.fpfile.url);" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GOOGLE_DRIVE" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
         </div>
         <div id ="gpxSpinner" style="margin-bottom: 30px;"></div>
         
@@ -567,7 +570,8 @@
     var gpxBounds = L.LatLngBounds();
     var gpx;
     var gpxUrl;
-    function addGPX() {
+    var lines = new Array();
+    function addGPX(uploadfile) {
         
         var spinner;
         var opts = {
@@ -588,31 +592,32 @@
                       top: 'auto', // Top position relative to parent in px
                       left: 'auto' // Left position relative to parent in px
                     };
+
+        // Remove button to upload another GPX file            
         $('#enkelTur').hide();
+
+        // Show spinner while adding file
         spinner = new Spinner(opts).spin(document.getElementById('gpxSpinner'));
-        
-        //gpxUrl = uploadFile; // URL to your GPX file
-        gpx = new L.GPX(uploadFile, {
-            async: true,
-            marker_options: {
-                startIconUrl: '{{ url_for('static', filename='img/pin-icon-start.png') }}',
-                endIconUrl: '{{ url_for('static', filename='img/pin-icon-end.png') }}',
-                shadowUrl: '{{ url_for('static', filename='img/pin-shadow.png') }}'
-              }
-          }).on('loaded', function(e) {
-            map.fitBounds(e.target.getBounds());
-            //$('#enkelTur').show();
-            spinner.stop();
-            // Set style
-      		var myStyle = {
-      		    "color": "#ff7800",
-      		    "weight": 5,
-      		    "opacity": 0.65
-      		};
-            gpx.setStyle(myStyle);
-          }).addTo(map);
-          
-        
+
+        // Create new line object
+        var line = new delturLine();
+
+        // Init line
+        line.init(uploadFile);
+
+        // Save a reference to this line
+        lines.push(line);
+
+        // Check when the file is uploaded and render to map
+        // and stop spinner
+        var interval = setInterval(function(){
+            if(line.getStatus() === 1) {
+                line.renderToMap(map);
+                spinner.stop();
+                clearInterval(interval);
+            }
+        },3000);
+    
             
           /*map.addLayer(gpx);
           gpxBounds.extend(e.target.getBounds());
@@ -995,13 +1000,17 @@
             return maptype;
         }
 
+        var gpxIds = new Array();
         function shareGPX(points) {
+
 
             /*FPFile from a previous pick, etc.*/
             var fpfile = {url: uploadFile,
                 filename: 'hello.txt', mimetype: 'text/plain', isWriteable: false, size: 100};
             //console.log("Loading "+fpfile.filename);
             filepicker.read(fpfile, function(data){
+
+
 
                 //Upload to deltur.no/del/gpx
                 $.ajax({
@@ -1017,10 +1026,12 @@
                             });
                         }
                       
-                        sendToTrip(ids)
+                        gpxIds.push(ids);
+                        //sendToTrip(ids)
                     },
                     error: function (response) {
-                      alert("Klarte dessverre ikke å laste opp filen!");
+                      //alert("Klarte dessverre ikke å laste opp filen!");
+                      gpxIds.push(-1);
                     },
                   contentType: "application/gpx+xml",
                   dataType: "json"

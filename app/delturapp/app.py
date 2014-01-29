@@ -183,7 +183,50 @@ def createGeoJSONTrip():
     else:
         return "Feil format!"    
 
+@app.route('/<int:id>/setStyle', methods = ['POST'])
+def setStyle(id):
 
+     # Firefox adds charset automatically    
+    if request.headers['Content-Type'] == 'application/json' or request.headers['Content-Type'] == 'application/json; charset=UTF-8':
+        try:
+            conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+        except:
+            print "Could not connect to database " + pg_db
+                
+        cursor = conn.cursor()
+
+        # Get the JSON data sent
+        jsondata = request.data
+
+        # Convert the JSON data into a Python structure
+        data = json.loads(jsondata)
+        
+
+        try:
+            sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
+                        style_end_icon=%s, style_popup=%s, style_label_static=%s, style_label_text=%s 
+                        where id=%s"""
+            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["startIcon"], data["endIcon"], data["popup"], data["label"]["static"], data["label"]["text"], id,))
+
+            data = {
+                'status'  : "success"
+            }
+        except:
+            data = {
+                'status'  : "failure"
+            }
+
+        conn.commit()
+        conn.close()
+        cursor.close()
+
+        js = json.dumps(data)
+
+        resp = Response(js, status=200, mimetype='application/json')
+
+        return resp
+    else:
+        return "Feil format!"    
 
 
 
