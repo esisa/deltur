@@ -366,7 +366,7 @@ def getPointMetadataFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select url, description, title, markerType, markersymbol, markerpopup, markerlabel_static, markerlabel_text from points where id=%s"
+    sql_string = "Select url, description, title, markerType, markersymbol, markerpopup, markerlabel_static, markerlabel_text, image_height, image_width from points where id=%s"
     print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
@@ -374,13 +374,17 @@ def getPointMetadataFromDB(id):
     
     data = {
             'id': id,
-            'url':res[0],
             'description':res[1],
             'title': res[2],
-            'style:': {
+            'style': {
                 'markerType':res[3],
                 'markersymbol':res[4],
                 'markerpopup':res[5],
+                'image': {
+                    'url':res[0],
+                    'height':res[8],
+                    'width':res[9]
+                },
                 'label': {
                     'static':res[6],
                     'text':res[7]
@@ -411,7 +415,7 @@ def getLineMetadataFromDB(id):
     data = {
             'id': id,
             'title': res[0],
-            'style:': {
+            'style': {
                 'color':res[1],
                 'width':res[2],
                 'opacity':res[3],

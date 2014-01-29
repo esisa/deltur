@@ -57,18 +57,23 @@ create table points(
 );
 SELECT AddGeometryColumn ('public','points','geo',4326,'POINT',2);
 ALTER TABLE points ADD COLUMN markercolor varchar(20);
-ALTER TABLE points ADD COLUMN markersymbol varchar(3);
+ALTER TABLE points ADD COLUMN markersymbol varchar(30);
 ALTER TABLE points ADD COLUMN markerpopup boolean;
 ALTER TABLE points ADD COLUMN markerlabel_static boolean;
 ALTER TABLE points ADD COLUMN markerlabel_text varchar(30);
+ALTER TABLE points ADD COLUMN image_width int;
+ALTER TABLE points ADD COLUMN image_height int;
 ALTER TABLE ONLY points ALTER COLUMN title SET DEFAULT '';
 ALTER TABLE ONLY points ALTER COLUMN url SET DEFAULT '';
 ALTER TABLE ONLY points ALTER COLUMN description SET DEFAULT '';
 ALTER TABLE ONLY points ALTER COLUMN markerType SET DEFAULT 'simple';
+ALTER TABLE ONLY points ALTER COLUMN markersymbol SET DEFAULT 'map-marker';
 ALTER TABLE ONLY points ALTER COLUMN markercolor SET DEFAULT 'blue';
 ALTER TABLE ONLY points ALTER COLUMN markerpopup SET DEFAULT true;
 ALTER TABLE ONLY points ALTER COLUMN markerlabel_static SET DEFAULT false;
 ALTER TABLE ONLY points ALTER COLUMN markerlabel_text SET DEFAULT '';
+ALTER TABLE ONLY points ALTER COLUMN image_height SET DEFAULT -1;
+ALTER TABLE ONLY points ALTER COLUMN image_width SET DEFAULT -1;
 
 
 
