@@ -26,7 +26,10 @@ var delturPoint = function () {
     	downloadStyle();
     };
 
-    this.init = function (_lat, _lon) {  //public
+    this.init = function (_lat, _lon, _title, _description, _imgUrl) {  //public
+        imgUrl = _imgUrl;
+        title = _title;
+        description = _description;
 
         var url = "/del/sted/" + _lat +"/"+ _lon;
         var jsonData =  JSON.stringify({"title": title,"description":description,"url": imgUrl});          
@@ -116,31 +119,33 @@ var delturPoint = function () {
     	return "geoObject";
     };
 
-    this.updateRendering = function (_map) {  //public
-    	_map.removeLayer(point);
+    this.updateRendering = function (_map, _markers) {  //public
+    	//_map.removeLayer(point);
 
-    	addToMap(_map);
+    	addToMap(_map, _markers);
     }
 
-    this.renderToMap = function (_map) {  //public
-    	addToMap(_map);
+    this.renderToMap = function (_map, _markers) {  //public
+    	addToMap(_map, _markers);
     }
 
-    var addToMap = function (_map) {  // private
+    var addToMap = function (_map, _markers) {  // private
 
-        var imgMarker;
+        var icon = L.AwesomeMarkers.icon({
+          prefix: 'fa',
+          icon: style.markersymbol, 
+          markerColor: style.markercolor
+        });
 
-        if(style.image.url != "")
-            imgMarker = L.marker([lat, lon], {icon: picture});
-        else
-            imgMarker = L.marker([lat, lon], {icon: emptyIcon});
+        var imgMarker = L.marker([lat, lon], {icon: icon});
         var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
         
         // Make sure the image is never larger than 250 px
         if(imgWidth>250)
             imgWidth = 250;
         
-        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+title+'</h3><img width="'+imgWidth+'" src="'+ style.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + description + '</div>');
+        _markers.push(imgMarker);
+        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+title+'</h3><img width="'+imgWidth+'" src="'+ style.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + description + '</div><div id="change-marker-link"><a onClick="openPointStyleEditor('+ id +')" href="javascript:void(0)">Endre på ikon</a></div>');
         $([style.image.url]).preload(); // Preload image
 
     
@@ -151,8 +156,6 @@ var delturPoint = function () {
     	// get line from server
     }; 
     var uploadStyle = function() { //private
-
-        debugger;
 
     	// Upload JSON to save changes to style
         $.ajax({
@@ -174,6 +177,10 @@ var delturPoint = function () {
     	// Download style and set all style variables
     	$.getJSON('/'+id+'/metadata', function (data) { 
     		style = data.style
+            lat = data.lat
+            lon = data.lon
+            title = data.title
+            description = data.description
     		status = 1;
     	});
 

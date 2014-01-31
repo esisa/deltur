@@ -81,7 +81,7 @@
     </script>
 
     
-    <!--script src="{{ url_for('static', filename='js/delturMap.js') }}"></script-->
+    
 
     <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
     <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
@@ -95,6 +95,9 @@
 
     <!-- Placeholder for images used in pop up -->
     <div id="currentImg"></div>
+
+    <!-- Placeholder for the current marker being edited -->
+    <div id="currentMarker"></div>
       
       <div id="imageNotification">
         <p>Klikk i kartet hvor bildet er tatt. </p>
@@ -186,6 +189,26 @@
              </div>
              <div class="modal-footer">
                <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-primary">Lagre</a>
+             </div>
+           </div>    
+        </div>
+    </div> 
+
+    <div id="markerStyleEditor" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h3>Editor</h3>
+             </div>
+             <div class="modal-body">
+               
+                 <textarea id="marker-style" class="form-control" rows="7">
+                </textarea>
+
+             </div>
+             <div class="modal-footer">
+               <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-success" onClick="savePointStyle();">Lagre</a>
              </div>
            </div>    
         </div>
@@ -320,6 +343,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-editable.css') }}">
     <script src="{{ url_for('static', filename='js/bootstrap-editable.min.js') }}"></script>
 
+    <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
+
     <script>
     
     //var groupLayer = new L.LayerGroup();
@@ -328,6 +353,7 @@
     var gpxUrl;
     var lines = new Array();
     var points = new Array();
+    var markers = new Array();
     function addGPX(uploadfile) {
         
         var spinner;
@@ -396,6 +422,32 @@
         lines[0].updateRendering(map);
     }
 
+    function savePointStyle() {
+        // Remove old marker
+        map.removeLayer(markers[0]);
+
+
+        var point = new delturPoint();
+        point.initWithId($('#currentMarker').html());
+
+        var interval = setInterval(function(){
+            if(point.getStatus() === 1) {
+                 // Save new style
+                point.setStyle(JSON.parse($('#marker-style').val()));
+
+                // Update map
+                point.updateRendering(map, markers);
+                
+                // Stop interval
+                clearInterval(interval);
+            }
+        },500);
+
+
+
+       
+    }
+
     function switchBgMap(maptype) {
         switch(maptype) {
             case "turkart":
@@ -428,7 +480,6 @@
     });
                 
 
-    var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
     var drawnItems;
     var layer;
     var numMarkers  = 0;
@@ -499,161 +550,6 @@
             }
         });
 
-        /*
-        ** END HANDLERS
-        */
-
-
- 		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
-		
-
- 		skikart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/skikart.json') }}', {
-            detectRetina: true,
-            // if retina is detected, this layer is used instead
-            retinaVersion: '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}'
-        });
-
- 		turkart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/turkart.json') }}', {
-            detectRetina: true,
-            // if retina is detected, this layer is used instead
-            retinaVersion: '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}'
-        });
-
-        
- 		topokart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/topokart.json') }}', {
-            detectRetina: true,
-            // if retina is detected, this layer is used instead
-            retinaVersion: '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}'
-        });
-        
-       
-
-
-      // Seems like attribution is not correctly pulled from tilejson so we do it manually
-      if ( $(window).width() < 800) {
-          map.attributionControl.addAttribution('<a data-toggle="modal" href="#termsModal">Kartrettigheter</a>');
-      }
-      else
-      {
-          map.attributionControl.addAttribution('<a target="_blank" href="http://skogoglandskap.no">Skog og landskap</a>');
-          map.attributionControl.addAttribution('<a target="_blank" href="http://kartverket.no">© Kartverket</a>');
-          map.attributionControl.addAttribution('<a target="_blank" href="http://osm.org">© OpenStreetMap-bidragsytere</a>');
-      } 
-    map.addLayer(topokart);
-        
-        
-        // Add layer for temporary markers
-        drawnItems = new L.FeatureGroup();
-		map.addLayer(drawnItems);
-
-
-        // Setup draw control
-		drawControl = new L.Control.Draw({
-            //position: 'topright',
-			draw: {
-				position: 'topleft',
-                polygon: false,
-				polyline: false, /*{
-					title: 'Tegn en tur',
-					shapeOptions: {
-						color: '#ff7800'
-					}
-				},*/
-				circle: false,
-                marker: {
-                    icon: emptyIcon
-                },
-                rectangle: false
-			},
-			edit: {
-				featureGroup: drawnItems,
-                remove: false
-			}
-		});
-    	map.addControl(drawControl);
-
-
-        var doneWithPopup;
-    	map.on('draw:created', function (e) {
-            doneWithPopup = false;
-    		var type = e.layerType;
-    		var newlayer = e.layer;
-
-
-            if (type === 'marker') {
-
-                // Create new line object
-                var point = new delturPoint();
-
-                // Init line
-                point.init(e.layer._latlng.lat, e.layer._latlng.lng);
-
-                // Save a reference to this line
-                points.push(point);
-                        
-                // Open modal
-                $('#markerInfo').modal();
-
-                // When users clicks save in modal
-                $('#lagrePopup').click(function () {
-
-                    // Remove image from stack. Check if there is room left for the add image element
-                    $('#'+activeImgId).remove();
-                    showRemoveAddImageElement();
-                    
-  
-                    point.setImgUrl($('#currentImg').html());
-                    point.setTitle($('#inputTittel').val());
-                    point.setDescription($('#inputBeskrivelse').val());
-
-                    point.renderToMap();
-                
-                    
-
-                    /*
-                    // Get data to populate popup
-                    var imgSrc = $('#currentImg').html();
-                    var tittel = $('#inputTittel').val();
-                    var description = $('#inputBeskrivelse').val();
-                    
-                    // Check which markers that already have a popup
-                    var doneWithPopup = false;
-                    $.each(drawnItems._layers, function(index, value) {
-                        if(newlayer.getLatLng().lat == value.getLatLng().lat && newlayer.getLatLng().lng == value.getLatLng().lng ) {
-                            doneWithPopup = true;
-                        }
-                    });
-
-                    // For some reason this code loops all features.
-                    // So we check which features is already present in the map. 
-                    if(!doneWithPopup) {
-                        markerInfo.push([tittel,description, imgSrc, false])
-
-                        var lenMarkerInfo = markerInfo.length-1;
-                        if(imgSrc != "") { // if image
-                            newlayer.bindPopup('<h3 id="popupText">'+markerInfo[lenMarkerInfo][0]+'</h3><img width="250" src="'+markerInfo[lenMarkerInfo][2]+'"><br><div id="popupText">' + markerInfo[lenMarkerInfo][1] + '</div>');
-                            $('#currentImg').html(""); // Reset to default
-                            
-                        } else { // just a marker
-                            newlayer.bindPopup('<h3 id="popupText">'+markerInfo[lenMarkerInfo][0]+'</h3><div id="popupText">' + markerInfo[lenMarkerInfo][1] + '</div>');   
-                        }
-                    
-                        drawnItems.addLayer(newlayer);
-                        
-                    }
-                    */
-                    $('#delturbutton').attr('disabled', false); // Enable button
-                    $('#lagrePopup').off('click'); // Remove click event so we do not reimplement on each marker
-                })
-                
-            }
-            	
-        });
-
-            
-            
-            
-            
         $('#delturbutton').click(function () {
 
             // Start uploading GPX
@@ -728,6 +624,122 @@
         
         });
 
+        /*
+        ** END HANDLERS
+        */
+
+
+ 		
+        map.addLayer(topokart);
+        
+        
+        // Add layer for temporary markers
+        drawnItems = new L.FeatureGroup();
+		map.addLayer(drawnItems);
+
+        // Setup draw control
+		drawControl = new L.Control.Draw({
+            //position: 'topright',
+			draw: {
+				position: 'topleft',
+                polygon: false,
+				polyline: false, /*{
+					title: 'Tegn en tur',
+					shapeOptions: {
+						color: '#ff7800'
+					}
+				},*/
+				circle: false,
+                marker: {
+                    icon: emptyIcon
+                },
+                rectangle: false
+			},
+			edit: {
+				featureGroup: drawnItems,
+                remove: false
+			}
+		});
+    	map.addControl(drawControl);
+
+
+        var doneWithPopup;
+    	map.on('draw:created', function (e) {
+            doneWithPopup = false;
+    		var type = e.layerType;
+    		var newlayer = e.layer;
+
+
+            if (type === 'marker') {
+                        
+                // Open modal
+                $('#markerInfo').modal();
+
+                // When users clicks save in modal
+                $('#lagrePopup').click(function () {
+
+                     // Create new line object
+                    var point = new delturPoint();
+
+                    // Init line
+                    var url = $('#currentImg').html();
+                    var description = $('#inputBeskrivelse').val();
+                    var title =  $('#inputTittel').val();
+                    point.init(e.layer._latlng.lat, e.layer._latlng.lng, title, description, url);
+
+                    // Save a reference to this line
+                    points.push(point);
+
+                    var interval = setInterval(function(){
+                    if(point.getStatus() === 1) {
+                            point.renderToMap(map, markers);
+                            
+                            // Stop interval
+                            clearInterval(interval);
+                        }
+                    },100);
+        
+
+                    // Remove image from stack. Check if there is room left for the add image element
+                    $('#'+activeImgId).remove();
+                    showRemoveAddImageElement();
+
+                
+                    $('#delturbutton').attr('disabled', false); // Enable button
+                    $('#lagrePopup').off('click'); // Remove click event so we do not reimplement on each marker
+                })
+                
+            }
+            	
+        });
+
+            
+            
+        function openPointStyleEditor(id) {
+            var point = new delturPoint();
+            point.initWithId(id);
+
+            // Save id so we can save to the same id later on
+            $('#currentMarker').html(id);
+            
+
+            var interval = setInterval(function(){
+                if(point.getStatus() === 1) {
+                    $('#marker-style').val(JSON.stringify(point.getStyle(), undefined, 2));
+                    $('#markerStyleEditor').modal();
+                    
+                    // Stop interval
+                    clearInterval(interval);
+                }
+            },500);
+    
+            
+
+        }
+
+        /*
+        * Function to check if the image add symbol should be shown or not
+        */
         function showRemoveAddImageElement() {
             var pageWidth = document.body.clientWidth;
             var numberOfImagesInStack = $('.imageStack').length;
@@ -740,6 +752,9 @@
             }
         }
             
+        /*
+        * Return the currently set map type
+        */    
         function getActiveMaptype() {
             var maptype = "topokart"; // Default maptype
 
@@ -757,7 +772,9 @@
             return maptype;
         }
 
-
+        /*
+        * Send user to the complete trip
+        */
         function sendToTrip(ids) {
             maptype = getActiveMaptype();
             document.location.href = "/"+ids+"/" + maptype;

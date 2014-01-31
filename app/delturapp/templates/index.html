@@ -348,7 +348,6 @@
     $(function () {
         
         $('#delturbutton').click(function () {
-            //console.log(uploadFile);
 
             new Spinner().spin(document.getElementById('spinner'));
             $('#apilink').css('visibility','hidden');
@@ -358,7 +357,6 @@
             /*FPFile from a previous pick, etc.*/
             var fpfile = {url: uploadFile,
                 filename: 'hello.txt', mimetype: 'text/plain', isWriteable: false, size: 100};
-            //console.log("Loading "+fpfile.filename);
             filepicker.read(fpfile, function(data){
                 //console.log(data);
                 

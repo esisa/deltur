@@ -203,7 +203,7 @@ def setStyle(id):
 
         if isPoint(id):
             sql_string = """update points set markercolor=%s, markerpopup=%s, markersymbol=%s, markerType=%s, 
-                        markerlabel_static=%s, markerlabel_text=%s, url=%s, image_height=%s, image_width=%s,
+                        markerlabel_static=%s, markerlabel_text=%s, url=%s, image_height=%s, image_width=%s
                         where id=%s"""
             cursor.execute(sql_string, (data["markercolor"], data["markerpopup"], data["markersymbol"], data["markerType"], data["label"]["static"], data["label"]["text"], data["image"]["url"], data["image"]["height"], data["image"]["width"],id,))
 
