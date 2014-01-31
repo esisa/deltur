@@ -11,322 +11,42 @@
     <!-- Le styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fileupload-ui.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link href='http://fonts.googleapis.com/css?family=Alegreya+SC:700,400italic' rel='stylesheet' type='text/css' />
+    <!--link href='http://fonts.googleapis.com/css?family=Alegreya+SC:700,400italic' rel='stylesheet' type='text/css' /-->
     
     
-    <style type="text/css">
-      body {
-        padding-top: 70px;
-        padding-bottom: 40px;
-        background-color: rgb(39,43,48);
-      }
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/advanced/custom.css') }}">
 
-      .form-signin {
-        max-width: 1050px;
-        padding: 19px 29px 29px;
-        margin: 0 auto 20px;
-        background-color: #fff;
-        border: 1px solid #e5e5e5;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
-       text-align: center;
-      }
-
-        #logo {
-            float: left;
-        }
-        @media screen and (max-width: 724px){
-            #logo {
-                margin-left: 25%;
-                margin-right: auto;
-                display: block;
-            }
-        }
-
-   
-
-      #apilink {
-          font-size: 11px;
-          margin-top: 5px;
-          text-align: center;
-      }
-      
-      #termslink {
-          font-size: 11px;
-          margin-top: 5px;
-          text-align: center;
-      }
-      
-      #delturbutton {
-          margin-left: auto;
-          margin-right: auto;
-          display: block;
-          width: 95%;
-          margin-top: 30px;
-      }
-      
-      #enkelTur {
-          text-align: center;          
-      }
-      
-      #avansertTur {
-          margin-left: 20%;          
-      }
-      
-      #maptable {
-          display: block;
-          margin-top: 30px;
-      }
-      
-      #uploadbutton {
-          margin-left: 25%;
-          margin-right: auto;
-          display: block;
-          margin-top: 30px;
-      }
-      
-      #dropdown {
-        margin: auto;
-        text-align:center;
-        margin-top: 30px;
-      }
-      
-      #text {
-          text-align: center;
-      }
-      
-      #filename {
-          text-align: center;
-          display: none;
-      }
-      
-      
-      
-      .da-thumbs {
-      	list-style: none;
-      	width: 984px;
-      	height: 170px;
-      	position: relative;
-      	margin: 0px auto;
-      	padding: 0;
-      }
-      .da-thumbs li {
-      	float: left;
-      	margin: 5px;
-      	background: #f2f2f2;
-      	padding: 8px;
-      	position: relative;
-      	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      }
-      .da-thumbs li a,
-      .da-thumbs li a img {
-      	display: block;
-      	position: relative;
-      }
-      .da-thumbs li a {
-      	overflow: hidden;
-      }
-      .da-thumbs li a div {
-      	position: absolute;
-      	background: #333;
-      	background: rgba(75,75,75,0.7);
-      	width: 100%;
-      	height: 100%;
-      }
-      .da-thumbs li a div span {
-      	display: block;
-      	padding: 10px 0;
-      	margin: 40px 20px 20px 20px;
-      	font-weight: normal;
-      	color: rgba(255,255,255,0.9);
-      	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-      	border-bottom: 1px solid rgba(255,255,255,0.5);
-
-      }
-
-      .mapContainer > header{
-      	margin: 10px;
-      	position: relative;
-      	display: block;
-      	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-          text-align: center;
-      }
-
-
-      /* NOJS */
-      .da-thumbs li a div {
-      	top: 0px;
-      	left: -100%;
-      	-webkit-transition: all 0.3s ease;
-      	-moz-transition: all 0.3s ease-in-out;
-      	-o-transition: all 0.3s ease-in-out;
-      	-ms-transition: all 0.3s ease-in-out;
-      	transition: all 0.3s ease-in-out;
-      }
-      .da-thumbs li a:hover div{
-      	left: 0px;
-      }
-      
-      label {
-          display: inline-block;
-          width: 5em;
-      }
-      
-      #imageNotification {
-          display: none;
-          position: fixed;
-          cursor: pointer;
-          width: 100%;
-          background: #EFEFEF;
-          text-align: center;
-          border-top: 2px solid #FFF;
-          z-index:9999;
-      }
-      
-      
-      .maptypes {
-          padding:10px;
-      }
-      #turkart {
-          width: 315px;
-      }
-      #skikart {
-          width: 315px;
-      }
-      #topokart {
-          width: 315px;
-      }
-      #turkart-radio {
-          margin-left: 140px;
-      }
-      #skikart-radio {
-          margin-left: 140px;
-      }
-      #topokart-radio {
-          margin-left: 140px;
-      }
-      
-      @media screen and (max-width: 1200px){
-          #turkart {
-              width: 270px;
-          }
-          #skikart {
-              width: 270px;
-          }
-          #topokart {
-              width: 270px;
-          }
-          #turkart-radio {
-              margin-left: 130px;
-          }
-          #skikart-radio {
-              margin-left: 130px;
-          }
-          #topokart-radio {
-              margin-left: 130px;
-          }
-         
-      }
-      
-      @media screen and (max-width: 980px){
-          #turkart {
-              width: 200px;
-          }
-          #skikart {
-              width: 200px;
-          }
-          #topokart {
-              width: 200px;
-          }
-          #turkart-radio {
-              margin-left: 100px;
-          }
-          #skikart-radio {
-              margin-left: 100px;
-          }
-          #topokart-radio {
-              margin-left: 100px;
-          }
-         
-      }
-
-      /* Override default shadowing */
-      .mapContainer > header {
-            text-align: center;
-            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
-        }
-
-        #line-style {
-            display: none;
-        }
-        #line-style-link {
-            display: none;
-            text-align: center; 
-            font-size:12px;
-        }
-        #line-style-hide-link {
-            display: none;
-            text-align: center; 
-            font-size:12px;
-        }
-        #line-style-save-button {
-            display: none;
-            text-align: center; 
-            font-size:12px;
-            margin-top: 5px;
-        }
-      
-    </style>
    
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
 
-    <!--link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" /-->
-
-    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
-    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
-    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
-    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
-
+    <script src='{{ url_for('static', filename='js/mapbox.js') }}'></script>
+    <script src='{{ url_for('static', filename='js/leaflet.draw.js') }}'></script>
+    <!--link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' /-->
+    <link href='{{ url_for('static', filename='css/mapbox.css') }}' rel='stylesheet' />
+    <link href='{{ url_for('static', filename='css/leaflet.draw.css') }}' rel='stylesheet' />
+    
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
 
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}"  />
 
 
-  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
   <script src="{{ url_for('static', filename='js/modernizr.custom.97074.js') }}"></script>
 
 
-  <script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>   
+  <script type="text/javascript" src="{{ url_for('static', filename='js/filepicker.js') }}"></script>   
   <script type="text/javascript" src="{{ url_for('static', filename='js/spin.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/lib/miniNotification.js') }}"></script>
-
-  <!--script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script-->
-
   <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>
-
-
-
-  <script src="https://raw.github.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
-
+  <script src="{{ url_for('static', filename='js/gpx.js') }}"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
 
-     <!--link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
-     <script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script-->
-
-   
    
    <script>
    
@@ -348,7 +68,23 @@
          
        </script>
 
+    <script type="text/javascript">
+
+        // Set up dynamic variables used in delturMap.js
+        var tileJsonSkikart = '{{ url_for('static', filename='mapconfig/skikart.json') }}';
+        var tileJsonSkikartHighdef = '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}';
+        var tileJsonTurkart = '{{ url_for('static', filename='mapconfig/turkart.json') }}';
+        var tileJsonTurkartHighdef = '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}';
+        var tileJsonTopokart = '{{ url_for('static', filename='mapconfig/topokart.json') }}';
+        var tileJsonTopokartHighdef = '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}';
+
+    </script>
+
+    
+    <!--script src="{{ url_for('static', filename='js/delturMap.js') }}"></script-->
+
     <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
    
    
    
@@ -357,7 +93,7 @@
   
 <body>
 
-    <!-- Placeholder for images uses in pop up -->
+    <!-- Placeholder for images used in pop up -->
     <div id="currentImg"></div>
       
       <div id="imageNotification">
@@ -446,20 +182,6 @@
                       <textarea id="inputBeskrivelse" class="form-control" rows="3"></textarea>
                     </div>
                   </div>
-                  
-
-                   <!--div class="control-group">
-                     <label class="control-label" for="inputTittel">Overskrift</label>
-                     <div class="controls">
-                       <input type="text" id="inputTittel" placeholder="Tittel">
-                     </div>
-                   </div>
-                   <div class="control-group">
-                     <label class="control-label" for="inputBeskrivelse">Beskrivelse</label>
-                     <div class="controls">
-                         <textarea id="inputBeskrivelse" placeholder="Beskrivelse" rows="3"></textarea>
-                     </div>
-                   </div-->
                  </form>
              </div>
              <div class="modal-footer">
@@ -593,6 +315,8 @@
     <script src="{{ url_for('static', filename='js/fileupload/jquery.fileupload.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.tab.min.js') }}"></script>
 
+
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-editable.css') }}">
     <script src="{{ url_for('static', filename='js/bootstrap-editable.min.js') }}"></script>
 
@@ -603,6 +327,7 @@
     var gpx;
     var gpxUrl;
     var lines = new Array();
+    var points = new Array();
     function addGPX(uploadfile) {
         
         var spinner;
@@ -711,6 +436,16 @@
     var drawControl;
     $(function () {
 
+        // Utility function to preload images
+        $.fn.preload = function() {
+            this.each(function(){
+                $('<img/>')[0].src = this;
+            });
+        }
+
+        /*
+        ** HANDLERS
+        */
 
         $('#line-style-link').click(function () {
             $('#line-style').show();
@@ -764,6 +499,10 @@
             }
         });
 
+        /*
+        ** END HANDLERS
+        */
+
 
  		map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
 		
@@ -800,14 +539,15 @@
           map.attributionControl.addAttribution('<a target="_blank" href="http://kartverket.no">© Kartverket</a>');
           map.attributionControl.addAttribution('<a target="_blank" href="http://osm.org">© OpenStreetMap-bidragsytere</a>');
       } 
-        map.addLayer(topokart);
+    map.addLayer(topokart);
         
         
-        
+        // Add layer for temporary markers
         drawnItems = new L.FeatureGroup();
 		map.addLayer(drawnItems);
 
 
+        // Setup draw control
 		drawControl = new L.Control.Draw({
             //position: 'topright',
 			draw: {
@@ -841,7 +581,16 @@
 
 
             if (type === 'marker') {
-                
+
+                // Create new line object
+                var point = new delturPoint();
+
+                // Init line
+                point.init(e.layer._latlng.lat, e.layer._latlng.lng);
+
+                // Save a reference to this line
+                points.push(point);
+                        
                 // Open modal
                 $('#markerInfo').modal();
 
@@ -852,6 +601,16 @@
                     $('#'+activeImgId).remove();
                     showRemoveAddImageElement();
                     
+  
+                    point.setImgUrl($('#currentImg').html());
+                    point.setTitle($('#inputTittel').val());
+                    point.setDescription($('#inputBeskrivelse').val());
+
+                    point.renderToMap();
+                
+                    
+
+                    /*
                     // Get data to populate popup
                     var imgSrc = $('#currentImg').html();
                     var tittel = $('#inputTittel').val();
@@ -880,15 +639,15 @@
                         }
                     
                         drawnItems.addLayer(newlayer);
-                        $('#delturbutton').attr('disabled', false); // Enable button
+                        
                     }
+                    */
+                    $('#delturbutton').attr('disabled', false); // Enable button
+                    $('#lagrePopup').off('click'); // Remove click event so we do not reimplement on each marker
                 })
                 
             }
-            else { // Line
-                drawnItems.addLayer(newlayer);
-                $('#delturbutton').attr('disabled', false); // Enable button
-            }	
+            	
         });
 
             
@@ -921,88 +680,25 @@
             $('#termslink').css('visibility','hidden');
             $('#delturbutton').text("Laster opp...");
 
-            // Start uploading points
-            var points = new Array();
-            var i = 0;
-            var j = 0;
+            // Create ids string
+            var ids = "";
+            $.each(lines, function(index, value) {
+                var currentId = value.getId();
+                if(ids=="")
+                    ids = currentId;
+                else
+                    ids = ids + "+" + currentId;
+            });
 
-            // Check if there are any markers
-            var markercount = 0;
-            for (var k in drawnItems._layers) {
-               if (drawnItems._layers.hasOwnProperty(k)) markercount++;
-            }
-            
-            // If there are markers
-            if(markercount>0) {
-                $.each(drawnItems._layers, function(index, value) {
+            $.each(points, function(index, value) {
+                var currentId = value.getId();
+                if(ids=="")
+                    ids = currentId;
+                else
+                    ids = ids + "+" + currentId;
+            });
 
-                    var tittel = markerInfo[i][0];
-                    var description = markerInfo[i][1];
-                    var imgUrl = markerInfo[i][2];
-
-                    i++;
-
-                    var lat = Number((value.getLatLng().lat).toFixed(5));
-                    var lon = Number((value.getLatLng().lng).toFixed(5));
-                    var url = "/del/sted/" + lat +"/"+ lon
-
-                    var jsonData =  JSON.stringify({"title": tittel,"description":description,"url": imgUrl});
-                    
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: jsonData,
-                        contentType : 'application/json',
-                        success: function (response) {
-                            points.push(response.id);
-                            markerInfo[j][3] = true; // This marker is uploaded to server
-                            
-                            if(typeof uploadFile !="undefined") { // No markers
-                                shareGPX(points);
-                            } // END IF
-                            else {
-                                if(points.length>1) { // More than one marker
-                                    var ids = "";
-                                    $.each(points, function(index, value) {
-                                        if(ids=="")
-                                            ids = value;
-                                        else
-                                            ids = ids + "+" + value;
-                                    });
-                                }
-                                else { // Only one marker
-                                    var ids = points[0];
-                                }
-                                
-                                // Check if all markers are uploaded
-                                var done = false;
-                                $.each(markerInfo, function(index2, value) {
-                                    
-                                    if(value[3]) {
-                                        done = true;    
-                                    }
-                                    else {
-                                        done = false;
-                                    }
-                                });
-                                if(done) {
-                                    sendToTrip(ids);
-                                }
-                                    
-                            }
-                            j++;
-                        },
-                        error: function (response) {
-                            alert("Klarte dessverre ikke å laste opp filen!");
-                            j++;
-                        }
-                    });
-                }); 
-            }
-            else {
-                sendToTrip(lines[0].getId());
-            }        
+            sendToTrip(ids)    
         }); 
 
     
@@ -1045,13 +741,13 @@
         }
             
         function getActiveMaptype() {
-            var maptype = "turkart"; // Default maptype
+            var maptype = "topokart"; // Default maptype
 
              // Check maptype
-            if(jQuery("#turkart-radio").attr('checked') == 'checked') {
+            if(jQuery("#turkart-radio").is(":checked")) {
                 maptype = "turkart";
             }
-            else if(jQuery("#skikart-radio").attr('checked') == 'checked') {
+            else if(jQuery("#skikart-radio").is(":checked")) {
                 maptype = "skikart";
             }
             else {
@@ -1061,45 +757,6 @@
             return maptype;
         }
 
-        var gpxIds = new Array();
-        function shareGPX(points) {
-
-
-            /*FPFile from a previous pick, etc.*/
-            var fpfile = {url: uploadFile,
-                filename: 'hello.txt', mimetype: 'text/plain', isWriteable: false, size: 100};
-            //console.log("Loading "+fpfile.filename);
-            filepicker.read(fpfile, function(data){
-
-
-
-                //Upload to deltur.no/del/gpx
-                $.ajax({
-                  type: "POST",
-                  url: "/del/gpx",
-                  data: data,
-                  success: function (response) {
-                        var ids = response.id;
-                      
-                        if(typeof points != "undefined") {
-                            $.each(points, function(index, value) {
-                                ids = ids + "+" + value;
-                            });
-                        }
-                      
-                        gpxIds.push(ids);
-                        //sendToTrip(ids)
-                    },
-                    error: function (response) {
-                      //alert("Klarte dessverre ikke å laste opp filen!");
-                      gpxIds.push(-1);
-                    },
-                  contentType: "application/gpx+xml",
-                  dataType: "json"
-                });
-                
-            }) // END UPLOAD GPX
-        }
 
         function sendToTrip(ids) {
             maptype = getActiveMaptype();

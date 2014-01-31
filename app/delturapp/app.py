@@ -201,16 +201,20 @@ def setStyle(id):
         # Convert the JSON data into a Python structure
         data = json.loads(jsondata)
 
+        if isPoint(id):
+            sql_string = """update points set markercolor=%s, markerpopup=%s, markersymbol=%s, markerType=%s, 
+                        markerlabel_static=%s, markerlabel_text=%s, url=%s, image_height=%s, image_width=%s,
+                        where id=%s"""
+            cursor.execute(sql_string, (data["markercolor"], data["markerpopup"], data["markersymbol"], data["markerType"], data["label"]["static"], data["label"]["text"], data["image"]["url"], data["image"]["height"], data["image"]["width"],id,))
 
-        sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
+        else:
+            sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
                         style_end_icon=%s, style_popup=%s, style_label_static=%s, style_label_text=%s 
                         where id=%s"""
-        cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"], data["label"]["static"], data["label"]["text"], id,))
+            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"], data["label"]["static"], data["label"]["text"], id,))
 
         
-
         try:
-            
             data = {
                 'status'  : "success"
             }
@@ -412,7 +416,9 @@ def getPointMetadataFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select url, description, title, markerType, markersymbol, markerpopup, markerlabel_static, markerlabel_text, image_height, image_width from points where id=%s"
+    sql_string = """Select url, description, title, markerType, markersymbol, 
+                    markerpopup, markerlabel_static, markerlabel_text, image_height, 
+                    image_width, st_x(geo), st_y(geo), markercolor from points where id=%s"""
     print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
@@ -422,7 +428,10 @@ def getPointMetadataFromDB(id):
             'id': id,
             'description':res[1],
             'title': res[2],
+            'lat': res[11],
+            'lon': res[10],
             'style': {
+                'markercolor': res[12],
                 'markerType':res[3],
                 'markersymbol':res[4],
                 'markerpopup':res[5],
