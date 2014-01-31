@@ -18,7 +18,7 @@
     <script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
     <script src="{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}"></script>
     <script src="{{ url_for('static', filename='js/rickshaw.js') }}"></script>
-    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.0/mapbox.js'></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
     
     
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -33,214 +33,17 @@
     <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/detail.css">
     <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
     <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
-    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.0/mapbox.css' rel='stylesheet' />
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
 
    
    
-    <!--link href="{{ url_for('static', filename='css/bootstrap_alt.css') }}" rel="stylesheet"-->
     <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
-    <style type="text/css">
     
-        .rickshaw_graph .detail .x_label { display: none }
-        .rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
-        .detail_swatch { float: right; display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
-        .rickshaw_graph .detail .date { color: #a0a0a0 }
-    
-        #chart {
-            position: relative;
-            left: 0px;
-            /*width: 680px;*/
-        }
-        #y_axis {
-            position: absolute;
-            left: -40px;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tur/custom.css') }}">
 
-        #popupText_title {
-            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-            font-weight: 500;
-            color: black;
-            font-size: 24px;
-            text-shadow: 0px 0px 0 rgba(0, 0, 0, 0.3);
-        }
-        #popupText_description {
-            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-            color: black;
-            font-size: 12px;
-        }
-
-        /* Sticky footer styles
-        -------------------------------------------------- */
-
-        html,
-        body {
-            height: 100%;
-        /* The html and body elements cannot have any padding or margin. */
-        }
-
-        /* Wrapper for page content to push down footer */
-        #wrap {
-            /*min-height: 100%;*/
-            height: auto !important;
-            height: 100%;
-            /* Negative indent footer by it's height */
-            margin: 0 auto -60px;
-        }
-
-        /* Custom page CSS
-        -------------------------------------------------- */
-        /* Not required for template or sticky footer method. */
-
-        .container {
-            width: auto;
-            max-width: 680px;
-            margin-top: 30px;
-        }
-        .container .credit {
-            margin: 20px 0;
-        }
-
-        .btn-custom {
-            background-color: hsl(214, 37%, 28%) !important;
-            background-repeat: repeat-x;
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#7a99c1", endColorstr="#2c4361");
-            background-image: -khtml-gradient(linear, left top, left bottom, from(#7a99c1), to(#2c4361));
-            background-image: -moz-linear-gradient(top, #7a99c1, #2c4361);
-            background-image: -ms-linear-gradient(top, #7a99c1, #2c4361);
-            background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7a99c1), color-stop(100%, #2c4361));
-            background-image: -webkit-linear-gradient(top, #7a99c1, #2c4361);
-            background-image: -o-linear-gradient(top, #7a99c1, #2c4361);
-            background-image: linear-gradient(#7a99c1, #2c4361);
-            border-color: #2c4361 #2c4361 hsl(214, 37%, 19.5%);
-            color: #fff !important;
-            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.56);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        label {
-            display: inline-block;
-            width: 5em;
-        }
-
-        #tripDownload {
-            display: none;
-        }
-
-        #placeDownload {
-            display: none;
-        }
-
-        #map {
-            height: 500px;
-        }
-
-
-        #mobile {
-            display: none;
-        }
-        @media screen and (max-width: 767px) {
-            .container {
-                margin-top: -20px;
-            }
-
-            #nav#full {
-                display:none
-            }
-
-            #logo {
-                float: left;
-                margin-left: 10px;
-                margin-top: 3px;
-
-            }
-
-            nav#mobile {
-                background-color:#2A333C;
-                box-shadow: 0 0 3px 2px rgba(0,0,0,0.3);
-                display:block;
-            }
-
-            /*
-            Top black bar that holds the toggle button
-            */
-
-            nav#mobile #toggle-bar {
-                line-height:70px;
-            }
-
-            /*
-            Toggle button #1 ("Menu")
-            */
-
-            nav#mobile strong a {
-                margin-left:0px;
-                border:0px solid #444;
-                padding:10px;
-                font-size: 20px;
-            }
-
-            /*
-            Toggle button #2 ("Navicon")
-            */
-
-            nav#mobile .navicon {
-                float: right;
-                height: 6px;
-                width: 34px;
-                margin: 20px;
-                border-top: 18px double #FFF;
-                border-bottom: 6px solid #FFF;
-                font-size:0;
-            }
-
-            /*
-            The dropdown menu
-            */
-
-            nav#mobile ul li {
-                clear:both;
-                list-style:none;
-            }
-
-            nav#mobile ul li a {
-                display:block;
-                background-color:#235A96;
-                font-family: Arial,sans-serif;
-                letter-spacing:.2em;
-                margin:2px 0;
-                padding:6px 0 6px 8px;
-            }
-
-            nav#mobile ul ul {
-                font-size:small;
-            }
-
-            nav#mobile ul ul li {
-                margin-left:30px;
-            }
-
-            nav#mobile ul ul a {
-                background-color:#328CBE;
-                padding-left:8px;
-                text-transform: lowercase;
-            }
-
-            nav#mobile ul ul a:before {
-                /*content: "\2192";*/
-                padding-right:8px;
-            }
-        }
-
-
-      
-    </style>
-    <!--link href="{{ url_for('static', filename='css/bootstrap-responsive.css') }}" rel="stylesheet"-->                            
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> 
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
@@ -467,7 +270,22 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!--script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script-->
+
+     <script type="text/javascript">
+
+        // Set up dynamic variables used in delturMap.js
+        var tileJsonSkikart = '{{ url_for('static', filename='mapconfig/skikart.json') }}';
+        var tileJsonSkikartHighdef = '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}';
+        var tileJsonTurkart = '{{ url_for('static', filename='mapconfig/turkart.json') }}';
+        var tileJsonTurkartHighdef = '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}';
+        var tileJsonTopokart = '{{ url_for('static', filename='mapconfig/topokart.json') }}';
+        var tileJsonTopokartHighdef = '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}';
+
+    </script>
+
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
 
     <script type="text/javascript">
 
@@ -478,7 +296,8 @@
             });
         }
     
-        var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 10, center: [59.98,10.572]});
+        
+        var lines = new Array();
 
         // Events
         //map.on('load', onLoadMap);
@@ -489,55 +308,8 @@
                 imgMarker.openPopup();
         }
 
-        map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
         
-        /*if($('.container').width()>480) {
-            L.control.scale({imperial:false, position: 'bottomleft'}).addTo(map);
-        }*/
-        
-        var skikart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/skikart.json') }}', {
-            detectRetina: true,
-            // if retina is detected, this layer is used instead
-            retinaVersion: '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}'
-        });
-
-        var turkart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/turkart.json') }}', {
-            detectRetina: true,
-            // if retina is detected, this layer is used instead
-            retinaVersion: '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}'
-        });
-        
-        var veikart = L.mapbox.tileLayer('esisa.map-0tz2sd3q');
-        
-        var topokart = L.mapbox.tileLayer('{{ url_for('static', filename='mapconfig/topokart.json') }}', {
-            detectRetina: true,
-            // if retina is detected, this layer is used instead
-            retinaVersion: '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}'
-        });
-        
-        var satellite = L.mapbox.tileLayer('esisa.map-0s7gv7xn');
-
-
-        var kartverket = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}", {
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
-
-         // Seems like attribution is not correctly pulled from tilejson so we do it manually
-          if ( $(window).width() < 800) {
-              map.attributionControl.addAttribution('<a data-toggle="modal" href="#termsModal">Kartrettigheter</a>');
-          }
-          else
-          {
-              map.attributionControl.addAttribution('<a target="_blank" href="http://skogoglandskap.no">Skog og landskap</a>');
-              map.attributionControl.addAttribution('<a target="_blank" href="http://kartverket.no">© Kartverket</a>');
-              map.attributionControl.addAttribution('<a target="_blank" href="http://osm.org">© OpenStreetMap-bidragsytere</a>');
-          } 
-
-
-        
-
+        // Add map used in URL
         if({{mapType}}==0) {
             map.addLayer(turkart);
         }
@@ -558,25 +330,20 @@
         }
             
 
+        // Get list of ids and split to array
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
-        /*if(ids.length>1) {
-            $('#downloadButton').hide();
-        }*/
-        var myStyle = {
-            "color": "#ff7800",
-            "weight": 5,
-            "opacity": 0.65
-        };
+        
+        
         var geoObject;
-        var markerGroup = new L.LayerGroup();
+        var markerGroup = new L.LayerGroup(); // Holds hover for graph
         var numLines = 0; var lineFeature;
-        var trip = L.geoJson();
-        trip.addTo(map);
+        
         var featureBounds = new L.LatLngBounds();
         var imgMarker;
         var numMarkers = 0;
             
+        // Loop through ids and draw on map    
         $.each(ids, function(index, value) {
             var id = value;
           
@@ -592,6 +359,26 @@
                 map.addLayer(markerGroup);
                 var marker;
                 if(line) {
+
+                    // Create new line object
+                    var line = new delturLine();
+
+                    // Save a reference to this line
+                    lines.push(line);
+
+                    // Init line
+                    line.initWithId(id);
+
+                    // Check when the line is ready for use
+                    var interval = setInterval(function(){
+                        if(line.getStatus() === 1) {
+                            line.renderToMap(map);
+                            
+                            // Stop interval
+                            clearInterval(interval);
+                        }
+                    },500);
+
                     
                     // Add to select box for download
                     $('#tripDownload').show()
@@ -601,45 +388,10 @@
                              .text(id)); 
                     
                     numLines++;
-                    lineFeature = geoObject;
-                    
-                    trip.addData(geoObject[0]);
-                    trip.on('mouseover', function(e) {
-                        //alert(e.latlng);
-                        markerGroup.clearLayers(); 
-                        //var latlng = new L.LatLng(e.latlng);
-                        marker = new L.CircleMarker(e.latlng);
-                        markerGroup.addLayer(marker);
-                    });
-                    featureBounds.extend(trip.getBounds());
-                    
-            
-                    
-                    var start = L.AwesomeMarkers.icon({
-                      prefix: 'fa',
-                      icon: 'play', 
-                      markerColor: 'green'
-                    });
-                    
-                    var stop = L.AwesomeMarkers.icon({
-                      prefix: 'fa',
-                      icon: 'stop', 
-                      markerColor: 'red'
-                    });
-                    
-                    
-                    /*var marker = L.marker([lineFeature[0].coordinates
-                        [lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1]
-                        [1], 
-                                                                         lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][lineFeature[0].coordinates[lineFeature[0].coordinates.length-1].length-1][0]], {icon: stop});
-                        
-                        */
-                    var marker = L.marker([lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][1], lineFeature[0].coordinates[lineFeature[0].coordinates.length-1][0]], {icon: stop});
-                    marker.addTo(map).bindPopup('Slutt');
-                    
-                    // Set start and stop marker
-                    var marker = L.marker([lineFeature[0].coordinates[0][1], lineFeature[0].coordinates[0][0]], {icon: start});
-                    marker.addTo(map).bindPopup('Start');
+
+                    // Add hover feature to line
+                    line.addHover(markerGroup);
+
                     
                 }
                 else {
@@ -681,7 +433,7 @@
                     
                 }
                     
-                trip.setStyle(myStyle);
+                
 
                 if(numLines==1) {
                     // Request elevation profile
@@ -692,7 +444,7 @@
                           dataType: 'json',
                           type: 'post',
                           contentType: "application/json",
-                          data: JSON.stringify(lineFeature[0]),
+                          data: JSON.stringify(lines[0].getGeom()),
                           success: setElevationProfile
                     });
             
@@ -814,6 +566,7 @@
     $('#downloadTripButton').click(function() {
         downloadTrip()    
     });
+    
     function downloadTrip() {
         //console.log("Download trip");
         var id = $("#tripSelect option:selected").text();

@@ -20,6 +20,12 @@ var delturLine = function () {
     var status = 0;
     var trip = L.geoJson();
     var style;
+    var startMarker, endMarker;
+
+    this.initWithId = function (_id) {
+    	setId(_id);
+    	downloadStyle();
+    };
 
     this.init = function (_url) {  //public
 
@@ -46,6 +52,10 @@ var delturLine = function () {
 	        });
             
         }); // END FILEPICKER
+    };
+
+    var setId = function(_id) { //private
+    	id = _id;
     };
 
     this.getId = function () {  //public
@@ -81,9 +91,27 @@ var delturLine = function () {
         uploadStyle();
     };
 
+    this.getGeom = function () {  //public
+        $.getJSON('/'+id+'/geojson', function (data) {
+    		geoObject = [data];
+    		
+    	});
+    	return "geoObject";
+    };
+
     this.updateRendering = function (_map) {  //public
     	_map.removeLayer(trip);
+    	try { _map.removeLayer(startMarker); } catch(err) {}
+    	try { _map.removeLayer(endMarker); } catch(err) {}
     	addToMap(_map);
+    }
+
+    this.addHover = function (_markerGroup) {  //public
+    	trip.on('mouseover', function(e) {
+            _markerGroup.clearLayers(); 
+            var marker = new L.CircleMarker(e.latlng);
+            _markerGroup.addLayer(marker);
+        });
     }
 
     this.renderToMap = function (_map) {  //public
@@ -112,14 +140,14 @@ var delturLine = function () {
     		// Fit bounds to line
     		_map.fitBounds(trip.getBounds());
 
-    		if(style.endIcon) {
-    			var marker = L.marker([geoObject[0].coordinates[geoObject[0].coordinates.length-1][1], geoObject[0].coordinates[geoObject[0].coordinates.length-1][0]], {icon: endIcon});
-                marker.addTo(map).bindPopup('Slutt');
+    		if(style.end_icon) {
+    			startMarker = L.marker([geoObject[0].coordinates[geoObject[0].coordinates.length-1][1], geoObject[0].coordinates[geoObject[0].coordinates.length-1][0]], {icon: endIcon});
+                startMarker.addTo(map).bindPopup('Slutt');
     		}
 
-    		if(style.startIcon) {
-    			var marker = L.marker([geoObject[0].coordinates[0][1], geoObject[0].coordinates[0][0]], {icon: startIcon});
-                marker.addTo(map).bindPopup('Start');
+    		if(style.start_icon) {
+    			endMarker = L.marker([geoObject[0].coordinates[0][1], geoObject[0].coordinates[0][0]], {icon: startIcon});
+                endMarker.addTo(map).bindPopup('Start');
     		}
     	});
 
@@ -131,25 +159,26 @@ var delturLine = function () {
     var uploadStyle = function() { //private
 
     	// Upload JSON to save changes to style
-	        $.ajax({
-	          type: "POST",
-	          url: "http://localhost:5000/"+id+"/setStyle",
-	          data: JSON.stringify(style),
-	          success: function (response) {
-	                
-	            },
-	            error: function (response) {
-	              
-	            },
-	          contentType: "application/json",
-	          dataType: "json"
-	        });
+        $.ajax({
+          type: "POST",
+          url: "http://localhost:5000/"+id+"/setStyle",
+          data: JSON.stringify(style),
+          success: function (response) {
+                
+            },
+            error: function (response) {
+              
+            },
+          contentType: "application/json",
+          dataType: "json"
+        });
     }; 
     var downloadStyle = function() { //private
 
     	// Download style and set all style variables
     	$.getJSON('/'+id+'/metadata', function (data) { 
     		style = data.style
+    		status = 1;
     	});
 
     }; 

@@ -200,14 +200,17 @@ def setStyle(id):
 
         # Convert the JSON data into a Python structure
         data = json.loads(jsondata)
+
+
+        sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
+                        style_end_icon=%s, style_popup=%s, style_label_static=%s, style_label_text=%s 
+                        where id=%s"""
+        cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"], data["label"]["static"], data["label"]["text"], id,))
+
         
 
         try:
-            sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
-                        style_end_icon=%s, style_popup=%s, style_label_static=%s, style_label_text=%s 
-                        where id=%s"""
-            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["startIcon"], data["endIcon"], data["popup"], data["label"]["static"], data["label"]["text"], id,))
-
+            
             data = {
                 'status'  : "success"
             }
@@ -450,7 +453,7 @@ def getLineMetadataFromDB(id):
     cursor = conn.cursor()
     
     sql_string = "Select title, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_static, style_label_text from trips where id=%s"
-    print sql_string
+
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();
