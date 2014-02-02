@@ -20,11 +20,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
 
-    <script src='{{ url_for('static', filename='js/mapbox.js') }}'></script>
-    <script src='{{ url_for('static', filename='js/leaflet.draw.js') }}'></script>
+    <!--script src='{{ url_for('static', filename='js/mapbox.js') }}'></script-->
+    <!--script src='{{ url_for('static', filename='js/leaflet.draw.js') }}'></script-->
     <!--link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' /-->
-    <link href='{{ url_for('static', filename='css/mapbox.css') }}' rel='stylesheet' />
-    <link href='{{ url_for('static', filename='css/leaflet.draw.css') }}' rel='stylesheet' />
+    <!--link href='{{ url_for('static', filename='css/mapbox.css') }}' rel='stylesheet' /-->
+    <!--link href='{{ url_for('static', filename='css/leaflet.draw.css') }}' rel='stylesheet' /-->
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
     
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -353,7 +361,6 @@
     var gpxUrl;
     var lines = new Array();
     var points = new Array();
-    var markers = new Array();
     function addGPX(uploadfile) {
         
         var spinner;
@@ -422,26 +429,43 @@
         lines[0].updateRendering(map);
     }
 
+    function openPointStyleEditor(arrayId) {
+        var point = points[arrayId];
+
+        // Save id so we can save to the same id later on
+        $('#currentMarker').html(arrayId);
+
+        // Update textarea with json data
+        $('#marker-style').val(JSON.stringify(point.getStyle(), undefined, 2));
+
+        // Open modal
+        $('#markerStyleEditor').modal();
+        
+    }
+
     function savePointStyle() {
-        // Remove old marker
-        map.removeLayer(markers[0]);
 
-
-        var point = new delturPoint();
-        point.initWithId($('#currentMarker').html());
-
+        var point = points[$('#currentMarker').html()];
+        point.setStyle(JSON.parse($('#marker-style').val()));
+        point.updateRendering(map);
+        
+        /*
         var interval = setInterval(function(){
             if(point.getStatus() === 1) {
                  // Save new style
                 point.setStyle(JSON.parse($('#marker-style').val()));
 
                 // Update map
-                point.updateRendering(map, markers);
+                $.each(points, function(index, point) {
+                    point.updateRendering(map, markers);
+                });
+                
                 
                 // Stop interval
                 clearInterval(interval);
             }
         },500);
+*/
 
 
 
@@ -473,12 +497,7 @@
           icon: 'map-marker', 
           markerColor: 'blue'
     });
-    var pictureIcon = L.AwesomeMarkers.icon({
-          prefix: 'fa',
-          icon: 'picture-o', 
-          markerColor: 'blue'
-    });
-                
+            
 
     var drawnItems;
     var layer;
@@ -681,7 +700,7 @@
                      // Create new line object
                     var point = new delturPoint();
 
-                    // Init line
+                    // Init point
                     var url = $('#currentImg').html();
                     var description = $('#inputBeskrivelse').val();
                     var title =  $('#inputTittel').val();
@@ -690,9 +709,14 @@
                     // Save a reference to this line
                     points.push(point);
 
+                    // Add a custom footer to popup
+                    var currentPlaceInArray = points.length-1;
+                    var customPopupFooter = '<div id="change-marker-link"><a onClick="openPointStyleEditor('+ currentPlaceInArray +')" href="javascript:void(0)">Endre på ikon</a></div>';
+                    point.addCustomPopupFooter(customPopupFooter);
+
                     var interval = setInterval(function(){
                     if(point.getStatus() === 1) {
-                            point.renderToMap(map, markers);
+                            point.renderToMap(map);
                             
                             // Stop interval
                             clearInterval(interval);
@@ -715,27 +739,7 @@
 
             
             
-        function openPointStyleEditor(id) {
-            var point = new delturPoint();
-            point.initWithId(id);
-
-            // Save id so we can save to the same id later on
-            $('#currentMarker').html(id);
-            
-
-            var interval = setInterval(function(){
-                if(point.getStatus() === 1) {
-                    $('#marker-style').val(JSON.stringify(point.getStyle(), undefined, 2));
-                    $('#markerStyleEditor').modal();
-                    
-                    // Stop interval
-                    clearInterval(interval);
-                }
-            },500);
-    
-            
-
-        }
+        
 
         /*
         * Function to check if the image add symbol should be shown or not
@@ -794,19 +798,13 @@
                 $('#imageNotification').miniNotification();
                 marker = new L.Draw.Marker(map, {
                     title: 'Add a marker',
-                    icon: pictureIcon
+                    icon: emptyIcon
                 });
 
         
                 marker.addHooks();
                 map.on('mousedown', function(e) {
                     setTimeout('marker.removeHooks()', 200);
-                    // Change back to default marker
-                    drawControl.setDrawingOptions({
-                        marker: {
-                            icon: emptyIcon
-                        }
-                    });
                 });
             });
         }

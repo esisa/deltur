@@ -34,6 +34,11 @@
     <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
     <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
     <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.3/leaflet-image.js'></script>
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
 
@@ -284,6 +289,7 @@
     </script>
 
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
     <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
     <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
 
@@ -298,6 +304,7 @@
     
         
         var lines = new Array();
+        var points = new Array();
 
         // Events
         //map.on('load', onLoadMap);
@@ -358,7 +365,7 @@
                 
                 map.addLayer(markerGroup);
                 var marker;
-                if(line) {
+                if(line) { // Line
 
                     // Create new line object
                     var line = new delturLine();
@@ -377,7 +384,7 @@
                             // Stop interval
                             clearInterval(interval);
                         }
-                    },500);
+                    },100);
 
                     
                     // Add to select box for download
@@ -394,7 +401,28 @@
 
                     
                 }
-                else {
+                else { // Point
+
+                    // Create new line object
+                    var point = new delturPoint();
+
+                    // Save a reference to this line
+                    points.push(point);
+
+                    // Init line
+                    point.initWithId(id);
+
+                    // Check when the point is ready for use
+                    var interval = setInterval(function(){
+                        if(point.getStatus() === 1) {
+                            point.renderToMap(map);
+                            
+                            // Stop interval
+                            clearInterval(interval);
+                        }
+                    },100);
+
+
                     
                     // Add to select box for download
                     $('#placeDownload').show()
@@ -402,34 +430,6 @@
                              .append($("<option></option>")
                              .attr("value",id)
                              .text(id)); 
-                    
-                    var picture = L.AwesomeMarkers.icon({
-                      prefix: 'fa',
-                      icon: 'picture-o', 
-                      markerColor: 'blue'
-                    });
-                    var emptyIcon = L.AwesomeMarkers.icon({
-                      prefix: 'fa',
-                      icon: 'map-marker', 
-                      markerColor: 'blue'
-                    });
-                    $.getJSON('/'+id+'/metadata', function (metadata) {
-                        numMarkers++;
-
-                        if(metadata.url != "")
-                            imgMarker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: picture});
-                        else
-                            imgMarker = L.marker([data.coordinates[1], data.coordinates[0]], {icon: emptyIcon});
-                        var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
-                        
-                        // Make sure the image is never larger than 250 px
-                        if(imgWidth>250)
-                            imgWidth = 250;
-                        
-                        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+metadata.title+'</h3><img width="'+imgWidth+'" src="'+ metadata.style.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + metadata.description + '</div>');
-                        $([metadata.url]).preload(); // Preload image
-                        featureBounds.extend(imgMarker.getLatLng());
-                    });
                     
                 }
                     

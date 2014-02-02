@@ -9,6 +9,7 @@ var delturPoint = function () {
     var point = L.geoJson();
     var style;
     var lat, lon;
+    var custom_popup_footer = "";
 
     var picture = L.AwesomeMarkers.icon({
       prefix: 'fa',
@@ -119,22 +120,36 @@ var delturPoint = function () {
     	return "geoObject";
     };
 
-    this.updateRendering = function (_map, _markers) {  //public
+    this.updateRendering = function (_map) {  //public
     	//_map.removeLayer(point);
 
-    	addToMap(_map, _markers);
+    	addToMap(_map);
     }
 
-    this.renderToMap = function (_map, _markers) {  //public
-    	addToMap(_map, _markers);
+    this.renderToMap = function (_map) {  //public
+    	addToMap(_map);
     }
 
-    var addToMap = function (_map, _markers) {  // private
+    this.addCustomPopupFooter = function (_custom_popup_footer) {  //public
+        custom_popup_footer = _custom_popup_footer;
+    }
+
+    var addToMap = function (_map) {  // private
+
+        /*
+        if(style.markerType == "simple") {
+    
+        }
+        else {
+    
+        }
+        */
 
         var icon = L.AwesomeMarkers.icon({
           prefix: 'fa',
           icon: style.markersymbol, 
-          markerColor: style.markercolor
+          markerColor: style.markercolor//,
+          //iconColor: 'black'
         });
 
         var imgMarker = L.marker([lat, lon], {icon: icon});
@@ -144,8 +159,7 @@ var delturPoint = function () {
         if(imgWidth>250)
             imgWidth = 250;
         
-        _markers.push(imgMarker);
-        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+title+'</h3><img width="'+imgWidth+'" src="'+ style.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + description + '</div><div id="change-marker-link"><a onClick="openPointStyleEditor('+ id +')" href="javascript:void(0)">Endre på ikon</a></div>');
+        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+title+'</h3><img width="'+imgWidth+'" src="'+ style.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + description + '</div>' + custom_popup_footer);
         $([style.image.url]).preload(); // Preload image
 
     
