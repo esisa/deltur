@@ -16,12 +16,18 @@
     
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}"></script>
-	<script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.3/leaflet-image.js'></script>
+
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.min.js') }}"></script>   
 
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
     <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.min.css">
 	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <style type="text/css">
@@ -50,7 +56,7 @@
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>					   
+    </script>
 
 </head>
 
@@ -62,8 +68,28 @@
         </a>
     </div>
 
+    <script type="text/javascript">
+
+        // Set up dynamic variables used in delturMap.js
+        var tileJsonSkikart = '{{ url_for('static', filename='mapconfig/skikart.json') }}';
+        var tileJsonSkikartHighdef = '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}';
+        var tileJsonTurkart = '{{ url_for('static', filename='mapconfig/turkart.json') }}';
+        var tileJsonTurkartHighdef = '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}';
+        var tileJsonTopokart = '{{ url_for('static', filename='mapconfig/topokart.json') }}';
+        var tileJsonTopokartHighdef = '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}';
+
+    </script>
+        
+
+    <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>            
+
 
     <script type="text/javascript">
+
+        var lines = new Array();
+        var points = new Array();
 
         $.fn.preload = function() {
             this.each(function(){
@@ -71,55 +97,6 @@
             });
         }
 
-    	var map = new L.Map('map', {keyboard: true, attributionControl: true});
-
-    	map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
-    
-
-    	 skikart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/skikart/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
-
-        turkart = new L.TileLayer("http://kart{s}.turkompisen.no/cgi-bin/tilecache.cgi/1.0.0/turkart/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
-        
-        veikart = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0tz2sd3q/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
-        
-        topokart = new L.TileLayer("http://kart{s}.turkompisen.no/cache/turkart_simple/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a> og <a href="http://www.skogoglandskap.no" target="_new">Skog og Landskap</a>', 
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
-        
-        var satellite = new L.TileLayer("http://api.tiles.mapbox.com/v3/esisa.map-0s7gv7xn/{z}/{x}/{y}.png", {
-            attribution: '© <a href="http://www.openstreetmap.org" target="_new">OpenStreetMap</a>-bidragsytere, <a href="http://creativecommons.org/licenses/by-sa/2.0/" target="_new">CC-BY-SA</a>', 
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
-
-        var kartverket = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}", {
-            attribution: '<a target="_new" href="http://www.kartverket.no">Statens kartverk</a>, <a target="_new" href="http://www.statkart.no/nor/Land/Fagomrader/Geovekst/">Geovekst</a> og <a target="_new" href="http://www.statkart.no/?module=Articles;action=Article.publicShow;ID=14194">kommuner</a>', 
-            subdomains: ["1", "2", "3", "4"],
-            //scheme: "tms",
-            maxZoom: 18
-        });
-
-
-        
 
         if({{mapType}}==0) {
             map.addLayer(turkart);
@@ -172,59 +149,51 @@
 
                 map.addLayer(markerGroup);
                 var marker;
-                if (line) {
-                    numLines++;
-                    lineFeature = geoObject;
+                if(line) { // Line
 
-                    trip.addData(geoObject[0]);
+                    // Create new line object
+                    var line = new delturLine();
 
-                    featureBounds.extend(trip.getBounds());
+                    // Save a reference to this line
+                    lines.push(line);
 
+                    // Init line
+                    line.initWithId(id);
 
+                    // Check when the line is ready for use
+                    var interval = setInterval(function(){
+                        if(line.getStatus() === 1) {
+                            line.renderToMap(map);
+                            
+                            // Stop interval
+                            clearInterval(interval);
+                        }
+                    },100);
 
-                    var start = L.AwesomeMarkers.icon({
-                        prefix: 'fa',
-                        icon: 'play',
-                        markerColor: 'green'
-                    });
-
-                    var stop = L.AwesomeMarkers.icon({
-                        prefix: 'fa',
-                        icon: 'stop',
-                        markerColor: 'red'
-                    });
-
-
-                    var marker = L.marker([lineFeature[0].coordinates[lineFeature[0].coordinates.length - 1][1], lineFeature[0].coordinates[lineFeature[0].coordinates.length - 1][0]], {
-                        icon: stop
-                    });
-                    marker.addTo(map).bindPopup('Slutt');
-
-                    // Set start and stop marker
-                    var marker = L.marker([lineFeature[0].coordinates[0][1], lineFeature[0].coordinates[0][0]], {
-                        icon: start
-                    });
-                    marker.addTo(map).bindPopup('Start');
-
-                } else {
-
-                    var picture = L.AwesomeMarkers.icon({
-                        prefix: 'fa',
-                        icon: 'picture-o',
-                        markerColor: 'blue'
-                    });
-                    $.getJSON('/' + id + '/metadata', function (metadata) {
-                        var marker = L.marker([data.coordinates[1], data.coordinates[0]], {
-                            icon: picture
-                        });
-                        marker.addTo(map).bindPopup('<h3 id="popupText">' + metadata.title + '</h3><img width="250" src="' + metadata.url + '"><br><div id="popupText">' + metadata.description + '</div>');
-                        $([metadata.url]).preload(); // Preload image
-                        featureBounds.extend(marker.getLatLng());
-                    });
-
+                    
                 }
+                else { // Point
 
-                trip.setStyle(myStyle);
+                    // Create new line object
+                    var point = new delturPoint();
+
+                    // Save a reference to this line
+                    points.push(point);
+
+                    // Init line
+                    point.initWithId(id);
+
+                    // Check when the point is ready for use
+                    var interval = setInterval(function(){
+                        if(point.getStatus() === 1) {
+                            point.renderToMap(map);
+                            
+                            // Stop interval
+                            clearInterval(interval);
+                        }
+                    },100);
+                    
+                }
 
 
 
