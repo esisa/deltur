@@ -39,10 +39,11 @@ var delturLine = function () {
 	          data: data,
 	          success: function (response) {
 	                id = response.id;
-	                status = 1; // File is uploaded
 
 	                // Update style from server
 	                downloadStyle();
+
+                    // Status is set in downloadStyle
 	            },
 	            error: function (response) {
 	              status = -1; // Error in uploaded file

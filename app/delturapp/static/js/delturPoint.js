@@ -44,10 +44,11 @@ var delturPoint = function () {
             contentType : 'application/json',
             success: function (response) {
                 id = response.id;
-                status = 1; // File is uploaded
 
                 // Update style from server
                 downloadStyle();
+
+                // Status is set in downloadStyle
             },
             error: function (response) {
                 status = -1; // Error in uploaded file
