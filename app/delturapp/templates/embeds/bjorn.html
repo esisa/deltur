@@ -91,16 +91,16 @@
           <li><i class="fa-li fa fa-map-marker"></i>Bjønnåsen</li>
           <li><i class="fa-li fa fa-map-marker"></i>to replace</li>
           <li><i class="fa-li fa fa-map-marker"></i>default bullets in lists</li>
-        </ul-->
+        </ul>
         <!--ol>
             <li>Holtevannet</li>
             <li>Bjønnåsen</li>
         </ol-->
-        <ol class="rectangle-list">
-            <li><a href="javascript:void(0)">Holtevannet</a></li>
-            <li><a href="javascript:void(0)">Bjønnåsen</a></li>
-            <li><a href="javascript:void(0)">Fiskervannet</a>                  
-        </ol>
+        <div id="point-info-block">
+            <ol class="rectangle-list">
+                <!-- Info is added dynamically below -->             
+            </ol>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -230,11 +230,15 @@
                     var interval = setInterval(function(){
                         if(point.getStatus() === 1) {
                             point.renderToMap(map);
+
+                            $("#point-info-block ol").append('<li><a href="javascript:void(0)"><i class="fa fa-'+point.getMarkerSymbol()+'"></i> '+point.getTitle()+'</a></li>');
                             
                             // Stop interval
                             clearInterval(interval);
                         }
                     },100);
+
+                    
                     
                 }
 

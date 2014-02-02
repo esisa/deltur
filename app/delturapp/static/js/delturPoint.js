@@ -97,8 +97,8 @@ var delturPoint = function () {
         description = _description;
     };
 
-    this.getStyle = function () {  //public
-        return style;
+    this.getMarkerSymbol = function () {  //public
+        return style.markersymbol;
     };
 
     this.setStyle = function (_style) {  //public
@@ -110,6 +110,10 @@ var delturPoint = function () {
 
     this.saveStyle = function () {  //public
         uploadStyle();
+    };
+
+    this.getStyle = function () {  //public
+        return style;
     };
 
     this.getGeom = function () {  //public
