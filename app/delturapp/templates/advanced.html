@@ -702,6 +702,7 @@
 
                     // Init point
                     var url = $('#currentImg').html();
+                    $('#currentImg').html(""); // Set back to null
                     var description = $('#inputBeskrivelse').val();
                     var title =  $('#inputTittel').val();
                     point.init(e.layer._latlng.lat, e.layer._latlng.lng, title, description, url);
