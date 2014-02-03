@@ -7,9 +7,24 @@ var delturPoint = function () {
     var imgUrl = "";
     var status = 0;
     var point = L.geoJson();
-    var style;
     var lat, lon;
     var custom_popup_footer = "";
+
+    var style = {
+                    "image": {
+                        "url": "",
+                        "width": -1,
+                        "height": -1
+                    },
+                    "label": {
+                        "text": "",
+                        "static": false
+                    },
+                    "markersymbol": "map-marker",
+                    "markerType": "fa",
+                    "markercolor": "blue",
+                    "markerpopup": true
+                };
 
     var picture = L.AwesomeMarkers.icon({
       prefix: 'fa',
@@ -44,11 +59,7 @@ var delturPoint = function () {
             contentType : 'application/json',
             success: function (response) {
                 id = response.id;
-
-                // Update style from server
-                downloadStyle();
-
-                // Status is set in downloadStyle
+                status = 1;
             },
             error: function (response) {
                 status = -1; // Error in uploaded file
