@@ -14,12 +14,24 @@ var delturLine = function () {
       markerColor: 'red'
     });
 
+    var style = {
+                "opacity": 0.65,
+                "popup": false,
+                "end_icon": false,
+                "color": "#ff7800",
+                "label": {
+                    "text": "",
+                    "static": false
+                },
+                "width": 5.0,
+                "start_icon": false
+            };
+
     var id;
     var title;
     var description;
     var status = 0;
     var trip = L.geoJson();
-    var style;
     var startMarker, endMarker;
 
     this.initWithId = function (_id) {
@@ -39,11 +51,7 @@ var delturLine = function () {
 	          data: data,
 	          success: function (response) {
 	                id = response.id;
-
-	                // Update style from server
-	                downloadStyle();
-
-                    // Status is set in downloadStyle
+                    status = 1;
 	            },
 	            error: function (response) {
 	              status = -1; // Error in uploaded file
