@@ -4,7 +4,6 @@ var delturPoint = function () {
     var id;
     var title = "";
     var description = "";
-    var imgUrl = "";
     var status = 0;
     var point = L.geoJson();
     var lat, lon;
@@ -43,12 +42,12 @@ var delturPoint = function () {
     };
 
     this.init = function (_lat, _lon, _title, _description, _imgUrl) {  //public
-        imgUrl = _imgUrl;
+        style.image.url = _imgUrl;
         title = _title;
         description = _description;
 
         var url = "/del/sted/" + _lat +"/"+ _lon;
-        var jsonData =  JSON.stringify({"title": title,"description":description,"url": imgUrl});          
+        var jsonData =  JSON.stringify({"title": title,"description":description,"url": style.image.url});          
         lat = _lat;
         lon = _lon;
 
@@ -96,10 +95,10 @@ var delturPoint = function () {
     };
 
     this.getImgUrl = function () {  //public
-        return imgUrl;
+        return style.image.url;
     };
     this.setImgUrl = function (_imgUrl) {  //public
-        imgUrl = _imgUrl;
+        style.image.url = _imgUrl;
     };
 
     this.getDescription = function () {  //public
