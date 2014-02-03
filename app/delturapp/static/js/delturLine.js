@@ -162,7 +162,7 @@ var delturLine = function () {
     	// Upload JSON to save changes to style
         $.ajax({
           type: "POST",
-          url: "http://localhost:5000/"+id+"/setStyle",
+          url: "/"+id+"/setStyle",
           data: JSON.stringify(style),
           success: function (response) {
                 
