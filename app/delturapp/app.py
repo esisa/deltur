@@ -209,9 +209,9 @@ def setStyle(id):
 
         else:
             sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
-                        style_end_icon=%s, style_popup=%s, style_label_static=%s, style_label_text=%s 
+                        style_end_icon=%s, style_popup=%s 
                         where id=%s"""
-            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"], data["label"]["static"], data["label"]["text"], id,))
+            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"], id,))
 
         
         try:
