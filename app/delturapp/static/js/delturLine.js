@@ -143,6 +143,13 @@ var delturLine = function () {
     		trip.addTo(_map);
     		trip.addData(geoObject[0]);
 
+            // Add label
+            /*
+            if(style.label.text != "") {
+                trip.bindLabel(style.label.text, {noHide: style.label.static});
+            }
+            */
+
     		// Set styling
     		trip.setStyle(lineStyle);
 

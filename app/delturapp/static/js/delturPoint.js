@@ -173,7 +173,12 @@ var delturPoint = function () {
         // Make sure the image is never larger than 250 px
         if(imgWidth>250)
             imgWidth = 250;
-        
+
+        // Add label
+        if(style.label.text != "") {
+            imgMarker.bindLabel(style.label.text, {noHide: style.label.static});
+        }
+
         imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+title+'</h3><img width="'+imgWidth+'" src="'+ style.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + description + '</div>' + custom_popup_footer);
         $([style.image.url]).preload(); // Preload image
 
