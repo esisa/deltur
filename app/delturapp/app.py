@@ -476,11 +476,11 @@ def getLineMetadataFromDB(id):
                 'opacity':res[3],
                 'start_icon':res[4],
                 'end_icon':res[5],
-                'popup':res[6],
-                'label': {
-                    'static':res[7],
-                    'text':res[8]
-                }
+                'popup':res[6]#,
+                #'label': {
+                #    'static':res[7],
+                #    'text':res[8]
+                #}
             }
         }
     js = json.dumps(data)

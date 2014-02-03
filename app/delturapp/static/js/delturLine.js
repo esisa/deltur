@@ -19,10 +19,10 @@ var delturLine = function () {
                 "popup": false,
                 "end_icon": false,
                 "color": "#ff7800",
-                "label": {
+                /*"label": {
                     "text": "",
                     "static": false
-                },
+                },*/
                 "width": 5.0,
                 "start_icon": false
             };
@@ -149,6 +149,7 @@ var delturLine = function () {
                 trip.bindLabel(style.label.text, {noHide: style.label.static});
             }
             */
+            
 
     		// Set styling
     		trip.setStyle(lineStyle);
