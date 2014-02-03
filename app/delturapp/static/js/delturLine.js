@@ -105,7 +105,7 @@ var delturLine = function () {
     		geoObject = [data];
     		
     	});
-    	return geoObject;
+    	return geoObject[0];
     };
 
     this.updateRendering = function (_map) {  //public
