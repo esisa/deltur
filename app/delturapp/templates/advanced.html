@@ -245,7 +245,7 @@
         
         <div id="enkelTur">
             <!-- Vises på vanlig desktop -->
-            <input id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX(event.fpfile.url);" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GOOGLE_DRIVE" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
+            <input id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX(event.fpfile.url);" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE,URL" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
         </div>
         <div id="line-style-link"><a href="javascript:void(0)">Editer visning av linje</a></div>
         <textarea id="line-style" class="form-control" rows="7">
@@ -629,7 +629,7 @@
             filepicker.pickAndStore(
                 {
                     mimetype:"image/*",
-                    services:['COMPUTER', 'FACEBOOK', 'DROPBOX', 'GMAIL',  'FLICKR',  'FTP',  'GOOGLE_DRIVE', 'PICASA', 'INSTAGRAM', 'URL'],
+                    services:['COMPUTER', 'FACEBOOK', 'DROPBOX', 'GOOGLE_DRIVE',  'FLICKR', 'PICASA', 'INSTAGRAM', 'URL'],
                 },
                 {location:"S3", access: 'public'}, 
                 function(fpfiles){
