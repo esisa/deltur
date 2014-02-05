@@ -197,10 +197,16 @@ var delturPoint = function () {
             imgMarker.bindLabel(style.label.text, {noHide: style.label.static});
         }
 
-        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+style.popup.title+'</h3><img width="'+imgWidth+'" src="'+ style.popup.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + style.popup.description + '</div>' + custom_popup_footer);
+        // Add marker to map
+        imgMarker.addTo(map);
+
+        if(style.popup.show) // Show popup
+            imgMarker.bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+style.popup.title+'</h3><img width="'+imgWidth+'" src="'+ style.popup.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + style.popup.description + '</div>' + custom_popup_footer);
+        else if(custom_popup_footer != "") // Only show popup in edit mode
+            imgMarker.bindPopup('<p>Popup vil ikke vises i ferdig tur.</p>' + custom_popup_footer);
+        
         $([style.popup.image.url]).preload(); // Preload image
 
-    
 
     };
 
