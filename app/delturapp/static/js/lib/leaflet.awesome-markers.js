@@ -9,6 +9,7 @@
 /*global L*/
 
 (function (window, document, undefined) {
+  
     "use strict";
     /*
      * Leaflet.AwesomeMarkers assumes that you have already included the Leaflet library.
@@ -45,6 +46,10 @@
                 div.innerHTML = this._createInner();
             }
 
+            if (options.text) {
+              div.innerHTML = this._createInnerText();
+            }
+
             if (options.bgPos) {
                 div.style.backgroundPosition =
                     (-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
@@ -76,6 +81,20 @@
             }
 
             return "<i " + iconColorStyle + "class='" + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'></i>";
+        },
+
+        _createInnerText: function() {
+          if (this.options.textFormat != undefined && this.options.textFormat == 'letter') {
+            this.options.text = this.num2letter(this.options.text);
+          }
+          return "<strong class='"
+          + (this.options.spin ? " icon-spin" :"") 
+          + (this.options.iconColor ? " icon-" + this.options.iconColor :"") + "'>" + this.options.text + "</strong>";
+        },
+
+        num2letter: function(num) {
+          var base = 'A'.charCodeAt(0);
+          return num < 26 ? String.fromCharCode(num + base) : String.fromCharCode(base + Math.floor(num/26) -1, base + num%26);   
         },
 
         _setIconStyles: function (img, name) {
@@ -117,6 +136,7 @@
     L.AwesomeMarkers.icon = function (options) {
         return new L.AwesomeMarkers.Icon(options);
     };
+
 
 }(this, document));
 

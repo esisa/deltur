@@ -151,21 +151,36 @@ var delturPoint = function () {
 
     var addToMap = function (_map) {  // private
 
-        /*
-        if(style.markerType == "simple") {
+        
+        if(style.markerType == "number") {
+            var icon = L.AwesomeMarkers.icon({
+                text: style.markersymbol,
+                color: style.markercolor
+            });
     
         }
-        else {
-    
+        else { // font awesome
+            var icon = L.AwesomeMarkers.icon({
+              prefix: 'fa',
+              icon: style.markersymbol, 
+              markerColor: style.markercolor//,
+              //iconColor: 'black'
+            });
         }
-        */
+        
 
-        var icon = L.AwesomeMarkers.icon({
+        /*var icon = L.AwesomeMarkers.icon({
           prefix: 'fa',
           icon: style.markersymbol, 
           markerColor: style.markercolor//,
           //iconColor: 'black'
-        });
+        });*/
+        /*var num = "A";
+        var icon = L.AwesomeMarkers.icon({
+            text: num,
+            //textFormat: 'letter',
+            color: 'blue'
+        });*/
 
         var imgMarker = L.marker([lat, lon], {icon: icon});
         var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
