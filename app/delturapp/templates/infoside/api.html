@@ -145,6 +145,89 @@
 
           </pre>  </dd>
         </dl>
+
+
+        <h2>Endre på en tur:</h2>
+        <dl>
+          <dt>deltur.no/setStyle </dt>
+          <dd>Du kan endre hvordan et punkt eller en linje rendres i kartet ved å sende inn et nytt styledokument. Nedenfor ser du hvordan dette dokumentet skal være når det sendes inn.   </dd>
+        </dl>
+        
+        <dl>
+          <dd>Eksempel på styledokument for et punkt: <pre>
+{
+    "popup": {
+        "show": true,
+        "image": {
+            "url": "",
+            "width": -1
+        },
+        "description": "",
+        "title": ""
+    },
+    "label": {
+        "text": "",
+        "static": false
+    },
+    "markersymbol": "map-marker",
+    "markerType": "fa",
+    "markercolor": "blue"
+}
+          </pre>  </dd>
+
+          <br>
+          <div id="punkt_param">  
+          <dd>Du ulike parameterene for et punkt:</dd>
+          <table class="table table-bordered">
+  			<tr><th>Parameter</th><th>Gyldige verdier</th></tr>
+  			<tr><td>popup.show</td><td>true|false - Vise popup eller ikke i kartet</td></tr>
+  			<tr><td>popup.image.url</td><td>String - URL til bilde som skal vises i popup</td></tr>
+  			<tr><td>popup.image.width</td><td>Integer - Bredde på bilde. Default verdi er -1 som betyr at deltur.no bestemmer bredde automatisk. </td></tr>
+  			<tr><td>popup.title</td><td>String - Tittel i popup</td></tr>
+  			<tr><td>popup.description</td><td>String - Beskrivelse i popup</td></tr>
+  			<tr><td>label.text</td><td>String - Label på punkt vises ikke som standard. Hvis dette feltet er noe annet enn tomt så vises det en label med denne teksten. </td></tr>
+  			<tr><td>label.static</td><td>true|false - Hvis true så vises label alltid, hvis false vises label når musepekeren er over punktet. </td></tr>
+  			<tr><td>markersymbol</td><td>String - Tall eller ikon som du vil vise. </td></tr>
+  			<tr><td>markerType</td><td>fa|number - Velg hva slags type ikon som skal vises. Ved "number" så legger du inn et tall i markersymbol. Ved "fa" kan du bruke alle koder som er godkjente <a href="http://fontawesome.io/icons/" target="_new">Font Awesome ikoner</a>. Ikke legg til fa- i ikonnavnet. </td></tr>
+  			<tr><td>markercolor</td><td>String - Fargen på ikonet som vises. Kan være en hex-farge eller en <a target="_new" href="http://www.w3schools.com/html/html_colornames.asp">godkjent tekst</a> som beskriver fargen. </td></tr>
+			</table>
+		</div>
+			<br>
+
+          <dd>Eksempel på styledokument for en linje: <pre>
+{
+    "popup": {
+        "title": "",
+        "description": "",
+        "show": false
+    },
+    "opacity": 0.65,
+    "start_icon": false,
+    "end_icon": false,
+    "color": "#ff7800",
+    "width": 5.0
+}
+          </pre>  </dd>
+
+          <br>
+          <div id="linje_param">  
+          <dd>Du ulike parameterene for et linje:</dd>
+          <table class="table table-bordered">
+  			<tr><th>Parameter</th><th>Gyldige verdier</th></tr>
+  			<tr><td>popup.show</td><td>true|false - Vise popup eller ikke i kartet</td></tr>
+  			<tr><td>popup.title</td><td>String - Tittel i popup</td></tr>
+  			<tr><td>popup.description</td><td>String - Beskrivelse i popup</td></tr>
+  			
+  			<tr><td>start_icon</td><td>true|false - Vise ikon ved turen start eller ikke.  </td></tr>
+  			<tr><td>end_icon</td><td>true|false - Vise ikon ved turen slutt eller ikke.  </td></tr>
+  			<tr><td>opacity</td><td>0 til 1 - Gjennomsiktighet på linje. 0 er helt gjennomsiktig, 1 er ingen gjennomsiktighet. </td></tr>
+  			<tr><td>color</td><td>String - Fargen på linjen som vises. Kan være en hex-farge eller en <a target="_new" href="http://www.w3schools.com/html/html_colornames.asp">godkjent tekst</a> som beskriver fargen.  </td></tr>
+  			<tr><td>width</td><td>Integer - Bredde på linjen </td></tr>
+  			
+			</table>
+			<br>
+		</div>
+        </dl>
     
         
         

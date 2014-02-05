@@ -214,6 +214,8 @@
                  <textarea id="marker-style" class="form-control" rows="7">
                 </textarea>
 
+                <p><a href="http://localhost:5000/info/api#punkt_param" target="_new">Beskrivelse av feltene</a></p>
+
              </div>
              <div class="modal-footer">
                <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-success" onClick="savePointStyle();">Lagre</a>
@@ -248,7 +250,10 @@
         <div id="line-style-link"><a href="javascript:void(0)">Editer visning av linje</a></div>
         <textarea id="line-style" class="form-control" rows="7">
         </textarea>
-        <div id="line-style-hide-link"><a href="javascript:void(0)">Skjul editering</a></div>
+        <div id="line-style-hide-element"><p>
+            <a href="http://localhost:5000/info/api#linje_param" target="_new">Beskrivelse av feltene</a>
+            <br>
+            <a id="line-style-hide-link" href="javascript:void(0)">Skjul editering</a></div>
         <div id="line-style-save-button">
             <button type="button" class="btn btn-success" onClick="saveLineStyle();">Oppdater</button>
         </div>
@@ -522,14 +527,14 @@
             $('#line-style').show();
             $('#line-style-save-button').show();
             $('#line-style-link').hide();
-            $('#line-style-hide-link').show();
+            $('#line-style-hide-element').show();
         });
 
         $('#line-style-hide-link').click(function () {
             $('#line-style').hide();
             $('#line-style-save-button').hide();
             $('#line-style-link').show();
-            $('#line-style-hide-link').hide();
+            $('#line-style-hide-element').hide();
         });
         
 

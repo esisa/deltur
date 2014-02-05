@@ -37,6 +37,11 @@ var delturLine = function () {
         $.getJSON('/'+id+'/geojson', function (data) {
             geoObject = [data];
             trip.addData(geoObject[0]);
+            /*trip = L.geoJson(geoObject[0], {
+                                onEachFeature: function (feature, layer) {
+                                    layer.bindPopup(getPopup());
+                                }
+                            });*/
             downloadStyle();
         });
     	
@@ -71,6 +76,10 @@ var delturLine = function () {
             
         }); // END FILEPICKER
     };
+
+    var getPopup = function() { //private
+        return '<h3 id="popupText_title">'+style.popup.title+'</h3><div id="popupText_description">' + style.popup.description + '</div>'
+    }
 
     var setId = function(_id) { //private
     	id = _id;
@@ -157,9 +166,12 @@ var delturLine = function () {
             trip.bindLabel(style.label.text, {noHide: style.label.static});
         }
         */
+
         
 		// Set styling
 		trip.setStyle(lineStyle);
+
+
 
 		if(style.end_icon) {
 			startMarker = L.marker([geoObject[0].coordinates[geoObject[0].coordinates.length-1][1], geoObject[0].coordinates[geoObject[0].coordinates.length-1][0]], {icon: endIcon});
