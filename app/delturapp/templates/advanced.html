@@ -403,6 +403,7 @@
         var interval = setInterval(function(){
             if(line.getStatus() === 1) {
                 line.renderToMap(map);
+                map.fitBounds(line.getBounds());
                 spinner.stop();
 
                 // Update textarea with style

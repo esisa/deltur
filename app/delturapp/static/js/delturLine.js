@@ -36,7 +36,12 @@ var delturLine = function () {
 
     this.initWithId = function (_id) {
     	setId(_id);
-    	downloadStyle();
+        $.getJSON('/'+id+'/geojson', function (data) {
+            geoObject = [data];
+            trip.addData(geoObject[0]);
+            downloadStyle();
+        });
+    	
     };
 
     this.init = function (_url) {  //public
@@ -51,7 +56,13 @@ var delturLine = function () {
 	          data: data,
 	          success: function (response) {
 	                id = response.id;
-                    status = 1;
+
+                    $.getJSON('/'+id+'/geojson', function (data) {
+                        geoObject = [data];
+                        trip.addData(geoObject[0]);
+                        status = 1;
+                    });
+                    
 	            },
 	            error: function (response) {
 	              status = -1; // Error in uploaded file
@@ -127,6 +138,10 @@ var delturLine = function () {
     	addToMap(_map);
     }
 
+    this.getBounds = function() { //public
+        return trip.getBounds();
+    }
+
     var addToMap = function (_map) {  // private
 
     	var lineStyle = {
@@ -135,38 +150,29 @@ var delturLine = function () {
             "opacity": style.opacity
         };
 
-        // Get GeoJSON and add to map
-    	$.getJSON('/'+id+'/geojson', function (data) {
-    		geoObject = [data];
+		// Create geojson object, add to map and add line to it
+		trip.addTo(_map);
+		
+        // Add label
+        /*
+        if(style.label.text != "") {
+            trip.bindLabel(style.label.text, {noHide: style.label.static});
+        }
+        */
+        
+		// Set styling
+		trip.setStyle(lineStyle);
 
-    		// Create geojson object, add to map and add line to it
-    		trip.addTo(_map);
-    		trip.addData(geoObject[0]);
+		if(style.end_icon) {
+			startMarker = L.marker([geoObject[0].coordinates[geoObject[0].coordinates.length-1][1], geoObject[0].coordinates[geoObject[0].coordinates.length-1][0]], {icon: endIcon});
+            startMarker.addTo(map).bindPopup('Slutt');
+		}
 
-            // Add label
-            /*
-            if(style.label.text != "") {
-                trip.bindLabel(style.label.text, {noHide: style.label.static});
-            }
-            */
-            
-
-    		// Set styling
-    		trip.setStyle(lineStyle);
-
-    		// Fit bounds to line
-    		_map.fitBounds(trip.getBounds());
-
-    		if(style.end_icon) {
-    			startMarker = L.marker([geoObject[0].coordinates[geoObject[0].coordinates.length-1][1], geoObject[0].coordinates[geoObject[0].coordinates.length-1][0]], {icon: endIcon});
-                startMarker.addTo(map).bindPopup('Slutt');
-    		}
-
-    		if(style.start_icon) {
-    			endMarker = L.marker([geoObject[0].coordinates[0][1], geoObject[0].coordinates[0][0]], {icon: startIcon});
-                endMarker.addTo(map).bindPopup('Start');
-    		}
-    	});
+		if(style.start_icon) {
+			endMarker = L.marker([geoObject[0].coordinates[0][1], geoObject[0].coordinates[0][0]], {icon: startIcon});
+            endMarker.addTo(map).bindPopup('Start');
+		}
+    	
 
     };
 

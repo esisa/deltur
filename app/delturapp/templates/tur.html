@@ -380,6 +380,8 @@
                     var interval = setInterval(function(){
                         if(line.getStatus() === 1) {
                             line.renderToMap(map);
+                            featureBounds.extend(line.getBounds());
+                            map.fitBounds(featureBounds);
                             
                             // Stop interval
                             clearInterval(interval);
@@ -416,6 +418,8 @@
                     var interval = setInterval(function(){
                         if(point.getStatus() === 1) {
                             point.renderToMap(map);
+                            featureBounds.extend(point.getPoint());
+                            map.fitBounds(featureBounds);
                             
                             // Stop interval
                             clearInterval(interval);
@@ -454,6 +458,7 @@
                 
                 // TODO: Rewrite
                 setTimeout(function() {
+                    
                     // Mobile map height
                     var bodyHeight = $('body').height();
                     var menuHeight = $('#mobile').height();
@@ -465,24 +470,20 @@
                     map.invalidateSize(true);
 
                     
-                    
-
-                    map.fitBounds(featureBounds);
-                    
-                    setTimeout(function() {
+                    /*setTimeout(function() {
                         map.zoomOut();
                         if(numLines==0 && map.getZoom() > 11) {
                                 map.setZoom(11);
                         }   
                     
-                        },300);
+                    },300);*/
                     
                 },300);
 
             });
         
         });
-        
+
         
     
     

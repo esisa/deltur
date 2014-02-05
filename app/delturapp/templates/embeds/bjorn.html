@@ -207,6 +207,8 @@
                     var interval = setInterval(function(){
                         if(line.getStatus() === 1) {
                             line.renderToMap(map);
+                            featureBounds.extend(line.getBounds());
+                            map.fitBounds(featureBounds);
                             
                             // Stop interval
                             clearInterval(interval);
@@ -230,6 +232,8 @@
                     var interval = setInterval(function(){
                         if(point.getStatus() === 1) {
                             point.renderToMap(map);
+                            featureBounds.extend(point.getPoint());
+                            map.fitBounds(featureBounds);
 
                             $("#point-info-block ol").append('<li><a href="javascript:void(0)"><i class="fa fa-'+point.getMarkerSymbol()+'"></i> '+point.getTitle()+'</a></li>');
                             
@@ -246,7 +250,7 @@
 
                 // TODO: Rewrite
                 setTimeout(function () {
-                    map.fitBounds(featureBounds);
+                    //map.fitBounds(featureBounds);
                     
                     /* Uncomment to load marker list at opening of page */
                     /*setTimeout(function () {
@@ -254,6 +258,7 @@
                             }, 500);
                     */
 
+                    /*
                     setTimeout(function () {
                         if (numLines == 0 && map.getZoom() > 11) {
                             map.setZoom(11);
@@ -262,7 +267,7 @@
                         }
 
 
-                    }, 300);
+                    }, 300);*/
                 }, 300);
 
 

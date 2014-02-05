@@ -145,6 +145,16 @@ var delturPoint = function () {
     	addToMap(_map);
     }
 
+    this.getPoint = function () { // public
+        return L.latLng(lat, lon);
+    }
+
+    this.getBounds = function() { //public
+        var p1 = L.point(lon, lat);
+        var p2 = L.point(lon, lat);
+        return L.bounds(p1, p2);
+    }
+
     this.addCustomPopupFooter = function (_custom_popup_footer) {  //public
         custom_popup_footer = _custom_popup_footer;
     }
@@ -167,20 +177,7 @@ var delturPoint = function () {
               //iconColor: 'black'
             });
         }
-        
 
-        /*var icon = L.AwesomeMarkers.icon({
-          prefix: 'fa',
-          icon: style.markersymbol, 
-          markerColor: style.markercolor//,
-          //iconColor: 'black'
-        });*/
-        /*var num = "A";
-        var icon = L.AwesomeMarkers.icon({
-            text: num,
-            //textFormat: 'letter',
-            color: 'blue'
-        });*/
 
         var imgMarker = L.marker([lat, lon], {icon: icon});
         var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
