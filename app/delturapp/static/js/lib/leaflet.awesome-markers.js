@@ -87,7 +87,7 @@
           if (this.options.textFormat != undefined && this.options.textFormat == 'letter') {
             this.options.text = this.num2letter(this.options.text);
           }
-          return "<strong class='"
+          return "<strong class='awesome-marker-number "
           + (this.options.spin ? " icon-spin" :"") 
           + (this.options.iconColor ? " icon-" + this.options.iconColor :"") + "'>" + this.options.text + "</strong>";
         },

@@ -2,18 +2,21 @@ var delturPoint = function () {
 
 
     var id;
-    var title = "";
-    var description = "";
     var status = 0;
     var point = L.geoJson();
     var lat, lon;
     var custom_popup_footer = "";
 
-    var style = {
-                    "image": {
-                        "url": "",
-                        "width": -1,
-                        "height": -1
+    var style =  {
+                    "popup": {
+                        "show": true,
+                        "image": {
+                            "url": "",
+                            "width": -1,
+                            "height": -1
+                        },
+                        "description": "",
+                        "title": ""
                     },
                     "label": {
                         "text": "",
@@ -21,8 +24,7 @@ var delturPoint = function () {
                     },
                     "markersymbol": "map-marker",
                     "markerType": "fa",
-                    "markercolor": "blue",
-                    "markerpopup": true
+                    "markercolor": "blue"
                 };
 
     var picture = L.AwesomeMarkers.icon({
@@ -42,12 +44,12 @@ var delturPoint = function () {
     };
 
     this.init = function (_lat, _lon, _title, _description, _imgUrl) {  //public
-        style.image.url = _imgUrl;
-        title = _title;
-        description = _description;
+        style.popup.image.url = _imgUrl;
+        style.popup.title = _title;
+        style.popup.description = _description;
 
         var url = "/del/sted/" + _lat +"/"+ _lon;
-        var jsonData =  JSON.stringify({"title": title,"description":description,"url": style.image.url});          
+        var jsonData =  JSON.stringify({"title": style.popup.title,"description":style.popup.description,"url": style.popup.image.url});          
         lat = _lat;
         lon = _lon;
 
@@ -88,10 +90,10 @@ var delturPoint = function () {
     };
 
     this.getTitle = function () {  //public
-        return title;
+        return style.popup.title;
     };
     this.setTitle = function (_title) {  //public
-        title = _title;
+        style.popup.title = _title;
     };
 
     this.getImgUrl = function () {  //public
@@ -102,10 +104,10 @@ var delturPoint = function () {
     };
 
     this.getDescription = function () {  //public
-         return description;
+         return style.popup.description;
     };
     this.setDescription = function (_description) {  //public
-        description = _description;
+        style.popup.description = _description;
     };
 
     this.getMarkerSymbol = function () {  //public
@@ -195,8 +197,8 @@ var delturPoint = function () {
             imgMarker.bindLabel(style.label.text, {noHide: style.label.static});
         }
 
-        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+title+'</h3><img width="'+imgWidth+'" src="'+ style.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + description + '</div>' + custom_popup_footer);
-        $([style.image.url]).preload(); // Preload image
+        imgMarker.addTo(map).bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+style.popup.title+'</h3><img width="'+imgWidth+'" src="'+ style.popup.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + style.popup.description + '</div>' + custom_popup_footer);
+        $([style.popup.image.url]).preload(); // Preload image
 
     
 
@@ -229,8 +231,8 @@ var delturPoint = function () {
     		style = data.style
             lat = data.lat
             lon = data.lon
-            title = data.title
-            description = data.description
+            title = data.style.popup.title
+            description = data.style.popup.description
     		status = 1;
     	});
 

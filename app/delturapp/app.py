@@ -203,15 +203,16 @@ def setStyle(id):
 
         if isPoint(id):
             sql_string = """update points set markercolor=%s, markerpopup=%s, markersymbol=%s, markerType=%s, 
-                        markerlabel_static=%s, markerlabel_text=%s, url=%s, image_height=%s, image_width=%s
+                        markerlabel_static=%s, markerlabel_text=%s, url=%s, image_height=%s, image_width=%s,
+                        title=%s, description=%s
                         where id=%s"""
-            cursor.execute(sql_string, (data["markercolor"], data["markerpopup"], data["markersymbol"], data["markerType"], data["label"]["static"], data["label"]["text"], data["image"]["url"], data["image"]["height"], data["image"]["width"],id,))
+            cursor.execute(sql_string, (data["markercolor"], data["popup"]["show"], data["markersymbol"], data["markerType"], data["label"]["static"], data["label"]["text"], data["popup"]["image"]["url"], data["popup"]["image"]["height"], data["popup"]["image"]["width"], data["popup"]["title"], data["popup"]["description"],id,))
 
         else:
             sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
-                        style_end_icon=%s, style_popup=%s 
+                        style_end_icon=%s, style_popup=%s, title=%s, description=%s
                         where id=%s"""
-            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"], id,))
+            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"]["show"], data["popup"]["title"], data["popup"]["description"], id,))
 
         
         try:
@@ -426,19 +427,21 @@ def getPointMetadataFromDB(id):
     
     data = {
             'id': id,
-            'description':res[1],
-            'title': res[2],
             'lat': res[11],
             'lon': res[10],
             'style': {
                 'markercolor': res[12],
                 'markerType':res[3],
                 'markersymbol':res[4],
-                'markerpopup':res[5],
-                'image': {
-                    'url':res[0],
-                    'height':res[8],
-                    'width':res[9]
+                'popup': {
+                    'show':res[5],
+                    'title':res[2],
+                    'description':res[1],
+                    'image': {
+                        'url':res[0],
+                        'height':res[8],
+                        'width':res[9]
+                    },
                 },
                 'label': {
                     'static':res[6],
@@ -461,7 +464,7 @@ def getLineMetadataFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select title, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_static, style_label_text from trips where id=%s"
+    sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup from trips where id=%s"
 
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
@@ -469,14 +472,17 @@ def getLineMetadataFromDB(id):
     
     data = {
             'id': id,
-            'title': res[0],
             'style': {
-                'color':res[1],
-                'width':res[2],
-                'opacity':res[3],
-                'start_icon':res[4],
-                'end_icon':res[5],
-                'popup':res[6]#,
+                'popup': {
+                    'show':res[7],
+                    'title':res[0],
+                    'description':res[1],
+                },
+                'color':res[2],
+                'width':res[3],
+                'opacity':res[4],
+                'start_icon':res[5],
+                'end_icon':res[6]
                 #'label': {
                 #    'static':res[7],
                 #    'text':res[8]

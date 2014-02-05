@@ -15,21 +15,19 @@ var delturLine = function () {
     });
 
     var style = {
-                "opacity": 0.65,
-                "popup": false,
-                "end_icon": false,
-                "color": "#ff7800",
-                /*"label": {
-                    "text": "",
-                    "static": false
-                },*/
-                "width": 5.0,
-                "start_icon": false
-            };
+                    "opacity": 0.65,
+                    "popup": {
+                        "title": "",
+                        "description": "",
+                        "show": false
+                    },
+                    "end_icon": false,
+                    "color": "#ff7800",
+                    "width": 5.0,
+                    "start_icon": false
+                };
 
     var id;
-    var title;
-    var description;
     var status = 0;
     var trip = L.geoJson();
     var startMarker, endMarker;
@@ -87,17 +85,17 @@ var delturLine = function () {
     };
 
     this.getTitle = function () {  //public
-        return title;
+        return style.popup.title;
     };
     this.setTitle = function (_title) {  //public
-        title = _title;
+        style.popup.title = _title;
     };
 
     this.getDescription = function () {  //public
-         return description;
+         return style.popup.description;
     };
     this.setDescription = function (_description) {  //public
-        description = _description;
+        style.popup.description = _description;
     };
 
     this.getStyle = function () {  //public

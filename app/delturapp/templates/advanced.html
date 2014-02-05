@@ -246,9 +246,9 @@
             <input id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX(event.fpfile.url);" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GMAIL,URL,EVERNOTE,FTP,GOOGLE_DRIVE" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
         </div>
         <div id="line-style-link"><a href="javascript:void(0)">Editer visning av linje</a></div>
-        <div id="line-style-hide-link"><a href="javascript:void(0)">Skjul editering</a></div>
         <textarea id="line-style" class="form-control" rows="7">
         </textarea>
+        <div id="line-style-hide-link"><a href="javascript:void(0)">Skjul editering</a></div>
         <div id="line-style-save-button">
             <button type="button" class="btn btn-success" onClick="saveLineStyle();">Oppdater</button>
         </div>
