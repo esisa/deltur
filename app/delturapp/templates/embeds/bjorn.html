@@ -21,6 +21,8 @@
     <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
     <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
     <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.3/leaflet-image.js'></script>
@@ -48,6 +50,10 @@
         .mapContainer > header {
             text-align: center;
             text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .list-group-item { 
+            border: 0px !important;
         }
 
 
@@ -97,9 +103,11 @@
             <li>Bjønnåsen</li>
         </ol-->
         <div id="point-info-block">
-            <ol class="rectangle-list">
+            <ul class="list-group">
+            </ul>
+            <!--ol class="rectangle-list">
                 <!-- Info is added dynamically below -->             
-            </ol>
+            </ol-->
         </div>
     </div>
 
@@ -235,7 +243,14 @@
                             featureBounds.extend(point.getPoint());
                             map.fitBounds(featureBounds);
 
-                            $("#point-info-block ol").append('<li><a href="javascript:void(0)"><i class="fa fa-'+point.getMarkerSymbol()+'"></i> '+point.getTitle()+'</a></li>');
+                            if(point.getMarkerType() != "number") {
+                                $("#point-info-block ul").append('<li class="list-group-item"><i class="fa fa-'+point.getMarkerSymbol()+'"></i> <a href="javascript:void(0)" onClick="zoomToMarker('+point.getLat()+','+point.getLon()+')">'+point.getTitle()+'</a></li>');
+                            }
+                            else {
+                                $("#point-info-block ul").append('<li class="list-group-item"><span style="font-weight:bold;">'+point.getMarkerSymbol()+ '</span> <a href="javascript:void(0)" onClick="zoomToMarker('+point.getLat()+','+point.getLon()+')">' +point.getTitle()+'</a></li>');
+                            }
+
+                            //$("#point-info-block ol").append('<li><a href="javascript:void(0)"><i class="fa fa-'+point.getMarkerSymbol()+'"></i> '+point.getTitle()+'</a></li>');
                             
                             // Stop interval
                             clearInterval(interval);
@@ -245,6 +260,10 @@
                     
                     
                 }
+
+                setTimeout(function () {
+                                sidebar.show();
+                            }, 500);
 
 
 
@@ -280,6 +299,10 @@
     // Add marker list control
     var markerList = new L.Control.MarkerList({});
     map.addControl(markerList);
+
+    function zoomToMarker(_lat, _lon) {
+        map.panTo([_lat, _lon]);
+    }
         
         
 

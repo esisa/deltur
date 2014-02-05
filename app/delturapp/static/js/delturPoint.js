@@ -112,6 +112,10 @@ var delturPoint = function () {
         return style.markersymbol;
     };
 
+    this.getMarkerType = function () {  //public
+        return style.markerType;
+    };
+
     this.setStyle = function (_style) {  //public
 
     	// Check if _style is valid??
