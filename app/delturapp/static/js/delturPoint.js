@@ -12,8 +12,8 @@ var delturPoint = function () {
                         "show": true,
                         "image": {
                             "url": "",
-                            "width": -1,
-                            "height": -1
+                            "width": -1//,
+                            /*"height": -1*/
                         },
                         "description": "",
                         "title": ""
@@ -186,12 +186,18 @@ var delturPoint = function () {
 
 
         var imgMarker = L.marker([lat, lon], {icon: icon});
-        var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
-        
-        // Make sure the image is never larger than 250 px
-        if(imgWidth>250)
-            imgWidth = 250;
 
+        if(style.popup.image.width==-1 && style.popup.image.width==-1) {
+            var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
+        
+            // Make sure the image is never larger than 250 px
+            if(imgWidth>250)
+                imgWidth = 250;
+        }
+        else {
+            imgWidth = style.popup.image.width;
+        }
+        
         // Add label
         if(style.label.text != "") {
             imgMarker.bindLabel(style.label.text, {noHide: style.label.static});
@@ -200,12 +206,14 @@ var delturPoint = function () {
         // Add marker to map
         imgMarker.addTo(map);
 
+        $([style.popup.image.url]).preload(); // Preload image
+
         if(style.popup.show) // Show popup
-            imgMarker.bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+style.popup.title+'</h3><img width="'+imgWidth+'" src="'+ style.popup.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + style.popup.description + '</div>' + custom_popup_footer);
+            imgMarker.bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+style.popup.title+'</h3><img width="'+imgWidth+'" src="'+ style.popup.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + style.popup.description + '</div>' + custom_popup_footer, {"minWidth": imgWidth + 20});
         else if(custom_popup_footer != "") // Only show popup in edit mode
             imgMarker.bindPopup('<p>Popup vil ikke vises i ferdig tur.</p>' + custom_popup_footer);
+
         
-        $([style.popup.image.url]).preload(); // Preload image
 
 
     };

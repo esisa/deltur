@@ -206,7 +206,7 @@ def setStyle(id):
                         markerlabel_static=%s, markerlabel_text=%s, url=%s, image_height=%s, image_width=%s,
                         title=%s, description=%s
                         where id=%s"""
-            cursor.execute(sql_string, (data["markercolor"], data["popup"]["show"], data["markersymbol"], data["markerType"], data["label"]["static"], data["label"]["text"], data["popup"]["image"]["url"], data["popup"]["image"]["height"], data["popup"]["image"]["width"], data["popup"]["title"], data["popup"]["description"],id,))
+            cursor.execute(sql_string, (data["markercolor"], data["popup"]["show"], data["markersymbol"], data["markerType"], data["label"]["static"], data["label"]["text"], data["popup"]["image"]["url"], -1, data["popup"]["image"]["width"], data["popup"]["title"], data["popup"]["description"],id,))
 
         else:
             sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
@@ -439,7 +439,7 @@ def getPointMetadataFromDB(id):
                     'description':res[1],
                     'image': {
                         'url':res[0],
-                        'height':res[8],
+                        #'height':res[8],
                         'width':res[9]
                     },
                 },
