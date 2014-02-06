@@ -210,7 +210,7 @@ def getAllLines():
         print "Could not connect to database " + pg_db
             
     cursor = conn.cursor()
-    sql_string = """select id, title, description, dato from trips where userid=%s"""
+    sql_string = """select id, title, description, dato::date from trips where userid=%s"""
     #print sql_string , current_user.id
     cursor.execute(sql_string, [current_user.id],)
 
@@ -223,7 +223,7 @@ def getAllLines():
                 'id': line[0],
                 'title': line[1],
                 'description': line[2],
-                'date': line[3],
+                'date': str(line[3]),
             })
     js = json.dumps(data)
     
@@ -240,7 +240,7 @@ def getAllPoints():
         print "Could not connect to database " + pg_db
             
     cursor = conn.cursor()
-    sql_string = """select id, title, description, dato from points where userid=%s"""
+    sql_string = """select id, title, description, dato::date from points where userid=%s"""
     #print sql_string , current_user.id
     cursor.execute(sql_string, [current_user.id],)
 
@@ -253,7 +253,7 @@ def getAllPoints():
                 'id': point[0],
                 'title': point[1],
                 'description': point[2],
-                'date': point[3],
+                'date': str(point[3]),
             })
     js = json.dumps(data)
     
@@ -507,7 +507,7 @@ def addPointToDB(lon, lat, url, description, markerType, title):
             
     cursor = conn.cursor()
 
-    sql_string = "INSERT INTO points(title, markerType, url, description, geo) VALUES (%s,%s,%s,%s, ST_GEOMFROMTEXT('POINT(%s %s)', 4326) ) RETURNING id;"
+    sql_string = "INSERT INTO points(dato, title, markerType, url, description, geo) VALUES (now(), %s,%s,%s,%s, ST_GEOMFROMTEXT('POINT(%s %s)', 4326) ) RETURNING id;"
     cursor.execute(sql_string, (title, "", url, description, lat, lon))
     id = cursor.fetchone()[0]
     conn.commit();
@@ -536,7 +536,7 @@ def addLineToDB(line, title):
             
     cursor = conn.cursor()
 
-    sql_string = "INSERT INTO trips(title, geo) VALUES (%s,ST_MULTI(ST_GEOMFROMTEXT(%s, 4326))) RETURNING id;"
+    sql_string = "INSERT INTO trips(dato, title, geo) VALUES (now(), %s,ST_MULTI(ST_GEOMFROMTEXT(%s, 4326))) RETURNING id;"
     cursor.execute(sql_string, (title, line.wkt))
     id = cursor.fetchone()[0]
     conn.commit();
