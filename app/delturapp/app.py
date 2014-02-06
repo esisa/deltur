@@ -210,9 +210,9 @@ def setStyle(id):
 
         else:
             sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
-                        style_end_icon=%s, style_popup=%s, title=%s, description=%s
+                        style_end_icon=%s, style_popup=%s, title=%s, description=%s, style_label_text=%s
                         where id=%s"""
-            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"]["show"], data["popup"]["title"], data["popup"]["description"], id,))
+            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"]["show"], data["popup"]["title"], data["popup"]["description"], data["label"]["text"], id,))
 
         
         try:
@@ -464,7 +464,7 @@ def getLineMetadataFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup from trips where id=%s"
+    sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_text from trips where id=%s"
 
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
@@ -477,6 +477,9 @@ def getLineMetadataFromDB(id):
                     'show':res[7],
                     'title':res[0],
                     'description':res[1],
+                },
+                'label': {
+                    'text': res[8]
                 },
                 'color':res[2],
                 'width':res[3],
