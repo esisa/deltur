@@ -208,6 +208,8 @@ var delturPoint = function () {
 
         $([style.popup.image.url]).preload(); // Preload image
 
+        _map.closePopup(); // Close poup to make sure title/description/image er rerendered
+
         if(style.popup.show) // Show popup
             imgMarker.bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+style.popup.title+'</h3><img width="'+imgWidth+'" src="'+ style.popup.image.url +'"><br><div id="popupText_description" style="width:'+imgWidth+'px">' + style.popup.description + '</div>' + custom_popup_footer, {"minWidth": imgWidth + 20});
         else if(custom_popup_footer != "") // Only show popup in edit mode
