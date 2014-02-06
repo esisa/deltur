@@ -157,17 +157,24 @@
 
   <body>
 
+     
 
     <div class="menu">
         <ul>
-            <li><a href="{{ url_for('login') }}"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
+            {% if current_user.is_authenticated() %}
+            
+            <li><a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+            <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
+          {% else %}
+           <li><a href="{{ url_for('security.login') }}"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
             </li>
+            <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
+          {% endif %}
+            
         </ul>
     </div>
       
-      <div id="delerTur">
-          Deler turen...
-      </div>      
+   
       
       <div id="betaModal" class="modal hide">
          <div class="modal-header">
@@ -225,8 +232,10 @@
              
 
     <div class="container">
+
+
       <form class="form-signin" onsubmit="return false;" AUTOCOMPLETE="off">
-          
+           
         <!--h2 style="margin-left: 100px" class="form-signin-heading">Last opp fil</h2-->
         <div id="logo"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></div>
         <h1 style="text-align: center;font-size:4em;" class="form-signin-heading">deltur.no</h1>

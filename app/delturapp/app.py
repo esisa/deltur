@@ -9,6 +9,11 @@ from flask import abort
 from werkzeug import secure_filename
 from werkzeug.routing import BaseConverter
 from jinja2 import TemplateNotFound
+from flask_peewee.db import Database
+from peewee import *
+from flask.ext.security import Security, PeeweeUserDatastore, UserMixin, RoleMixin, login_required
+from flask.ext.security import *
+from flask.ext.sqlalchemy import SQLAlchemy
 
 import gpxpy
 import gpxpy.gpx
@@ -19,9 +24,77 @@ import psycopg2
 import json
 import requests
 
+import urllib
+from markupsafe import Markup
+
+pg_db = "deltur"
+pg_host = "localhost"
+pg_user = "deltur"
+pg_passwd = "deltur._01"
+pg_port = "5432"
+
+
 app = Flask(__name__)
 app.debug = True
 app.secret_key = '....'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://deltur:dsfdsfdsdeltsur._01@localhost:5432/deltur'
+app.config['SECURITY_TRACKABLE'] = True
+app.config['SECURITY_REGISTERABLE'] = True
+app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
+app.config['SECURITY_PASSWORD_HASH'] = "bcrypt"
+app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$byc5TEXXKHqMIP9inxqnQO'
+
+
+
+# Used to encode URLs
+@app.template_filter('urlencode')
+def urlencode_filter(s):
+    if type(s) == 'Markup':
+        s = s.unescape()
+    s = s.encode('utf8')
+    s = urllib.quote_plus(s)
+    return Markup(s)
+
+
+# Create database connection object
+db = SQLAlchemy(app)
+
+# Define models
+roles_users = db.Table('roles_users',
+        db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
+        db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
+
+class Role(db.Model, RoleMixin):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    description = db.Column(db.String(255))
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(255), unique=True)
+    password = db.Column(db.String(255))
+    active = db.Column(db.Boolean())
+    confirmed_at = db.Column(db.DateTime())
+    current_login_at = db.Column(db.DateTime())
+    last_login_at = db.Column(db.DateTime())
+    last_login_ip = db.Column(db.String(255))
+    current_login_ip = db.Column(db.String(255))
+    login_count = db.Column(db.Integer)
+    roles = db.relationship('Role', secondary=roles_users,
+                            backref=db.backref('users', lazy='dynamic'))
+
+# Setup Flask-Security
+user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, user_datastore)
+
+# Create a user to test with
+#@app.before_first_request
+#def create_user():
+#    db.create_all()
+#    user_datastore.create_user(email='matts@nobien.net', password='password')
+#    db.session.commit()
+
+
 
 
 class RegexConverter(BaseConverter):
@@ -38,16 +111,20 @@ app.url_map.converters['regex'] = RegexConverter
 # 4 = satellitt
 # 4 = kartverket
 
-pg_db = "deltur"
-pg_host = "localhost"
-pg_user = "deltur"
-pg_passwd = "deltur._01"
-pg_port = "5432"
+
 
 mapTypesList = ['turkart','skikart','veikart','topokart', 'satellitt', 'kartverket']
 
+
+
+
 ### READ ###
 
+
+@app.route('/test')
+@login_required
+def test():
+    return current_user.get_auth_token()
 
 @app.route('/<int:id>/metadata')
 def getTripMetadata(id):
@@ -124,18 +201,85 @@ def getTripGPX(id):
         except:
             return "Error"
 
+@app.route('/lines')
+@login_required
+def getAllLines():
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
+    sql_string = """select id, title, description, dato from trips where userid=%s"""
+    #print sql_string , current_user.id
+    cursor.execute(sql_string, [current_user.id],)
+
+    lines = cursor.fetchall()
+    conn.commit();
+    
+    data = []
+    for line in lines:
+        data.append({
+                'id': line[0],
+                'title': line[1],
+                'description': line[2],
+                'date': line[3],
+            })
+    js = json.dumps(data)
+    
+    resp = Response(js, status=200, mimetype='application/json')
+    
+    return resp
+
+@app.route('/points')
+@login_required
+def getAllPoints():
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
+    sql_string = """select id, title, description, dato from points where userid=%s"""
+    #print sql_string , current_user.id
+    cursor.execute(sql_string, [current_user.id],)
+
+    points = cursor.fetchall()
+    conn.commit();
+    
+    data = []
+    for point in points:
+        data.append({
+                'id': point[0],
+                'title': point[1],
+                'description': point[2],
+                'date': point[3],
+            })
+    js = json.dumps(data)
+    
+    resp = Response(js, status=200, mimetype='application/json')
+    
+    return resp
+
+
 
 
 
 ### WRITE ###
 
+
+
+
 @app.route('/del/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])
 def createPointJSON(lon=10, lat=60):
+    #if not current_user.is_authenticated():
+    #    print "ikke autorisert bruker"
+
     if request.method == 'POST':
         return addPointToDB(lon, lat, request.json['url'], request.json['description'], "", request.json['title'])
     else:
         return addPointToDB(lon, lat, "", "", "", "")
-    
+ 
 
 @app.route('/del/gpx', methods = ['POST'])
 def createGPXTrip():
@@ -286,10 +430,6 @@ def pro():
 def register():
     return render_template('register.html')
 
-@app.route('/login/')
-def login():
-    return render_template('admin/login.html')
-
 @app.route('/terms/')
 def terms():
     return render_template('terms.html')
@@ -323,10 +463,41 @@ def infokontakt():
     return render_template('infoside/contact.html')
  
 
+@app.route('/admin')
+@login_required
+def adminIndex():
+    return render_template('admin/index.html')
+@app.route('/admin/abbonement')
+def adminInvoice():
+    return render_template('admin/invoice.html')
+@app.route('/admin/innstillinger')
+def adminSettings():
+    return render_template('admin/settings.html')
+@app.route('/admin/turer')
+def adminTrips():
+    return render_template('admin/trips.html')
 
+ ### UTILITY FUNCTIONS ### 
 
- ### UTILITY FUNCTIONS ###   
-    
+def insertUser(_id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
+
+    if isPoint(_id):
+        sql_string = "UPDATE points set userid=%s where id=%s"
+        #print sql_string , " ",  current_user.id , " ",  _id
+        cursor.execute(sql_string, (current_user.id, _id))
+        conn.commit();
+    else:
+        sql_string = "UPDATE trips set userid=%s where id=%s"
+        #print sql_string
+        cursor.execute(sql_string, (current_user.id, _id))
+        conn.commit();
+
     
 def addPointToDB(lon, lat, url, description, markerType, title):
     try:
@@ -340,6 +511,10 @@ def addPointToDB(lon, lat, url, description, markerType, title):
     cursor.execute(sql_string, (title, "", url, description, lat, lon))
     id = cursor.fetchone()[0]
     conn.commit();
+
+    # Update table with user info
+    if current_user.is_authenticated():
+        insertUser(id)
     
     
     data = {
@@ -365,6 +540,10 @@ def addLineToDB(line, title):
     cursor.execute(sql_string, (title, line.wkt))
     id = cursor.fetchone()[0]
     conn.commit();
+
+    # Update table with user info
+    if current_user.is_authenticated():
+        insertUser(id)
     
     data = {
             'id'  : id
@@ -420,7 +599,7 @@ def getPointMetadataFromDB(id):
     sql_string = """Select url, description, title, markerType, markersymbol, 
                     markerpopup, markerlabel_static, markerlabel_text, image_height, 
                     image_width, st_x(geo), st_y(geo), markercolor from points where id=%s"""
-    print sql_string
+    #print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();

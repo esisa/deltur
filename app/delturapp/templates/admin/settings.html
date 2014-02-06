@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>deltur.no admin - Innstillinger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Tuner Admin, a fully featured, responsive, HTML5, Bootstrap admin template.">
+	<meta name="author" content="Romel Panahon">
+	<link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
+
+     <!-- Le styles -->
+    <link href="{{ url_for('static', filename='css/admin/bootstrap.css') }}" rel="stylesheet">
+    <style type="text/css">
+      body {
+     
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     
+    </style>
+
+    <link href="{{ url_for('static', filename='css/admin/bootstrap-responsive.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/admin/style.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>							
+	
+  </head>
+
+  <body>
+ 
+   <div class="navbar">
+	<div class="navbar-inner">
+    <div class="container">
+ 
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+ 
+      <!-- Be sure to leave the brand out there if you want it shown -->
+      <a class="brand" href="#">deltur.no<span> admin</span></a>
+ 
+      <!-- Everything you want hidden at 940px or less, place within here -->
+      <div class="nav-collapse pull-right">
+	  
+		    <ul class="nav nav-pills">
+			  <!--li class="dropdown ">
+				<a class="dropdown-toggle"  data-toggle="dropdown" href="#"> <span class="badge badge-important">4</span> Beskjeder <b class="caret"></b></a>
+					<ul class="dropdown-menu msg-list">
+						<li><a href="#"><span>Romel</span>  Sample message in here</a></li>
+						<li><a href="#"><span>Lito</span> Sample message in here</a></li>
+						<li class="unread-msg"><a href="#"><span>Cyrus</span>This is Unread message</a></li>
+						<li><a href="#"><span>Dondie</span>  Sample message in here</a></li>						
+						<li class="seeall"><a href="#"> See All  </a></li>
+					</ul>
+			  </li-->
+			  {% if current_user.is_authenticated() %}
+			  <li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> {{ current_user.email }} <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('home') }}">Del ny tur</a></li>
+						<li><a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+					</ul>
+			  </li>
+			  {% endif %}
+			  
+		    </ul>
+        <!-- .nav, .navbar-search, .navbar-form, etc -->
+		
+      </div>
+ 
+    </div>
+  </div>
+</div>       
+
+   
+   
+<!-- content -->	
+<div class="container-fluid">
+<div class="row-fluid">
+	  
+	    <!-- Sidebar -->
+        <div class="span3">
+			<ul id="nav">
+			  <li><a href="{{ url_for('adminIndex') }}"><i class="fa fa-bar-chart-o fa-2x icon-style"></i> Statistikk</a></li>
+              <li><a href="{{ url_for('adminTrips') }}"><i class="fa fa-picture-o fa-2x icon-style"></i> Turer</a></li>
+              <li><a class="active"  href="{{ url_for('adminSettings') }}"><i class="fa fa-wrench fa-2x icon-style"></i>Innstillinger</a></li>
+              <li><a href="{{ url_for('adminInvoice') }}"><i class="fa fa-dollar fa-2x icon-style"></i>Abbonement</a></li>
+			</ul>	
+        </div><!--/span-->
+		<!--   /Sidebar -->      
+
+		
+		
+	<!-- Content-->
+    <div class="span9">	
+
+		
+			<!-- Breadcrumb-->
+			<div class="row-fluid">		
+				<div class="span12">
+					<ul class="breadcrumb">
+						<li><a href="#">Hjem</a> <span class="divider">/</span></li>
+						<li class="active">Innstillinger</li>
+					</ul>
+				</div><!--/span-->
+			</div><!--/row-->
+			<!-- /Breadcrumb-->
+				
+	
+		
+		
+
+		
+		
+		
+		
+			<!--  notification -->
+			<div class="row-fluid">		
+				<div class="span12">			
+					<div class="widget">
+							<div class="widget-header">
+								<i class="fa fa-wrench icon-style"></i>
+								<h3>Notifications</h3>
+							</div>
+							<div class="widget-content">
+								Token<br>
+								Slette bruker 
+							</div>						
+					</div><!--/widget-->
+				</div><!--/span-->
+			</div><!--/row-->
+			<!--/notification-->	
+
+			
+	
+	</div><!--end of span9 -->
+
+	
+</div><!--end of row -->		
+</div><!-- Content-->
+     
+
+	<!-- footer -->
+	 <footer>
+	  <div class="container">
+		<div class="row-fluid">
+			<div class="span6">	
+				<p><a href="http://www.kresendo.no">&copy; Kresendo 2014</a> </p>
+			</div>
+			
+		</div>
+		</div>
+      </footer>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>	
+	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
+
+	
+	
+	
+	
+  </body>
+</html>

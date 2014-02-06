@@ -29,6 +29,10 @@ ALTER TABLE trips ADD COLUMN style_end_icon boolean;
 ALTER TABLE trips ADD COLUMN style_popup boolean;
 ALTER TABLE trips ADD COLUMN style_label_static boolean;
 ALTER TABLE trips ADD COLUMN style_label_text varchar(30);
+ALTER TABLE trips ADD COLUMN userid int;
+ALTER TABLE trips ADD COLUMN plan varchar(50);
+ALTER TABLE ONLY trips ALTER COLUMN plan SET DEFAULT 'free';
+ALTER TABLE ONLY trips ALTER COLUMN userid SET DEFAULT null;
 ALTER TABLE ONLY trips ALTER COLUMN title SET DEFAULT '';
 ALTER TABLE ONLY trips ALTER COLUMN description SET DEFAULT '';
 ALTER TABLE ONLY trips ALTER COLUMN style_color SET DEFAULT '#ff7800';
@@ -74,6 +78,10 @@ ALTER TABLE ONLY points ALTER COLUMN markerlabel_static SET DEFAULT false;
 ALTER TABLE ONLY points ALTER COLUMN markerlabel_text SET DEFAULT '';
 ALTER TABLE ONLY points ALTER COLUMN image_height SET DEFAULT -1;
 ALTER TABLE ONLY points ALTER COLUMN image_width SET DEFAULT -1;
+ALTER TABLE points ADD COLUMN userid int;
+ALTER TABLE points ADD COLUMN plan varchar(50);
+ALTER TABLE ONLY points ALTER COLUMN plan SET DEFAULT 'free';
+ALTER TABLE ONLY points ALTER COLUMN userid SET DEFAULT null;
 
 
 

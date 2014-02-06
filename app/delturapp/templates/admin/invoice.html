@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>deltur.no admin - Abbonement</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Tuner Admin, a fully featured, responsive, HTML5, Bootstrap admin template.">
+	<meta name="author" content="Romel Panahon">
+	<link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
+
+     <!-- Le styles -->
+    <link href="{{ url_for('static', filename='css/admin/bootstrap.css') }}" rel="stylesheet">
+    <style type="text/css">
+      body {
+     
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+     
+    </style>
+
+    <link href="{{ url_for('static', filename='css/admin/bootstrap-responsive.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/admin/style.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>							
+	
+    <script type="text/javascript">
+  		var PAYMILL_PUBLIC_KEY = '07819295812fa6bff309d5c259e9ad27';
+	</script>
+	<script type="text/javascript" src="https://bridge.paymill.com/"></script>
+	<link rel="stylesheet" type ="text/css" href="css/paymill_styles.css">
+	<script type="text/javascript" src="lang/translation.js"></script>
+	<script type="text/javascript">
+	    $.noConflict();
+
+	    jQuery(document).ready(function ($) {
+	        var formlang = 'en';
+	        var doc = document;
+	        var body = $( doc.body );
+	        
+
+	        $('.card-number').keyup(function() {
+	            var brand = paymill.cardType($('.card-number').val());
+	            brand = brand.toLowerCase();
+	            $(".card-number")[0].className = $(".card-number")[0].className.replace(/paymill-card-number-.*/g, '');
+	            if (brand !== 'unknown') {
+	                $('#card-number').addClass("paymill-card-number-" + brand);
+	            }
+
+	            if (brand !== 'maestro') {
+	                VALIDATE_CVC = true;
+	            } else {
+	                VALIDATE_CVC = false;
+	            }
+	        });
+
+	        $('.card-expiry').keyup(function() {
+	            if ( /^\d\d$/.test( $('.card-expiry').val() ) ) {
+	                text = $('.card-expiry').val();
+	                $('.card-expiry').val(text += "/");
+	            }
+	        });
+
+
+	        function PaymillResponseHandler(error, result) {
+	            if (error) {
+	                // Zeigt den Fehler überhalb des Formulars an
+	                $(".payment_errors").text(error.apierror);
+	                $(".payment_errors").css("display","inline-block");
+	            } else {
+	                $(".payment_errors").css("display","none");
+	                $(".payment_errors").text("");
+	                var form = $("#payment-form");
+	                // Token
+	                var token = result.token;
+	                // Token in das Formular einfügen damit es an den Server übergeben wird
+	                form.append("<input type='hidden' name='paymillToken' value='" + token + "'/>");
+	                form.get(0).submit();
+	            }
+	            $(".submit-button").removeAttr("disabled");
+	        }
+
+	        $("#payment-form").submit(function (event) {
+	            $('.submit-button').attr("disabled", "disabled");
+	            if (false == paymill.validateHolder($('.card-holdername').val())) {
+	                $(".payment_errors").text(translation[formlang]["error"]["invalid-card-holdername"]);
+	                $(".payment_errors").css("display","inline-block");
+	                $(".submit-button").removeAttr("disabled");
+	                return false;
+	            }
+	            if ((false == paymill.validateCvc($('.card-cvc').val()))) {
+	                if(VALIDATE_CVC){
+	                    $(".payment_errors").text(translation[formlang]["error"]["invalid-card-cvc"]);
+	                    $(".payment_errors").css("display","inline-block");
+	                    $(".submit-button").removeAttr("disabled");
+	                    return false;
+	                } else {
+	                    $('.card-cvc').val("000");
+	                }
+	            }
+	            if (false == paymill.validateCardNumber($('.card-number').val())) {
+	                $(".payment_errors").text(translation[formlang]["error"]["invalid-card-number"]);
+	                $(".payment_errors").css("display","inline-block");
+	                $(".submit-button").removeAttr("disabled");
+	                return false;
+	            }
+	            var expiry = $('.card-expiry').val();
+	            expiry = expiry.split("/");
+	            if(expiry[1] && (expiry[1].length <= 2)){
+	                expiry[1] = '20'+expiry[1];
+	            }
+	            if (false == paymill.validateExpiry(expiry[0], expiry[1])) {
+	                $(".payment_errors").text(translation[formlang]["error"]["invalid-card-expiry-date"]);
+	                $(".payment_errors").css("display","inline-block");
+	                $(".submit-button").removeAttr("disabled");
+	                return false;
+	            }
+	            var params = {
+	                amount_int:     $('.amount').val() * 100,  // E.g. "15" for 0.15 Eur
+	                currency:       $('.currency').val(),    // ISO 4217 e.g. "EUR"
+	                number:         $('.card-number').val(),
+	                exp_month:      expiry[0],
+	                exp_year:       expiry[1],
+	                cvc:            $('.card-cvc').val(),
+	                cardholder:     $('.card-holdername').val()
+	            };
+
+	            paymill.createToken(params, PaymillResponseHandler);
+	            return false;
+	        });
+
+
+	    });
+	</script>
+
+  </head>
+
+  <body>
+ 
+    <div class="navbar">
+	<div class="navbar-inner">
+    <div class="container">
+ 
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+ 
+      <!-- Be sure to leave the brand out there if you want it shown -->
+      <a class="brand" href="#">deltur.no<span> admin</span></a>
+ 
+      <!-- Everything you want hidden at 940px or less, place within here -->
+      <div class="nav-collapse pull-right">
+	  
+		    <ul class="nav nav-pills">
+			  <!--li class="dropdown ">
+				<a class="dropdown-toggle"  data-toggle="dropdown" href="#"> <span class="badge badge-important">4</span> Beskjeder <b class="caret"></b></a>
+					<ul class="dropdown-menu msg-list">
+						<li><a href="#"><span>Romel</span>  Sample message in here</a></li>
+						<li><a href="#"><span>Lito</span> Sample message in here</a></li>
+						<li class="unread-msg"><a href="#"><span>Cyrus</span>This is Unread message</a></li>
+						<li><a href="#"><span>Dondie</span>  Sample message in here</a></li>						
+						<li class="seeall"><a href="#"> See All  </a></li>
+					</ul>
+			  </li-->
+			  {% if current_user.is_authenticated() %}
+			  <li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> {{ current_user.email }} <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('home') }}">Del ny tur</a></li>
+						<li><a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+					</ul>
+			  </li>
+			  {% endif %}
+			  
+		    </ul>
+        <!-- .nav, .navbar-search, .navbar-form, etc -->
+		
+      </div>
+ 
+    </div>
+  </div>
+</div>       
+
+   
+   
+	<!-- content -->	
+    <div class="container-fluid">
+    <div class="row-fluid">
+	  
+	     <!-- Sidebar -->
+        <div class="span3">
+			<ul id="nav">
+			  <li><a href="{{ url_for('adminIndex') }}"><i class="fa fa-bar-chart-o fa-2x icon-style"></i> Statistikk</a></li>
+              <li><a href="{{ url_for('adminTrips') }}"><i class="fa fa-picture-o fa-2x icon-style"></i> Turer</a></li>
+              <li><a href="{{ url_for('adminSettings') }}"><i class="fa fa-wrench fa-2x icon-style"></i>Innstillinger</a></li>
+              <li><a class="active"  href="{{ url_for('adminInvoice') }}"><i class="fa fa-dollar fa-2x icon-style"></i>Abbonement</a></li>
+			</ul>	
+        </div><!--/span-->
+		<!--   /Sidebar -->      
+		
+		
+	
+		<!-- middle-->
+        <div class="span9">
+		
+			<!-- Breadcrumb-->
+			<div class="row-fluid">		
+				<div class="span12">
+					<ul class="breadcrumb">
+						<li><a href="#">Hjem</a> <span class="divider">/</span></li>
+						<li class="active">Abbonement</li>
+					</ul>
+				</div><!--/span-->
+			</div><!--/row-->
+			<!-- /Breadcrumb-->
+
+				
+		
+		
+			<!-- Span12 -->
+			<div class="row-fluid">	
+
+
+		
+				<div class="span12">			
+					<div class="widget">
+							<div class="widget-header">
+								<i class="fa fa-dollar icon-style"></i>
+								<h3>Abbonnement</h3>
+							</div>
+							<div class="widget-content">
+								<p>Du har foreløpig ikke noe betalt abbonement på deltur.no. Velg abbonement hvis du ønsker å oppgradere. </p>
+
+								<p>Kommer! </p>
+
+								<!--div id="paymill_example_form">
+								    
+								    <form id="payment-form" action="payment.php" method="POST">
+								        <header>
+								            <img alt="Logo" src="img/paymill/paymill-logo-signet.png">
+								            <h1 class="form-signin-heading">deltur.no standard</h1>
+								            <h2 class="form-signin-heading"></h2>
+								        </header>
+								        <div class="payment_errors">&nbsp;</div>
+								        <fieldset>
+								            <label for="card-number" class="card-number-label field-left">Kortnummer</label>
+								            <input id ="card-number" class="card-number field-left" type="text" placeholder="**** **** **** ****" maxlength="19">
+								            <label for="card-expiry" class="card-expiry-label field-right">Dato</label>
+								            <input id="card-expiry" class="card-expiry field-right" type="text" placeholder="MM/YY" maxlength="7">
+								        </fieldset>
+								        <fieldset>
+								            <label for="card-holdername" class="card-holdername-label field-left">Navn</label>
+								            <input id="card-holdername" class="card-holdername field-left" type="text">
+								            <label for="card-cvc" class="field-right"><span class="card-cvc-label"></span>CVC<span id="tooltip" title="">?</span></label>
+								            <input id="card-cvc" class="card-cvc field-right" type="text" placeholder="CVC" maxlength="4">
+								        </fieldset>
+								        <fieldset>
+								            <label for="amount" class="amount-label field-left">Verdi</label>
+								            <input id="amount" class="amount field-left" type="text" value="39.00" name="amount">
+								            <label for="currency" class="currency-label field-right">Valuta</label>
+								            <input id="currency" class="currency field-right" type="text" value="NOK" name="currency">
+								        </fieldset>
+								        <fieldset id="buttonWrapper">
+								            <button id="paymill-submit-button" class="submit-button btn btn-primary" type="submit">Start abbonement</button>
+								        </fieldset>
+								    </form>
+								</div-->
+									
+								
+								
+							
+								
+							</div>						
+					</div><!--/widget-->
+				</div><!--/span-->
+	
+       
+		
+					<!-- Span12 -->
+				
+					
+	
+			</div><!--/row-->
+		
+				
+			
+		</div>	<!--end of span -->		
+    </div><!--/row-->
+    </div><!--/.fluid-container-->
+     
+
+	<!-- footer -->
+	 <footer>
+	  <div class="container">
+		<div class="row-fluid">
+			<div class="span6">	
+				<p><a href="http://www.kresendo.no">&copy; Kresendo 2014</a> </p>
+			</div>
+			
+		</div>
+		</div>
+      </footer>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>	
+	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
+
+
+<script>
+
+</script>
+	
+ </body>
+</html>

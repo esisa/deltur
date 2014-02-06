@@ -19,6 +19,7 @@
 
    
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
 
     <!--script src='{{ url_for('static', filename='js/mapbox.js') }}'></script-->
@@ -101,6 +102,21 @@
   
   
 <body>
+
+    <div class="menu">
+        <ul>
+            {% if current_user.is_authenticated() %}
+            
+            <li><a href="{{ url_for('security.logout') }}?next=%2Fadvanced">Logg ut</a></li>
+            <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
+          {% else %}
+           <li><a href="{{ url_for('security.login') }}?next=%2Fadvanced"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
+            </li>
+            <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
+          {% endif %}
+            
+        </ul>
+    </div>
 
     <!-- Placeholder for images used in pop up -->
     <div id="currentImg"></div>
