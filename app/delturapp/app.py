@@ -42,6 +42,8 @@ app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 app.config['SECURITY_PASSWORD_HASH'] = "bcrypt"
 app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$byc5TEXXKHqMIP9inxqnQO'
 
+#app.messages['USER_DOES_NOT_EXIST'] = 'Det finnes ikke noe bruker med denne e-post adressen'
+
 
 
 # Used to encode URLs

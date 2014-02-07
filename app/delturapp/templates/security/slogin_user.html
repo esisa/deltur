@@ -1,14 +1,13 @@
-{% from "security/delturMacros.html" import render_field_with_errors, render_field %}
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>deltur.no - Logg inn</title>
+    <title>Tuner Admin - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
 
     <!-- Le styles -->
     <link href="{{ url_for('static', filename='css/admin/bootstrap_login.css') }}" rel="stylesheet">
@@ -51,11 +50,38 @@
 					
 
 					<div class="content clearfix">
+						{% macro render_field_with_errors(field) %}
+						  <p>
+						    {{ field.label }} {{ field(**kwargs)|safe }}
+						    {% if field.errors %}
+						      <ul>
+						      {% for error in field.errors %}
+						        <li>{{ error }}</li>
+						      {% endfor %}
+						      </ul>
+						    {% endif %}
+						  </p>
+						{% endmacro %}
+
+						{% macro render_field(field) %}
+						  <p>{{ field(**kwargs)|safe }}</p>
+						{% endmacro %}
+
+
+
+						{%- with messages = get_flashed_messages(with_categories=true) -%}
+						  {% if messages %}
+						    <ul class="flashes">
+						    {% for category, message in messages %}
+						      <li class="{{ category }}">{{ message }}</li>
+						    {% endfor %}
+						    </ul>
+						  {% endif %}
+						{%- endwith %}
+
+						sssss
 						<form role="form" action="{{ url_for_security('login') }}" method="POST" name="login_form">
 							{{ login_user_form.hidden_tag() }}
-							{{ render_field_with_errors(login_user_form.email) }}
-							{{ render_field_with_errors(login_user_form.password) }}
-  							{{ render_field_with_errors(login_user_form.remember) }}
 							<h1>Logg inn</h1>
 							  <div class="form-group">
 							    <label for="email">E-post</label>
