@@ -100,6 +100,29 @@
            </div>    
         </div>
     </div> 
+
+
+    <div id="lineStyleEditor" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h3>Editor</h3>
+             </div>
+             <div class="modal-body">
+               
+                 <textarea id="line-style" class="form-control" rows="7" cols="40" style="font-size: 16px; width: 500px; height: 150px;">
+                </textarea>
+
+                <p><a href="http://localhost:5000/info/api#line_param" target="_new">Beskrivelse av feltene</a></p>
+
+             </div>
+             <div class="modal-footer">
+               <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-success" onClick="saveLineStyle();">Lagre</a>
+             </div>
+           </div>    
+        </div>
+    </div> 
  
    <div class="navbar">
 	<div class="navbar-inner">
@@ -187,8 +210,16 @@
 		<!-- Select All table -->
 		<div class="row-fluid">		
             <div class="span12">
-			
-				<div class="widget">
+
+        	    <ul class="nav nav-tabs">
+				    <li><a href="#kart" data-toggle="tab">Kart</a></li>
+				    <li><a href="#linjer" data-toggle="tab">Linjer</a></li>
+				    <li><a href="#punkter" data-toggle="tab">Punkter</a></li>
+				</ul>
+
+				<div class="tab-content">
+					<div class="tab-pane active" id="kart">
+						<div class="widget">
 						<div class="widget-header">
 							<i class="fa fa-picture-o icon-style"></i>
 							<h3>Kart</h3>
@@ -198,7 +229,7 @@
 								  <caption></caption>
 								  <thead>
 									<tr>
-									  <th>Hash</th>
+									  <th class="col-md-1">Hash</th>
 									  <th>Forhåndsvisning</th>
 									  <th>Sammensatt av</th>
 									  <th>Actions</th>
@@ -209,17 +240,10 @@
 								  </tbody>
 								</table>
 							</div>						
-				</div><!--/widget-->
-			</div><!--/span-->
-        </div><!--/row-->
-		<!-- /Select All table-->
-
-
-		<!-- Select All table -->
-		<div class="row-fluid">		
-            <div class="span12">
-			
-				<div class="widget">
+						</div><!--/widget-->
+					</div>
+					<div class="tab-pane" id="linjer">
+						<div class="widget">
 						<div class="widget-header">
 							<i class="icon-th icon-style"></i>
 							<h3>Linjer</h3>
@@ -241,17 +265,10 @@
 								  </tbody>
 								</table>
 							</div>						
-				</div><!--/widget-->
-			</div><!--/span-->
-        </div><!--/row-->
-		<!-- /Select All table-->
-
-
-		<!-- Select All table -->
-		<div class="row-fluid">		
-            <div class="span12">
-			
-				<div class="widget">
+						</div><!--/widget-->
+					</div>
+					<div class="tab-pane" id="punkter">
+						<div class="widget">
 						<div class="widget-header">
 							<i class="icon-th icon-style"></i>
 							<h3>Punkter</h3>
@@ -273,10 +290,17 @@
 								  </tbody>
 								</table>
 							</div>						
-				</div><!--/widget-->
+						</div><!--/widget-->
+					</div>
+				</div>
+			
+				
 			</div><!--/span-->
         </div><!--/row-->
 		<!-- /Select All table-->
+
+
+		
 			
 			
 		
@@ -312,9 +336,11 @@
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-tooltip.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-modal.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/admin/bootstrap-tab.js') }}"></script>
 	<script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
 	<script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
 
 	
 	
@@ -322,6 +348,10 @@
 	<script>
 		$('a,.btn').tooltip('hide')
 		renderTables();
+
+		 $(function () {
+			$('#myTab a:last').tab('show');
+		})
 
 
 		function renderTables() {
@@ -339,7 +369,7 @@
 					var edit = '<a class="btn btn-small" onClick="openLineStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Edit"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteLineModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Delete"><i class="fa fa-eraser fa-lg"></i></a>';
 					edit += '<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
 					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
-					edit += '<a class="btn btn-small" href="/'+data.id+'/gpx" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
+					edit += '<a class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
 
 					$("#lines").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
 
@@ -352,7 +382,7 @@
 					var edit = '<a class="btn btn-small" onClick="openPointStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Edit"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeletePointModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Delete"><i class="fa fa-eraser fa-lg"></i></a>';
 					edit += '<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
 					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
-					edit += '<a class="btn btn-small" href="/'+data.id+'/gpx" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
+					edit += '<a class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
 
 
 					$("#points").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
@@ -428,6 +458,40 @@
 	        point.setStyle(JSON.parse($('#marker-style').val()));
 	        renderTables(); // In case user changes title/description
 	    }
+
+
+
+	    var line;
+		function openLineStyleEditor(id) {
+
+
+	        // Create new line object
+            line = new delturLine();
+
+            // Init line
+            line.initWithId(id);
+
+            var interval = setInterval(function(){
+	            if(line.getStatus() === 1) {
+	            	// Update textarea with json data
+			        $('#line-style').val(JSON.stringify(line.getStyle(), undefined, 2));
+
+	                 // Open modal
+			        $('#lineStyleEditor').modal("show");
+
+	                // Stop interval
+	                clearInterval(interval);
+            	}
+        	},500);
+	    }
+		function saveLineStyle() {
+	        line.setStyle(JSON.parse($('#line-style').val()));
+	        renderTables(); // In case user changes title/description
+	    }
+
+
+
+	    
 
 		
 
