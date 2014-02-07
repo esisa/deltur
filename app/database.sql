@@ -82,8 +82,8 @@ ALTER TABLE points ADD COLUMN userid int;
 ALTER TABLE ONLY points ALTER COLUMN userid SET DEFAULT null;
 ALTER TABLE ONLY points ALTER COLUMN markerlabel_text type varchar(300);
 
-ALTER TABLE user ADD COLUMN plan varchar(50);
-ALTER TABLE ONLY user ALTER COLUMN plan SET DEFAULT 'free';
+ALTER TABLE "user" ADD COLUMN plan varchar(50);
+ALTER TABLE ONLY "user" ALTER COLUMN plan SET DEFAULT 'free';
 
 
 
