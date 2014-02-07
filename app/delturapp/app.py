@@ -26,6 +26,8 @@ import requests
 import urllib
 from markupsafe import Markup
 
+from flask_shorturl import ShortUrl
+
 pg_db = "deltur"
 pg_host = "localhost"
 pg_user = "deltur"
@@ -44,11 +46,12 @@ app.config['SECURITY_CHANGEABLE'] = False #Change password
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 app.config['SECURITY_PASSWORD_HASH'] = "bcrypt"
 app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$byc5TEXXKHqMIP9inxqnQO'
-#app.config['MAIL_SERVER'] = 'smtp.mandrillapp.com'
-#app.config['MAIL_PORT'] = 587
-#app.config['MAIL_USE_SSL'] = False
-#app.config['MAIL_USERNAME'] = 'espen@kresendo.no'
-#app.config['MAIL_PASSWORD'] = 'tnrGGTWmlGS5Gc6AQSnZYg'
+
+app.config['MAIL_SERVER'] = 'smtp.mandrillapp.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'espen@kresendo.no'
+app.config['MAIL_PASSWORD'] = 'tnrGGTWmlGS5Gc6AQSnZYg'
 #mail = Mail(app)
 
 
@@ -232,7 +235,7 @@ def getAllLines():
         print "Could not connect to database " + pg_db
             
     cursor = conn.cursor()
-    sql_string = """select id, title, description, dato::date from trips where userid=%s"""
+    sql_string = """select id, title, description, dato::date from trips where userid=%s order by id"""
     #print sql_string , current_user.id
     cursor.execute(sql_string, [current_user.id],)
 
@@ -262,7 +265,7 @@ def getAllPoints():
         print "Could not connect to database " + pg_db
             
     cursor = conn.cursor()
-    sql_string = """select id, title, description, dato::date from points where userid=%s"""
+    sql_string = """select id, title, description, dato::date from points where userid=%s order by id"""
     #print sql_string , current_user.id
     cursor.execute(sql_string, [current_user.id],)
 
@@ -288,6 +291,14 @@ def getAllPoints():
 
 
 ### WRITE ###
+
+@app.route('/hash/<regex("[0-9+]+"):ids>')
+def hashTrip(ids):
+    idset = ids.split("+")
+    su = ShortUrl(app)
+    url = su.encode_url(10,10)
+
+    return url
 
 @app.route('/<regex("[0-9]+"):id>', methods=['DELETE'])
 @login_required
