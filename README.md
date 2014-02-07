@@ -13,6 +13,9 @@ deltur.no
 - sudo apt-get install postgresql-9.1-postgis
 - sudo aptitude install apache2 apache2.2-common apache2-mpm-prefork apache2-utils libexpat1 ssl-cert
 - sudo aptitude install libapache2-mod-wsgi
+- apt-get install python-bcrypt
+- pip install flask-security
+- pip install flask-sqlalchemy
 - a2enmod proxy
 - a2enmod proxy_http
 
