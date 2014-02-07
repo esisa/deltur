@@ -136,20 +136,24 @@ def getTripMetadata(id):
 @app.route('/<int:id>/geojson')
 def getTripGeoJSON(id):
     try:
+        increaseLineAccess(id)
         return getLineFromDB(id)
     except:
+        increasePointAccess(id)
         return getPointFromDB(id)
         
 @app.route('/<int:id>/osm')
 def getTripOSM(id):
     if isPoint(id):
         try:
+            increaseLineAccess(id)
             r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=osm')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
     else:
         try:
+            increasePointAccess(id)
             r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=osm')
             return Response(r.text, mimetype='text/xml')
         except:
@@ -159,12 +163,14 @@ def getTripOSM(id):
 def getTripKML(id):
     if isPoint(id):
         try:
+            increaseLineAccess(id)
             r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=kml')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
     else:
         try:
+            increasePointAccess(id)
             r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=kml')
             return Response(r.text, mimetype='text/xml')
         except:
@@ -174,12 +180,14 @@ def getTripKML(id):
 def getTripCSV(id):
     if isPoint(id):
         try:
+            increaseLineAccess(id)
             r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=csv')
             return Response(r.text, mimetype='text/plain')
         except:
             return "Error"
     else:
         try:
+            increasePointAccess(id)
             r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=csv')
             return Response(r.text, mimetype='text/plain')
         except:
@@ -189,12 +197,14 @@ def getTripCSV(id):
 def getTripGPX(id):
     if isPoint(id):
         try:
+            increaseLineAccess(id)
             r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=gpx')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
     else:
         try:
+            increasePointAccess(id)
             r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=gpx')
             return Response(r.text, mimetype='text/xml')
         except:
@@ -716,3 +726,28 @@ def isPoint(id):
         return True
     else:
         return False
+
+def increaseLineAccess(id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+    
+    sql_string = "update trips set accessed=accessed+1 where id=%s"
+    cursor.execute(sql_string, (id,))
+    conn.commit();
+
+def increasePointAccess(id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+    
+    sql_string = "update points set accessed=accessed+1 where id=%s"
+    cursor.execute(sql_string, (id,))
+    conn.commit();
+

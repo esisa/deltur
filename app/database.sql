@@ -43,6 +43,8 @@ ALTER TABLE ONLY trips ALTER COLUMN style_label_static SET DEFAULT false;
 ALTER TABLE ONLY trips ALTER COLUMN style_label_text SET DEFAULT '';
 ALTER TABLE ONLY trips ALTER COLUMN style_label_text SET DEFAULT '';
 ALTER TABLE ONLY trips ALTER COLUMN style_label_text type varchar(300);
+ALTER TABLE trips ADD COLUMN accessed int;
+ALTER TABLE ONLY trips ALTER COLUMN accessed SET DEFAULT 0;
 
 drop view if exists trips_v;
 create view trips_v as 
@@ -81,6 +83,8 @@ ALTER TABLE ONLY points ALTER COLUMN image_width SET DEFAULT -1;
 ALTER TABLE points ADD COLUMN userid int;
 ALTER TABLE ONLY points ALTER COLUMN userid SET DEFAULT null;
 ALTER TABLE ONLY points ALTER COLUMN markerlabel_text type varchar(300);
+ALTER TABLE points ADD COLUMN accessed int;
+ALTER TABLE ONLY points ALTER COLUMN accessed SET DEFAULT 0;
 
 ALTER TABLE "user" ADD COLUMN plan varchar(50);
 ALTER TABLE ONLY "user" ALTER COLUMN plan SET DEFAULT 'free';
