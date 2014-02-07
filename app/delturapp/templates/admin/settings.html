@@ -124,11 +124,12 @@
 					<div class="widget">
 							<div class="widget-header">
 								<i class="fa fa-wrench icon-style"></i>
-								<h3>Notifications</h3>
+								<h3>Innstillinger</h3>
 							</div>
 							<div class="widget-content">
-								Token<br>
-								Slette bruker 
+								Hemmelig token til bruk sammen med API: <div class="well well-sm">{{ current_user.get_auth_token() }}</div><br>
+								<button type="button" onClick="deleteUser()" class="btn btn-danger">Slette bruker </button>
+								
 							</div>						
 					</div><!--/widget-->
 				</div><!--/span-->
@@ -165,6 +166,11 @@
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
 
+	<script>
+		function deleteUser() {
+			alert("Foreløpig kan du ikke slette din bruker!");
+		}
+	</script>
 	
 	
 	
