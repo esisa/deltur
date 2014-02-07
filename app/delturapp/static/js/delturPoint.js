@@ -10,13 +10,13 @@ var delturPoint = function () {
     var style =  {
                     "popup": {
                         "show": true,
+                        "description": "",
+                        "title": "",
                         "image": {
                             "url": "",
                             "width": -1//,
                             /*"height": -1*/
                         },
-                        "description": "",
-                        "title": ""
                     },
                     "label": {
                         "text": "",

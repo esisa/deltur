@@ -289,7 +289,28 @@ def getAllPoints():
 
 ### WRITE ###
 
+@app.route('/<regex("[0-9]+"):id>', methods=['DELETE'])
+@login_required
+def deleteTrip(id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
 
+    if isPoint(id):
+        sql_string = "DELETE FROM points where id=%s"
+        cursor.execute(sql_string, (id,))
+        conn.commit();
+    else:
+        sql_string = "DELETE FROM trips where id=%s"
+        cursor.execute(sql_string, (id,))
+        conn.commit();
+
+    resp = Response('', status=200, mimetype='application/json')
+    
+    return resp
 
 
 @app.route('/del/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])

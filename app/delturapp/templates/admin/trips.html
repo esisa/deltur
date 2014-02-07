@@ -27,6 +27,79 @@
   </head>
 
   <body>
+
+  	<div id="deleteLineModal"  class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Slette linje</h3>
+                </div>
+                <div id="deleteLineBody" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn" data-dismiss="modal" >Avbryt</a>
+                </div>
+            </div>
+        </div>
+    </div>	
+
+  	<div id="deletePointModal"  class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Slette punkt</h3>
+                </div>
+                <div id="deletePointBody" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn" data-dismiss="modal" >Avbryt</a>
+                </div>
+            </div>
+        </div>
+    </div>	
+
+  	<div id="embedModal"  class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Embed</h3>
+                </div>
+                <div id="embedBody" class="modal-body">
+                  
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  	<div id="markerStyleEditor" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h3>Editor</h3>
+             </div>
+             <div class="modal-body">
+               
+                 <textarea id="marker-style" class="form-control" rows="7" cols="40" style="font-size: 16px; width: 500px; height: 150px;">
+                </textarea>
+
+                <p><a href="http://localhost:5000/info/api#punkt_param" target="_new">Beskrivelse av feltene</a></p>
+
+             </div>
+             <div class="modal-footer">
+               <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-success" onClick="savePointStyle();">Lagre</a>
+             </div>
+           </div>    
+        </div>
+    </div> 
  
    <div class="navbar">
 	<div class="navbar-inner">
@@ -132,16 +205,7 @@
 									</tr>
 								  </thead>
 								  <tbody>
-									<tr>
-									  <td>Romel</td>
-									  <td>Panahon</td>
-									  <td><a href="">473</a> + <a href="">3434</a> + <a href="">343</a></td>
-									  <td>
-									  	Style
-										<a class="btn btn-small" href="#" data-trigger="hover" data-placement="top" data-original-title="Edit"><i class="icon-edit"></i></a>
-										<a class="btn btn-small" href="#" data-trigger="hover" data-placement="top" data-original-title="Delete"><i class="icon-remove"></i></a>
-									  </td>
-									</tr>
+									
 								  </tbody>
 								</table>
 							</div>						
@@ -247,28 +311,123 @@
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-tooltip.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/admin/bootstrap-modal.js') }}"></script>
+	<script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+	<script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
 
 	
 	
 	<!-- tooltip -->
 	<script>
 		$('a,.btn').tooltip('hide')
+		renderTables();
 
-		var edit = '<a class="btn btn-small" href="#" data-trigger="hover" data-placement="top" data-original-title="Edit"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="#" data-trigger="hover" data-placement="top" data-original-title="Delete"><i class="fa fa-eraser fa-lg"></i></a>Åpne embedkode, link til embed, last ned turen';
 
+		function renderTables() {
 
-		// Populate tables
-		$.getJSON( "/lines", function( json ) {
-			$.each(json, function(i, data){
-				$("#lines").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+			// Clear all tables
+			$("#lines tbody").remove();
+			$("#points tbody").remove();
+
+			// Populate tables
+			$.getJSON( "/lines", function( json ) {
+				
+
+				$.each(json, function(i, data){
+
+					var edit = '<a class="btn btn-small" onClick="openLineStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Edit"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteLineModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Delete"><i class="fa fa-eraser fa-lg"></i></a>';
+					edit += '<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
+					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
+					edit += '<a class="btn btn-small" href="/'+data.id+'/gpx" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
+
+					$("#lines").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+
+				});
 			});
-		});
 
-		$.getJSON( "/points", function( json ) {
-			$.each(json, function(i, data){
-				$("#points").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+			$.getJSON( "/points", function( json ) {
+				$.each(json, function(i, data){
+
+					var edit = '<a class="btn btn-small" onClick="openPointStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Edit"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeletePointModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Delete"><i class="fa fa-eraser fa-lg"></i></a>';
+					edit += '<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
+					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
+					edit += '<a class="btn btn-small" href="/'+data.id+'/gpx" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
+
+
+					$("#points").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+
+				});
 			});
-		});
+		}
+		
+
+
+		function deleteFeature(id) {
+			$('#deleteLineModal').modal("hide");
+			$('#deletePointModal').modal("hide");
+			$.ajax({
+			    url: '/' + id,
+			    type: 'DELETE',
+			    success: function(result) {
+			        renderTables();
+			    }
+			});
+		}
+
+
+        function opendeletePointModal(id) {
+			$('#deletePointBody').html('<p>Ønsker du virkelig å slette dette punktet?</p><button type="button" onClick="deleteFeature('+id+');" class="btn btn-danger">Ja, slett punktet</button>');
+
+			// Open modal
+			$('#deletePointModal').modal("show");
+		}
+
+		function opendeleteLineModal(id) {
+			$('#deleteLineBody').html('<p>Ønsker du virkelig å slette denne linjen?</p><button type="button" onClick="deleteFeature('+id+');" class="btn btn-danger">Ja, slett linjen</button>');
+
+			// Open modal
+			$('#deleteLineModal').modal("show");
+		}
+
+		function openEmbedModal(id) {
+			$('#embedBody').html('<p>Kopier følgende kode for å legge til denne turen på din nettside:</p><pre>&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+id+'/embed">&lt;/iframe&gt;</pre>');
+
+			// Open modal
+			$('#embedModal').modal("show");
+		}
+			
+
+		var point;
+		function openPointStyleEditor(id) {
+
+
+	        // Create new line object
+            point = new delturPoint();
+
+            // Init line
+            point.initWithId(id);
+
+            var interval = setInterval(function(){
+	            if(point.getStatus() === 1) {
+	            	// Update textarea with json data
+			        $('#marker-style').val(JSON.stringify(point.getStyle(), undefined, 2));
+
+	                 // Open modal
+			        $('#markerStyleEditor').modal("show");
+
+	                // Stop interval
+	                clearInterval(interval);
+            	}
+        	},500);
+
+	        
+	        
+	    }
+	    function savePointStyle() {
+	        point.setStyle(JSON.parse($('#marker-style').val()));
+	        renderTables(); // In case user changes title/description
+	    }
 
 		
 
