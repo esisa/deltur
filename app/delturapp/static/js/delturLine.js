@@ -33,18 +33,14 @@ var delturLine = function () {
     var id;
     var status = 0;
     var trip = L.geoJson();
+    var geo;
     var startMarker, endMarker;
 
     this.initWithId = function (_id) {
     	setId(_id);
         $.getJSON('/'+id+'/geojson', function (data) {
             geoObject = [data];
-            trip.addData(geoObject[0]);
-            /*trip = L.geoJson(geoObject[0], {
-                                onEachFeature: function (feature, layer) {
-                                    layer.bindPopup(getPopup());
-                                }
-                            });*/
+     
             downloadStyle();
         });
     	
@@ -65,7 +61,6 @@ var delturLine = function () {
 
                     $.getJSON('/'+id+'/geojson', function (data) {
                         geoObject = [data];
-                        trip.addData(geoObject[0]);
                         status = 1;
                     });
                     
@@ -161,6 +156,12 @@ var delturLine = function () {
         };
 
 		// Create geojson object, add to map and add line to it
+        trip = L.geoJson(geoObject[0], {
+            onEachFeature: function (feature, layer) {
+                if(style.popup.show)
+                    layer.bindPopup(getPopup());
+            }
+        });
 		trip.addTo(_map);
 		
         // Add label

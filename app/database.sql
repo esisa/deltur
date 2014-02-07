@@ -28,7 +28,7 @@ ALTER TABLE trips ADD COLUMN style_start_icon boolean;
 ALTER TABLE trips ADD COLUMN style_end_icon boolean;
 ALTER TABLE trips ADD COLUMN style_popup boolean;
 ALTER TABLE trips ADD COLUMN style_label_static boolean;
-ALTER TABLE trips ADD COLUMN style_label_text varchar(30);
+ALTER TABLE trips ADD COLUMN style_label_text varchar(300);
 ALTER TABLE trips ADD COLUMN userid int;
 ALTER TABLE trips ADD COLUMN plan varchar(50);
 ALTER TABLE ONLY trips ALTER COLUMN plan SET DEFAULT 'free';
@@ -43,6 +43,8 @@ ALTER TABLE ONLY trips ALTER COLUMN style_end_icon SET DEFAULT false;
 ALTER TABLE ONLY trips ALTER COLUMN style_popup SET DEFAULT false;
 ALTER TABLE ONLY trips ALTER COLUMN style_label_static SET DEFAULT false;
 ALTER TABLE ONLY trips ALTER COLUMN style_label_text SET DEFAULT '';
+ALTER TABLE ONLY trips ALTER COLUMN style_label_text SET DEFAULT '';
+ALTER TABLE ONLY trips ALTER COLUMN style_label_text type varchar(300);
 
 drop view if exists trips_v;
 create view trips_v as 
@@ -64,7 +66,7 @@ ALTER TABLE points ADD COLUMN markercolor varchar(20);
 ALTER TABLE points ADD COLUMN markersymbol varchar(30);
 ALTER TABLE points ADD COLUMN markerpopup boolean;
 ALTER TABLE points ADD COLUMN markerlabel_static boolean;
-ALTER TABLE points ADD COLUMN markerlabel_text varchar(30);
+ALTER TABLE points ADD COLUMN markerlabel_text varchar(300);
 ALTER TABLE points ADD COLUMN image_width int;
 ALTER TABLE points ADD COLUMN image_height int;
 ALTER TABLE ONLY points ALTER COLUMN title SET DEFAULT '';
@@ -82,6 +84,7 @@ ALTER TABLE points ADD COLUMN userid int;
 ALTER TABLE points ADD COLUMN plan varchar(50);
 ALTER TABLE ONLY points ALTER COLUMN plan SET DEFAULT 'free';
 ALTER TABLE ONLY points ALTER COLUMN userid SET DEFAULT null;
+ALTER TABLE ONLY points ALTER COLUMN markerlabel_text type varchar(300);
 
 
 

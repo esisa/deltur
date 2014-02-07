@@ -345,6 +345,7 @@ def setStyle(id):
         # Convert the JSON data into a Python structure
         data = json.loads(jsondata)
 
+
         if isPoint(id):
             sql_string = """update points set markercolor=%s, markerpopup=%s, markersymbol=%s, markerType=%s, 
                         markerlabel_static=%s, markerlabel_text=%s, url=%s, image_height=%s, image_width=%s,
@@ -468,12 +469,15 @@ def infokontakt():
 def adminIndex():
     return render_template('admin/index.html')
 @app.route('/admin/abbonement')
+@login_required
 def adminInvoice():
     return render_template('admin/invoice.html')
 @app.route('/admin/innstillinger')
+@login_required
 def adminSettings():
     return render_template('admin/settings.html')
 @app.route('/admin/turer')
+@login_required
 def adminTrips():
     return render_template('admin/trips.html')
 
