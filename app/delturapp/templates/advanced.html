@@ -712,9 +712,14 @@
 			},
 			edit: {
 				featureGroup: drawnItems,
+                edit: false,
                 remove: false
 			}
 		});
+        L.drawLocal.draw.toolbar.actions.cancel = "Avbryt";
+        L.drawLocal.edit.toolbar.actions.cancel = "Avbryt";
+        L.drawLocal.draw.toolbar.buttons.marker = "Legg til en markør";
+        L.drawLocal.draw.handlers.marker.tooltip.start = "Klikk i kartet for å plassere markøren";
     	map.addControl(drawControl);
 
 
