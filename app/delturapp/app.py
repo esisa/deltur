@@ -12,6 +12,7 @@ from jinja2 import TemplateNotFound
 from flask.ext.security import Security, PeeweeUserDatastore, UserMixin, RoleMixin, login_required
 from flask.ext.security import *
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask_mail import Mail
 
 import gpxpy
 import gpxpy.gpx
@@ -38,9 +39,19 @@ app.secret_key = '....'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://deltur:dsfdsfdsdeltsur._01@localhost:5432/deltur'
 app.config['SECURITY_TRACKABLE'] = True
 app.config['SECURITY_REGISTERABLE'] = True
+app.config['SECURITY_RECOVERABLE'] = False #Reset password
+app.config['SECURITY_CHANGEABLE'] = False #Change password
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 app.config['SECURITY_PASSWORD_HASH'] = "bcrypt"
 app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$byc5TEXXKHqMIP9inxqnQO'
+#app.config['MAIL_SERVER'] = 'smtp.mandrillapp.com'
+#app.config['MAIL_PORT'] = 587
+#app.config['MAIL_USE_SSL'] = False
+#app.config['MAIL_USERNAME'] = 'espen@kresendo.no'
+#app.config['MAIL_PASSWORD'] = 'tnrGGTWmlGS5Gc6AQSnZYg'
+#mail = Mail(app)
+
+
 
 #app.messages['USER_DOES_NOT_EXIST'] = 'Det finnes ikke noe bruker med denne e-post adressen'
 
