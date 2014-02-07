@@ -366,10 +366,10 @@
 
 				$.each(json, function(i, data){
 
-					var edit = '<a class="btn btn-small" onClick="openLineStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Edit"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteLineModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Delete"><i class="fa fa-eraser fa-lg"></i></a>';
+					var edit = '<a class="btn btn-small" onClick="openLineStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteLineModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
 					edit += '<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
-					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
-					edit += '<a class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
+					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
+					edit += '<a  class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
 
 					$("#lines").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
 
@@ -379,16 +379,22 @@
 			$.getJSON( "/points", function( json ) {
 				$.each(json, function(i, data){
 
-					var edit = '<a class="btn btn-small" onClick="openPointStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Edit"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeletePointModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Delete"><i class="fa fa-eraser fa-lg"></i></a>';
+					var edit = '<a class="btn btn-small" onClick="openPointStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeletePointModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
 					edit += '<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
-					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
+					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
 					edit += '<a class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
 
 
 					$("#points").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
 
 				});
+				
+				// Activate tooltip
+				$('.btn').tooltip();
+
 			});
+
+	
 		}
 		
 
