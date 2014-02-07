@@ -262,7 +262,7 @@
         
         <div id="enkelTur">
             <!-- Vises på vanlig desktop -->
-            <input id="dd" type="filepicker" name="myName" data-fp-maxSize="10485760"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX(event.fpfile.url);" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE,URL" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
+            <input id="dd" type="filepicker" name="myName" data-fp-maxSize="1048576"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX(event.fpfile.url);" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE,URL" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
         </div>
         <div id="line-style-link"><a href="javascript:void(0)">Editer visning av linje</a></div>
         <textarea id="line-style" class="form-control" rows="7">
@@ -642,19 +642,32 @@
     
         var imgNum = 1; // Used as id on images
         $('#addImg').click(function () {
+
+            // Check how many images we have room for
+            /*var pageWidth = $('.form-signin').width();
+            var numberOfImagesInStack = $('.imageStack').length;
+            var imgWidth = 166;
+            var maxImages = (pageWidth-(numberOfImagesInStack+1)*imgWidth)/imgWidth-2;*/
             
             filepicker.pickAndStore(
                 {
                     mimetype:"image/*",
                     services:['COMPUTER', 'FACEBOOK', 'DROPBOX', 'GOOGLE_DRIVE',  'FLICKR', 'PICASA', 'INSTAGRAM', 'URL'],
+                    multiple: true,
+                    maxFiles: 3,
+                    maxSize: 3145728
                 },
                 {location:"S3", access: 'public'}, 
                 function(fpfiles){
-                    console.log(JSON.stringify(fpfiles));
+                    //console.log(JSON.stringify(fpfiles));
                     
-                    // Add to list
-                    $('#da-thumbs').prepend('<li class="imageStack" id="imageNum'+imgNum+'"><a class="img" href="javascript:void(0)"><img id="imageNum'+imgNum+'" src="'+fpfiles[0].url+'"  width="166" height="120" /><div><span>Klikk for å plassere i kartet</span></div></a></li>');
-                    imgNum++;
+                    $.each(fpfiles, function(index, file) {
+                        // Add to list
+                        $('#da-thumbs').prepend('<li class="imageStack" id="imageNum'+imgNum+'"><a class="img" href="javascript:void(0)"><img id="imageNum'+imgNum+'" src="'+file.url+'"  width="166" height="120" /><div><span>Klikk for å plassere i kartet</span></div></a></li>');
+                        imgNum++;
+                    });
+                    
+
                     setImageOnClick();
 
                     showRemoveAddImageElement();
@@ -769,7 +782,7 @@
         * Function to check if the image add symbol should be shown or not
         */
         function showRemoveAddImageElement() {
-            var pageWidth = document.body.clientWidth;
+            var pageWidth = $('.form-signin').width();
             var numberOfImagesInStack = $('.imageStack').length;
             var imgWidth = 166;
             if(pageWidth-(numberOfImagesInStack+1)*imgWidth< 150 ) {
