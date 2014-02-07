@@ -9,8 +9,6 @@ from flask import abort
 from werkzeug import secure_filename
 from werkzeug.routing import BaseConverter
 from jinja2 import TemplateNotFound
-from flask_peewee.db import Database
-from peewee import *
 from flask.ext.security import Security, PeeweeUserDatastore, UserMixin, RoleMixin, login_required
 from flask.ext.security import *
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -80,6 +78,7 @@ class User(db.Model, UserMixin):
     last_login_ip = db.Column(db.String(255))
     current_login_ip = db.Column(db.String(255))
     login_count = db.Column(db.Integer)
+    plan = db.Column(db.String(255))
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
@@ -602,16 +601,26 @@ def getPointMetadataFromDB(id):
     
     sql_string = """Select url, description, title, markerType, markersymbol, 
                     markerpopup, markerlabel_static, markerlabel_text, image_height, 
-                    image_width, st_x(geo), st_y(geo), markercolor from points where id=%s"""
+                    image_width, st_x(geo), st_y(geo), markercolor, 45-(now()::date-dato::date) as lifespan, userid 
+                    from points where id=%s"""
     #print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();
-    
+
+    # Check remaining days
+    remaining_days = res[13]
+    sql_check_plan = 'select plan from "user" where id=%s'
+    cursor.execute(sql_check_plan, (res[14],))
+    userPlan = cursor.fetchone()
+    if userPlan[0] != "free":
+        remaining_days = -1
+
     data = {
             'id': id,
             'lat': res[11],
             'lon': res[10],
+            'remaining_days': remaining_days,
             'style': {
                 'markercolor': res[12],
                 'markerType':res[3],
@@ -647,14 +656,23 @@ def getLineMetadataFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_text from trips where id=%s"
+    sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_text, 45-(now()::date-dato::date) as lifespan, userid  from trips where id=%s"
 
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();
+
+    # Check remaining days
+    remaining_days = res[9]
+    sql_check_plan = 'select plan from "user" where id=%s'
+    cursor.execute(sql_check_plan, (res[10],))
+    userPlan = cursor.fetchone()
+    if userPlan[0] != "free":
+        remaining_days = -1
     
     data = {
             'id': id,
+            'remaining_days': remaining_days,
             'style': {
                 'popup': {
                     'show':res[7],
