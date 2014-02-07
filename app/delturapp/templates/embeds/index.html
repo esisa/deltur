@@ -171,7 +171,7 @@
                         if(line.getStatus() === 1) {
                             line.renderToMap(map);
                             featureBounds.extend(line.getBounds());
-                            map.fitBounds(featureBounds);
+                            map.fitBounds(featureBounds.pad(0.1));
                             
                             // Stop interval
                             clearInterval(interval);
@@ -196,7 +196,7 @@
                         if(point.getStatus() === 1) {
                             point.renderToMap(map);
                             featureBounds.extend(point.getPoint());
-                            map.fitBounds(featureBounds);
+                            map.fitBounds(featureBounds.pad(0.1));
                             
                             // Stop interval
                             clearInterval(interval);
