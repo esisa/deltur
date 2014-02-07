@@ -28,6 +28,23 @@
 
   <body>
 
+  	<div id="deleteHashModal"  class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Slette sammensatt kart</h3>
+                </div>
+                <div id="deleteHashBody" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn" data-dismiss="modal" >Avbryt</a>
+                </div>
+            </div>
+        </div>
+    </div>	
+
   	<div id="deleteLineModal"  class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -114,7 +131,7 @@
                  <textarea id="line-style" class="form-control" rows="7" cols="40" style="font-size: 16px; width: 500px; height: 150px;">
                 </textarea>
 
-                <p><a href="http://localhost:5000/info/api#line_param" target="_new">Beskrivelse av feltene</a></p>
+                <p><a href="http://localhost:5000/info/api#linje_param" target="_new">Beskrivelse av feltene</a></p>
 
              </div>
              <div class="modal-footer">
@@ -225,14 +242,14 @@
 							<h3>Kart</h3>
 						</div>
 						<div class="widget-content nopadding">
-							<table class="table table-bordered table-striped" >
+							<table id="hashes" class="table table-bordered table-striped" >
 								  <caption></caption>
 								  <thead>
 									<tr>
 									  <th class="col-md-1">Hash</th>
-									  <th>Forhåndsvisning</th>
 									  <th>Sammensatt av</th>
-									  <th>Actions</th>
+									  <th>Opprettet</th>
+									  <th>Funksjoner</th>
 									</tr>
 								  </thead>
 								  <tbody>
@@ -245,7 +262,7 @@
 					<div class="tab-pane" id="linjer">
 						<div class="widget">
 						<div class="widget-header">
-							<i class="icon-th icon-style"></i>
+							<i class="fa fa-minus icon-style"></i>
 							<h3>Linjer</h3>
 						</div>
 						<div class="widget-content nopadding">
@@ -256,8 +273,8 @@
 									  <th>Id</th>
 									  <th>Tittel</th>
 									  <th>Beskrivelse</th>
-									  <th>Dato</th>
-									  <th></th>
+									  <th>Opprettet</th>
+									  <th>Funksjoner</th>
 									</tr>
 								  </thead>
 								  <tbody>
@@ -270,7 +287,7 @@
 					<div class="tab-pane" id="punkter">
 						<div class="widget">
 						<div class="widget-header">
-							<i class="icon-th icon-style"></i>
+							<i class="fa fa-circle icon-style"></i>
 							<h3>Punkter</h3>
 						</div>
 						<div class="widget-content nopadding">
@@ -281,8 +298,8 @@
 									  <th>Id</th>
 									  <th>Tittel</th>
 									  <th>Beskrivelse</th>
-									  <th>Dato</th>
-									  <th></th>
+									  <th>Opprettet</th>
+									  <th>Funksjoner</th>
 									</tr>
 								  </thead>
 								  <tbody>
@@ -361,15 +378,40 @@
 			$("#points tbody").remove();
 
 			// Populate tables
+
+			$.getJSON( "/hashes", function( json ) {
+				
+
+				$.each(json, function(i, data){
+
+					
+					var edit = '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteHashModal(&quot;'+data.hash+'&quot;)" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
+					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal(&quot;'+data.hash+'&quot;)" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
+					edit += '&nbsp;<a class="btn btn-small" href="/'+data.hash+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
+					
+
+					var ids = "";
+					var idArray = data.ids.split("+");
+					$.each(idArray, function(index, id){ 
+						ids += "<a href='/"+id+"'>" +id + "</a>+"
+					});
+					ids = ids.substring(0, ids.length - 1); // Delete last pluss sign
+
+					$("#hashes").append("<tr><td><a href='/"+data.hash+"'>"+data.hash+"</a></td><td>"+ids+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+
+				});
+			});
+
 			$.getJSON( "/lines", function( json ) {
 				
 
 				$.each(json, function(i, data){
 
-					var edit = '<a class="btn btn-small" onClick="openLineStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteLineModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
-					edit += '<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
-					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
-					edit += '<a  class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
+					var edit = '&nbsp;<a class="btn btn-small" onClick="openLineStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a>'
+					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteLineModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
+					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
+					edit += '&nbsp;<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
+					edit += '&nbsp;<a  class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
 
 					$("#lines").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
 
@@ -379,10 +421,11 @@
 			$.getJSON( "/points", function( json ) {
 				$.each(json, function(i, data){
 
-					var edit = '<a class="btn btn-small" onClick="openPointStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a><a class="btn btn-small" href="javascript:void(0)" onClick="opendeletePointModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
-					edit += '<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
-					edit += '<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
-					edit += '<a class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
+					var edit = '&nbsp;<a class="btn btn-small" onClick="openPointStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a>'
+					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="opendeletePointModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
+					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
+					edit += '&nbsp;<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
+					edit += '&nbsp;<a class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
 
 
 					$("#points").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
@@ -412,6 +455,12 @@
 		}
 
 
+		function deleteHash(hasg) {
+			$('#deleteHashModal').modal("hide");
+			alert("Denne funksjonen er foreløpig ikke implementert.")
+		}
+
+
         function opendeletePointModal(id) {
 			$('#deletePointBody').html('<p>Ønsker du virkelig å slette dette punktet?</p><button type="button" onClick="deleteFeature('+id+');" class="btn btn-danger">Ja, slett punktet</button>');
 
@@ -424,6 +473,13 @@
 
 			// Open modal
 			$('#deleteLineModal').modal("show");
+		}
+
+		function opendeleteHashModal(hash) {
+			$('#deleteHashBody').html('<p>Ønsker du virkelig å slette dette kartet? Du kan velge å kun slette det sammensatte kartet. Eller slette både det sammensatte kartet og linjer/punkter som dette kartet består av. </p><button type="button" onClick="deleteHash(&quot;'+hash+'&quot;);" class="btn btn-danger">Slett kun kartet</button>&nbsp;<button type="button" onClick="deleteHash(&quot;'+hash+'&quot;);" class="btn btn-danger">Slett kartet og linjer/punkter</button>');
+
+			// Open modal
+			$('#deleteHashModal').modal("show");
 		}
 
 		function openEmbedModal(id) {

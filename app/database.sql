@@ -90,5 +90,13 @@ ALTER TABLE "user" ADD COLUMN plan varchar(50);
 ALTER TABLE ONLY "user" ALTER COLUMN plan SET DEFAULT 'free';
 
 
-
+drop table if exists hash;
+create table hash(
+    id serial NOT NULL,
+    hash varchar(50) not null,
+    ids varchar(300) not null,
+    userid int not null,
+    dato timestamp,
+    unique (hash, userid)
+);
 

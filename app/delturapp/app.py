@@ -26,7 +26,7 @@ import requests
 import urllib
 from markupsafe import Markup
 
-from flask_shorturl import ShortUrl
+import hashlib
 
 pg_db = "deltur"
 pg_host = "localhost"
@@ -226,6 +226,35 @@ def getTripGPX(id):
         except:
             return "Error"
 
+@app.route('/hashes')
+@login_required
+def getAllHashes():
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
+    sql_string = """select hash, ids, dato::date as dato from hash where userid=%s order by id"""
+    #print sql_string , current_user.id
+    cursor.execute(sql_string, [current_user.id],)
+
+    hashes = cursor.fetchall()
+    conn.commit();
+    
+    data = []
+    for hash in hashes:
+        data.append({
+                'hash': hash[0],
+                'ids': hash[1],
+                'date': str(hash[2]),
+            })
+    js = json.dumps(data)
+    
+    resp = Response(js, status=200, mimetype='application/json')
+    
+    return resp
+
 @app.route('/lines')
 @login_required
 def getAllLines():
@@ -294,11 +323,35 @@ def getAllPoints():
 
 @app.route('/hash/<regex("[0-9+]+"):ids>')
 def hashTrip(ids):
-    idset = ids.split("+")
-    su = ShortUrl(app)
-    url = su.encode_url(10,10)
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
 
-    return url
+    hash = hashlib.md5(ids).hexdigest()
+
+    cursor = conn.cursor()
+
+    try:
+        sql_string = "insert into hash (hash, ids, userid, dato) VALUES(%s,%s,%s, now())"
+        cursor.execute(sql_string, (hash, ids, current_user.id,))
+        conn.commit();
+        conn.close()
+
+        data = {
+                    'hash'  : hash
+                }
+    except: # Hash already in table
+        data = {
+                    'hash'  : hash
+                }
+       
+    js = json.dumps(data)
+
+    resp = Response(js, status=200, mimetype='application/json')
+
+    return resp
+
 
 @app.route('/<regex("[0-9]+"):id>', methods=['DELETE'])
 @login_required
@@ -307,7 +360,7 @@ def deleteTrip(id):
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
-            
+        
     cursor = conn.cursor()
 
     if isPoint(id):
@@ -445,7 +498,24 @@ def getTripHTML(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
     return render_template('tur.html', mapType=map, idList=ids)
 
+# Hash input
+@app.route('/<regex("[a-z0-9]+"):hash>')
+@app.route('/<regex("[a-z0-9]+"):hash>/<string:mapType>')
+def getTripHTMLByHash(hash, mapType='topokart'):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
 
+    sql_string = "select ids from hash where hash=%s"
+    cursor.execute(sql_string, (hash,))
+    idString = cursor.fetchone()[0]
+    conn.commit();
+
+    map = mapTypesList.index(mapType)
+    return render_template('tur.html', mapType=map, idList=idString)
     
 @app.route('/<regex("[0-9+]+"):ids>/embed')
 @app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>')
@@ -461,6 +531,31 @@ def getTripEmbed(ids, mapType='topokart'):
     else:
         return render_template('embeds/index.html', mapType=map, idList=ids)
 
+@app.route('/<regex("[a-z0-9]+"):hash>/embed')
+@app.route('/<regex("[a-z0-9]+"):hash>/embed/<string:mapType>')
+def getTripEmbedByHash(hash, mapType='topokart'):
+    map = mapTypesList.index(mapType)
+
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    sql_string = "select ids from hash where hash=%s"
+    cursor.execute(sql_string, (hash,))
+    idString = cursor.fetchone()[0]
+    conn.commit();
+
+    embedType = request.args.get('embedType', '')
+    if embedType != '':
+        try:
+            return render_template('embeds/' + embedType + '.html', mapType=map, idList=idString)
+        except TemplateNotFound:
+            return render_template('404.html'), 404
+    else:
+        return render_template('embeds/index.html', mapType=map, idList=idString)
 
 @app.route('/del/kml/', methods = ['POST'])
 def createKMLTrip():

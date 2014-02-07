@@ -372,6 +372,18 @@
         // Get list of ids and split to array
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
+
+
+        {% if current_user.is_authenticated() %}
+            var hash;
+            // Automatically create a hash if more than one id
+            if(ids.length>1) {
+                $.getJSON( "/hash/" + "{{idList}}" , function( json ) {
+                    hash = json.hash;
+                });
+            }
+        {% endif %}
+        
         
         
         var geoObject;
