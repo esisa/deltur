@@ -280,7 +280,8 @@
         </div>
         
         <br>
-        
+
+    
         <div id="chart_container">
             <div id="y_axis"></div>
             <div id="chart"></div>
@@ -290,6 +291,11 @@
             </div>
             <div id="slider"></div>
         </div>
+
+        <div id="formerNextElevProfileButtons" style="color:F8F8F8; font-size: 12px; float:right;">
+            <a href="javascript:void(0)" onClick="showFormerElevProfile();"><i class="fa fa-chevron-left"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)" onClick="showNextElevProfile();"><i class="fa fa-chevron-right"></i></a>
+        </div>  
+        
         
         <div style="color:F8F8F8; font-size: 12px;">
             Utviklet av <a href="http://www.kresendo.no">kresendo.no</a>
@@ -394,6 +400,7 @@
         var featureBounds = new L.LatLngBounds();
         var imgMarker;
         var numMarkers = 0;
+        var currentElevProfile;
             
         // Loop through ids and draw on map    
         $.each(ids, function(index, value) {
@@ -491,26 +498,13 @@
                     // TODO: Remove when only point
 
                     //debugger;
-                     var intervalProfile = setInterval(function(){
-                        if(lines[0].getStatus() === 1) {
-                            $.ajax({
-                                  url: "/elev/elevationprofile.json",
-                                  dataType: 'json',
-                                  type: 'post',
-                                  contentType: "application/json",
-                                  data: JSON.stringify(lines[0].getGeom()),
-                                  success: setElevationProfile
-                            });
-                            
-                            // Stop interval
-                            clearInterval(intervalProfile);
-                        }
-                    },100);
-            
+                    currentElevProfile = 0
+                    getElevationProfile(); 
                     
-            
-           
-            
+                }
+                else if(numLines>1) {
+                    // Show buttons for switching elev profile
+                    $('#formerNextElevProfileButtons').show();
                 }
                 
                 // TODO: Rewrite
@@ -541,8 +535,31 @@
         
         });
 
+    function showNextElevProfile() {
+        currentElevProfile = currentElevProfile + 1;
+    }
+    function showFormerElevProfile() {
+        currentElevProfile = currentElevProfile - 1;
+    }
         
-    
+    function getElevationProfile() {
+
+         var intervalProfile = setInterval(function(){
+            if(lines[currentElevProfile].getStatus() === 1) {
+                $.ajax({
+                      url: "/elev/elevationprofile.json",
+                      dataType: 'json',
+                      type: 'post',
+                      contentType: "application/json",
+                      data: JSON.stringify(lines[0].getGeom()),
+                      success: setElevationProfile
+                });
+                
+                // Stop interval
+                clearInterval(intervalProfile);
+            }
+        },100);
+    }
     
    
     var graphData = new Array();

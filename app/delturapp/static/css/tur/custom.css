@@ -95,6 +95,10 @@
             height: 500px;
         }
 
+        #formerNextElevProfileButtons {
+            display: none;
+        }
+
 
         #mobile {
             display: none;
