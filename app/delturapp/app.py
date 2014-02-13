@@ -437,7 +437,12 @@ def createPoint(request, lon, lat):
 def addImage():
     increaseNumImages(current_user.id)
     resp = Response('', status=200, mimetype='application/json')
-    
+    return resp
+
+@app.route('/del/addMapviewCount/<regex("[0-9+]+"):ids>', methods=['GET'])
+def addMapview(ids):
+    increaseNumMapviews(ids)
+    resp = Response('', status=200, mimetype='application/json')
     return resp
  
 @app.route('/delturno/gpx', methods = ['POST'])
@@ -999,3 +1004,26 @@ def increaseNumImages(id):
     sql_string = "update \"user\" set images=images+1 where id=%s"
     cursor.execute(sql_string, (id,))
     conn.commit();
+
+def increaseNumMapviews(idString):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    userids = []
+    ids = idString.split("+")
+    for id in ids:
+        if isPoint(id):
+            sql_string = "select userid from points where id=%s"
+        else:
+            sql_string = "select userid from trips where id=%s"                    
+        cursor.execute(sql_string, (id,))
+        userids.append(cursor.fetchone()[0])
+
+    for userid in set(userids):
+        sql_string = "update \"user\" set mapviews=mapviews+1 where id=%s"
+        cursor.execute(sql_string, (userid,))
+        conn.commit();

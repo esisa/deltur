@@ -383,6 +383,11 @@
         var ids = "{{idList}}".split("+");
 
 
+        // Increase mapview in database
+        $.getJSON( "/del/addMapviewCount/" + "{{idList}}" , function( json ) {
+        });
+
+
         {% if current_user.is_authenticated() %}
             var hash;
             // Automatically create a hash if more than one id
