@@ -231,11 +231,12 @@
         	    <ul class="nav nav-tabs">
 				    <li><a href="#kart" data-toggle="tab">Kart</a></li>
 				    <li><a href="#linjer" data-toggle="tab">Linjer</a></li>
-				    <li><a href="#punkter" data-toggle="tab">Punkter</a></li>
+				    <li><a href="#punkter" data-toggle="tab">Markører</a></li>
 				</ul>
 
 				<div class="tab-content">
 					<div class="tab-pane active" id="kart">
+						<p>Et kart består av en rekke linjer og markører. Hvis du deler en tur med flere markører/linjer så blir det automatisk laget et kart for disse elementene.</p>
 						<div class="widget">
 						<div class="widget-header">
 							<i class="fa fa-picture-o icon-style"></i>
@@ -288,7 +289,7 @@
 						<div class="widget">
 						<div class="widget-header">
 							<i class="fa fa-circle icon-style"></i>
-							<h3>Punkter</h3>
+							<h3>Markører</h3>
 						</div>
 						<div class="widget-content nopadding">
 							<table id="points" class="table table-bordered table-striped" >
@@ -374,6 +375,7 @@
 		function renderTables() {
 
 			// Clear all tables
+			$("#hashes tbody").remove();
 			$("#lines tbody").remove();
 			$("#points tbody").remove();
 
@@ -455,10 +457,18 @@
 		}
 
 
-		function deleteHash(hasg) {
+		function deleteHash(hash, cascade) {
 			$('#deleteHashModal').modal("hide");
-			alert("Denne funksjonen er foreløpig ikke implementert.")
+			$.ajax({
+			    url: '/' + hash + '?cascade=' + cascade,
+			    type: 'DELETE',
+			    success: function(result) {
+			        renderTables();
+			    }
+			});
 		}
+
+
 
 
         function opendeletePointModal(id) {
@@ -476,7 +486,7 @@
 		}
 
 		function opendeleteHashModal(hash) {
-			$('#deleteHashBody').html('<p>Ønsker du virkelig å slette dette kartet? Du kan velge å kun slette det sammensatte kartet. Eller slette både det sammensatte kartet og linjer/punkter som dette kartet består av. </p><button type="button" onClick="deleteHash(&quot;'+hash+'&quot;);" class="btn btn-danger">Slett kun kartet</button>&nbsp;<button type="button" onClick="deleteHash(&quot;'+hash+'&quot;);" class="btn btn-danger">Slett kartet og linjer/punkter</button>');
+			$('#deleteHashBody').html('<p>Ønsker du virkelig å slette dette kartet? <p>Merk at alle linjer og markører som kartet består av vil ikke bli slettet.</p>  <!--Du kan velge å kun slette det sammensatte kartet. Eller slette både det sammensatte kartet og linjer/markører som dette kartet består av. --></p><button type="button" onClick="deleteHash(&quot;'+hash+'&quot;, false);" class="btn btn-danger">Slett kartet</button>&nbsp;<!--button type="button" onClick="deleteHash(&quot;'+hash+'&quot;, true);" class="btn btn-danger">Slett kartet og linjer/markører</button-->');
 
 			// Open modal
 			$('#deleteHashModal').modal("show");

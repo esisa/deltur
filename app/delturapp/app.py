@@ -376,6 +376,33 @@ def deleteTrip(id):
     
     return resp
 
+@app.route('/<regex("[a-z0-9]+"):hash>', methods=['DELETE'])
+@login_required
+def deleteHash(hash):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+
+    cursor = conn.cursor()
+
+    cascade = request.args.get('cascade', '')
+    if cascade is not None:
+        sql_string = "select ids from hash where hash=%s"
+        cursor.execute(sql_string, (hash,))
+        idsString = cursor.fetchone()[0]
+        ids = idsString.split("+")
+        for id in ids:
+            deleteTrip(id)
+    
+    sql_string = "DELETE FROM hash where hash=%s"
+    cursor.execute(sql_string, (hash,))
+    conn.commit();
+
+    resp = Response('', status=200, mimetype='application/json')
+    
+    return resp
+
 
 @app.route('/del/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])
 def createPointJSON(lon=10, lat=60):
