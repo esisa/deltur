@@ -246,9 +246,7 @@
             text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
         }
 
-        #line-style {
-            display: none;
-        }
+
         #line-style-link {
             display: none;
             text-align: center; 

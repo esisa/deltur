@@ -35,6 +35,8 @@ var delturLine = function () {
     var trip = L.geoJson();
     var geo;
     var startMarker, endMarker;
+    var custom_popup_footer = "";
+    var geoObject;
 
     this.initWithId = function (_id) {
     	setId(_id);
@@ -46,7 +48,39 @@ var delturLine = function () {
     	
     };
 
-    this.init = function (_url) {  //public
+    this.initWithGeo = function (_geo, _title, _description) {
+        style.popup.title = _title;
+        style.popup.description = _description;
+        geoObject =  _geo ;
+
+        //Upload to deltur.no/del/gpx
+        $.ajax({
+          type: "POST",
+          url: "/del/geojson",
+          data: JSON.stringify(geoObject[0]),
+          success: function (response) {
+                id = response.id;
+
+                uploadStyle();
+                //downloadStyle();
+            },
+            error: function (response) {
+              status = -1; // Error in uploaded file
+            },
+          contentType: "application/json",
+          dataType: "json"
+        });
+
+
+        
+ 
+        
+        
+    };
+
+    this.init = function (_url, _title, _description) {  //public
+        style.popup.title = _title;
+        style.popup.description = _description;
 
         var fpfile = {url: _url, filename: 'hello.txt', mimetype: 'text/plain', isWriteable: false, size: 100};
         filepicker.read(fpfile, function(data){
@@ -76,7 +110,7 @@ var delturLine = function () {
     };
 
     var getPopup = function() { //private
-        return '<h3 id="popupText_title">'+style.popup.title+'</h3><div id="popupText_description">' + style.popup.description + '</div>'
+        return '<h3 id="popupText_title">'+style.popup.title+'</h3><div id="popupText_description">' + style.popup.description + '</div>' + custom_popup_footer;
     }
 
     var setId = function(_id) { //private
@@ -117,10 +151,10 @@ var delturLine = function () {
     };
 
     this.getGeom = function () {  //public
-        $.getJSON('/'+id+'/geojson', function (data) {
+        /*$.getJSON('/'+id+'/geojson', function (data) {
     		geoObject = [data];
     		
-    	});
+    	});*/
     	return geoObject[0];
     };
 
@@ -147,6 +181,10 @@ var delturLine = function () {
         return trip.getBounds();
     }
 
+    this.addCustomPopupFooter = function (_custom_popup_footer) {  //public
+        custom_popup_footer = _custom_popup_footer;
+    }
+
     var addToMap = function (_map) {  // private
 
     	var lineStyle = {
@@ -160,8 +198,11 @@ var delturLine = function () {
             onEachFeature: function (feature, layer) {
                 if(style.popup.show)
                     layer.bindPopup(getPopup());
+                else if(custom_popup_footer != "") // Only show popup in edit mode
+                    layer.bindPopup('<p>Popup vil ikke vises i ferdig tur.</p>' + custom_popup_footer);
             }
         });
+
 		trip.addTo(_map);
 		
         // Add label
@@ -199,7 +240,7 @@ var delturLine = function () {
           url: "/"+id+"/setStyle",
           data: JSON.stringify(style),
           success: function (response) {
-                
+                status = 1;
             },
             error: function (response) {
               

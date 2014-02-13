@@ -80,6 +80,7 @@
         });
 
     </script>
+    <script src="//tomodo-tools.s3.amazonaws.com/tomodo.korz-0.5.js"></script>
   
   </head>
   
@@ -239,9 +240,9 @@
             <span class="hint--top" data-hint="Legg kartet på eget nettsted">
                 <a id="embedButton" style="text-decoration: none;" data-toggle="modal" href="#embedModal"><i class="fa fa-map-marker"></a></i>&nbsp;
             </span>
-            <!--span class="hint--top" data-hint="Legg ned kartet som et bilde">
+            <span class="hint--top" data-hint="Legg ned kartet som et bilde">
                 <a onClick="createImg()" id="embedButton" style="text-decoration: none;" data-toggle="modal" href="javacript:void(0)"><i class="fa fa-picture-o"></a></i>&nbsp;
-            </span-->
+            </span>
         </div>
 
 
@@ -421,16 +422,17 @@
                     line.initWithId(id);
 
                     // Check when the line is ready for use
-                    var interval = setInterval(function(){
+                    //debugger;
+                    var intervalLine = setInterval(function(){
                         if(line.getStatus() === 1) {
                             line.renderToMap(map);
                             featureBounds.extend(line.getBounds());
                             map.fitBounds(featureBounds.pad(0.1));
                             
                             // Stop interval
-                            clearInterval(interval);
+                            clearInterval(intervalLine);
                         }
-                    },100);
+                    },1000);
 
                     
                     // Add to select box for download
@@ -459,14 +461,15 @@
                     point.initWithId(id);
 
                     // Check when the point is ready for use
-                    var interval = setInterval(function(){
+                    //debugger;
+                    var intervalPoint = setInterval(function(){
                         if(point.getStatus() === 1) {
                             point.renderToMap(map);
                             featureBounds.extend(point.getPoint());
                             map.fitBounds(featureBounds.pad(0.1));
                             
                             // Stop interval
-                            clearInterval(interval);
+                            clearInterval(intervalPoint);
                         }
                     },100);
 
@@ -486,15 +489,25 @@
                 if(numLines==1) {
                     // Request elevation profile
                     // TODO: Remove when only point
+
+                    //debugger;
+                     var intervalProfile = setInterval(function(){
+                        if(lines[0].getStatus() === 1) {
+                            $.ajax({
+                                  url: "/elev/elevationprofile.json",
+                                  dataType: 'json',
+                                  type: 'post',
+                                  contentType: "application/json",
+                                  data: JSON.stringify(lines[0].getGeom()),
+                                  success: setElevationProfile
+                            });
+                            
+                            // Stop interval
+                            clearInterval(intervalProfile);
+                        }
+                    },100);
             
-                    $.ajax({
-                          url: "/elev/elevationprofile.json",
-                          dataType: 'json',
-                          type: 'post',
-                          contentType: "application/json",
-                          data: JSON.stringify(lines[0].getGeom()),
-                          success: setElevationProfile
-                    });
+                    
             
            
             

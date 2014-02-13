@@ -123,6 +123,9 @@
 
     <!-- Placeholder for the current marker being edited -->
     <div id="currentMarker"></div>
+
+    <!-- Placeholder for the current line being edited -->
+    <div id="currentLine"></div>
       
       <div id="imageNotification">
         <p>Klikk i kartet hvor bildet er tatt. </p>
@@ -191,12 +194,13 @@
           <div class="modal-content">
              <div class="modal-header">
                <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button-->
-               <h3>Stedsinformasjon</h3>
+               <h3>Markørinformasjon</h3>
              </div>
              <div class="modal-body">
+               <p>Tittel og beskrivelse vil bli lagt til i popup-boksen som kan aktiveres når trykker på linja. Er du registrert 
+                vil du også se disse beskrivelsene i ditt adminpanel.  <br><br></p>
                
-               
-                 <form class="form-horizontal" role="form">
+                 <form id="markerInfo" class="form-horizontal" role="form">
 
                   <div class="form-group">
                     <label for="inputTittel" class="col-sm-2 control-label">Tittel</label>
@@ -214,6 +218,39 @@
              </div>
              <div class="modal-footer">
                <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-primary">Lagre</a>
+             </div>
+           </div>    
+        </div>
+    </div> 
+
+    <div id="lineInfo" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+               <!--button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button-->
+               <h3>Linjeinformasjon</h3>
+             </div>
+             <div class="modal-body">
+               <p>Hvis du fyller inn tittel og beskrivelse så blir det lettere å finne igjen turen seinere i admin-panelet. Tittel og beskrivelse kan også bl lagt til i popup-boksen som vises når du trykker på markøren.<br><br></p>
+               
+                 <form id="lineInfo" class="form-horizontal" role="form">
+
+                  <div class="form-group">
+                    <label for="inputLineTittel" class="col-sm-2 control-label">Tittel</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="inputLineTittel" placeholder="Tittel">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputLineBeskrivelse" class="col-sm-2 control-label">Beskrivelse</label>
+                    <div class="col-sm-10">
+                      <textarea id="inputLineBeskrivelse" class="form-control" rows="3"></textarea>
+                    </div>
+                  </div>
+                 </form>
+             </div>
+             <div class="modal-footer">
+               <a href="#" id="lagreLineButton" data-dismiss="modal" class="btn btn-primary">Lagre</a>
              </div>
            </div>    
         </div>
@@ -241,6 +278,28 @@
         </div>
     </div> 
 
+    <div id="lineStyleEditor" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h3>Editor</h3>
+             </div>
+             <div class="modal-body">
+               
+                 <textarea id="line-style" class="form-control" rows="7">
+                </textarea>
+
+                <p><a href="/info/api#linje_param" target="_new">Beskrivelse av feltene</a></p>
+
+             </div>
+             <div class="modal-footer">
+               <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-success" onClick="saveLineStyle();">Lagre</a>
+             </div>
+           </div>    
+        </div>
+    </div>
+
       
              
 
@@ -264,16 +323,7 @@
             <!-- Vises på vanlig desktop -->
             <input id="dd" type="filepicker" name="myName" data-fp-maxSize="1048576"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url; addGPX(event.fpfile.url);" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE,URL" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Legg til GPS-fil..." data-fp-button-class="btn btn-primary"/>
         </div>
-        <div id="line-style-link"><a href="javascript:void(0)">Editer visning av linje</a></div>
-        <textarea id="line-style" class="form-control" rows="7">
-        </textarea>
-        <div id="line-style-hide-element"><p>
-            <a href="/info/api#linje_param" target="_new">Beskrivelse av feltene</a>
-            <br>
-            <a id="line-style-hide-link" href="javascript:void(0)">Skjul editering</a></div>
-        <div id="line-style-save-button">
-            <button type="button" class="btn btn-success" onClick="saveLineStyle();">Oppdater</button>
-        </div>
+        
         
         <div id ="gpxSpinner" style="margin-bottom: 30px;"></div>
         
@@ -405,38 +455,57 @@
                       left: 'auto' // Left position relative to parent in px
                     };
 
-        // Remove button to upload another GPX file            
-        $('#enkelTur').hide();
+        // Open modal
+        $('#lineInfo').modal();
 
-        // Show spinner while adding file
-        spinner = new Spinner(opts).spin(document.getElementById('gpxSpinner'));
+        // When users clicks save in modal
+        $('#lagreLineButton').click(function () {
+            // Remove button to upload another GPX file            
+            $('#enkelTur').hide();
 
-        // Create new line object
-        var line = new delturLine();
+            // Show spinner while adding file
+            spinner = new Spinner(opts).spin(document.getElementById('gpxSpinner'));
 
-        // Init line
-        line.init(uploadFile);
+            // Create new line object
+            var line = new delturLine();
 
-        // Save a reference to this line
-        lines.push(line);
+            // Init line
+            var description = $('#inputLineBeskrivelse').val();
+            var title =  $('#inputLineTittel').val();
+            line.init(uploadFile, title, description);
 
-        // Check when the file is uploaded and render to map
-        // and stop spinner
-        var interval = setInterval(function(){
-            if(line.getStatus() === 1) {
-                line.renderToMap(map);
-                map.fitBounds(line.getBounds());
-                spinner.stop();
+            // Save a reference to this line
+            lines.push(line);
 
-                // Update textarea with style
-                $('#line-style').text(JSON.stringify(line.getStyle(), undefined, 2));
-                $('#line-style-link').show();
-                
-                // Stop interval
-                clearInterval(interval);
-            }
-        },500);
-    
+             // Add a custom footer to popup
+            var currentPlaceInArray = lines.length-1;
+            var customPopupFooter = '<div id="change-marker-link"><a onClick="openLineStyleEditor('+ currentPlaceInArray +')" href="javascript:void(0)">Endre på linje</a></div>';
+            line.addCustomPopupFooter(customPopupFooter);
+
+            // Check when the file is uploaded and render to map
+            // and stop spinner
+            var interval = setInterval(function(){
+                if(line.getStatus() === 1) {
+                    line.renderToMap(map);
+                    map.fitBounds(line.getBounds());
+                    spinner.stop();
+
+                    // Update textarea with style
+                    $('#line-style').text(JSON.stringify(line.getStyle(), undefined, 2));
+
+                    $('#enkelTur').show();
+                    $('#delturbutton').attr('disabled', false); // Enable button
+                    $('#lagreLineButton').off('click'); // Remove click event so we do not reimplement on each marker
+
+                    
+                    // Stop interval
+                    clearInterval(interval);
+                }
+            },500);
+
+        });
+
+
             
           /*map.addLayer(gpx);
           gpxBounds.extend(e.target.getBounds());
@@ -444,12 +513,31 @@
         })*/
     }
 
+    function openLineStyleEditor(arrayId) {
+        var line = lines[arrayId];
+
+        // Save id so we can save to the same id later on
+        $('#currentLine').html(arrayId);
+
+        // Update textarea with json data
+        $('#line-style').val(JSON.stringify(line.getStyle(), undefined, 2));
+
+        // Open modal
+        $('#lineStyleEditor').modal();
+        
+    }
+
     function saveLineStyle() {
+
+        // Get current line
+        var line = lines[$('#currentLine').html()];
+
         // Save new style
-        lines[0].setStyle(JSON.parse($('#line-style').val()));
+        line.setStyle(JSON.parse($('#line-style').val()));
 
         // Update map
-        lines[0].updateRendering(map);
+        line.updateRendering(map);
+
     }
 
     function openPointStyleEditor(arrayId) {
@@ -540,19 +628,23 @@
         ** HANDLERS
         */
 
-        $('#line-style-link').click(function () {
-            $('#line-style').show();
-            $('#line-style-save-button').show();
-            $('#line-style-link').hide();
-            $('#line-style-hide-element').show();
+        // Disable enter on forms
+        $('#markerInfo').bind("keyup keypress", function(e) {
+          var code = e.keyCode || e.which; 
+          if (code  == 13) {               
+            e.preventDefault();
+            return false;
+          }
         });
 
-        $('#line-style-hide-link').click(function () {
-            $('#line-style').hide();
-            $('#line-style-save-button').hide();
-            $('#line-style-link').show();
-            $('#line-style-hide-element').hide();
+        $('#lineInfo').bind("keyup keypress", function(e) {
+          var code = e.keyCode || e.which; 
+          if (code  == 13) {               
+            e.preventDefault();
+            return false;
+          }
         });
+
         
 
         // Handlers for clicking map or radio buttons below map
@@ -698,7 +790,7 @@
 			draw: {
 				position: 'topleft',
                 polygon: false,
-				polyline: false, /*{
+				polyline: true, /*{
 					title: 'Tegn en tur',
 					shapeOptions: {
 						color: '#ff7800'
@@ -728,9 +820,66 @@
             doneWithPopup = false;
     		var type = e.layerType;
     		var newlayer = e.layer;
+            //debugger;
+            if (type === 'polyline') {
+
+                // Open modal
+                $('#lineInfo').modal();
+
+                // When users clicks save in modal
+                $('#lagreLineButton').click(function () {
+                     // Create new line object
+                    var line = new delturLine();
+
+                    // Convert line to geojson
+                    var coordinates = new Array();
+                    $.each(e.layer._latlngs, function(index, node) {
+                        coordinates.push([node.lng, node.lat])
+                    });
+
+                     geojson = [
+                           {
+                              "type": "LineString",
+                              "coordinates": coordinates
+                            }
+                        ];
+
+                    // Init line
+                    var description = $('#inputLineBeskrivelse').val();
+                    var title =  $('#inputLineTittel').val();
+                    line.initWithGeo(geojson, title, description);
+
+                    // Save a reference to this line
+                    lines.push(line);
 
 
-            if (type === 'marker') {
+                    // Add a custom footer to popup
+                    var currentPlaceInArray = lines.length-1;
+                    var customPopupFooter = '<div id="change-marker-link"><a onClick="openLineStyleEditor('+ currentPlaceInArray +')" href="javascript:void(0)">Endre på linje</a></div>';
+                    line.addCustomPopupFooter(customPopupFooter);
+
+                    // Check when the file is uploaded and render to map
+                    // and stop spinner
+                    var interval = setInterval(function(){
+                        if(line.getStatus() === 1) {
+                            line.renderToMap(map);
+                            map.fitBounds(line.getBounds());
+
+                            // Update textarea with style
+                            $('#line-style').text(JSON.stringify(line.getStyle(), undefined, 2));
+                            
+                            // Stop interval
+                            clearInterval(interval);
+                        }
+                    },500);
+
+                    $('#delturbutton').attr('disabled', false); // Enable button
+                    $('#lagreLineButton').off('click'); // Remove click event so we do not reimplement on each marker
+
+                });
+
+            }
+            else if (type === 'marker') {
                         
                 // Open modal
                 $('#markerInfo').modal();
