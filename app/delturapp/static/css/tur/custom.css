@@ -99,6 +99,10 @@
             display: none;
         }
 
+        #formerGraph {
+            display: none;;
+        }
+
 
         #mobile {
             display: none;
