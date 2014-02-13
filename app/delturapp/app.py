@@ -753,18 +753,20 @@ def getPointMetadataFromDB(id):
                     markerpopup, markerlabel_static, markerlabel_text, image_height, 
                     image_width, st_x(geo), st_y(geo), markercolor, 45-(now()::date-dato::date) as lifespan, userid 
                     from points where id=%s"""
-    print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();
 
     # Check remaining days
     remaining_days = res[13]
-    sql_check_plan = 'select plan from "user" where id=%s'
-    print sql_check_plan
-    cursor.execute(sql_check_plan, (res[14],))
-    userPlan = cursor.fetchone()
-    if userPlan[0] != "free":
+    userid = res[14]
+    if userid is not None:
+        sql_check_plan = 'select plan from "user" where id=%s'
+        cursor.execute(sql_check_plan, (userid,))
+        userPlan = cursor.fetchone()[0]
+    else: 
+        userPlan = "free"
+    if userPlan != "free":
         remaining_days = -1
 
     data = {
@@ -815,12 +817,16 @@ def getLineMetadataFromDB(id):
 
     # Check remaining days
     remaining_days = res[9]
-    sql_check_plan = 'select plan from "user" where id=%s'
-    print sql_check_plan
-    cursor.execute(sql_check_plan, (res[10],))
-    userPlan = cursor.fetchone()
-    if userPlan[0] != "free":
+    userid = res[10]
+    if userid is not None:
+        sql_check_plan = 'select plan from "user" where id=%s'
+        cursor.execute(sql_check_plan, (userid,))
+        userPlan = cursor.fetchone()[0]
+    else: 
+        userPlan = "free"
+    if userPlan != "free":
         remaining_days = -1
+
     
     data = {
             'id': id,
