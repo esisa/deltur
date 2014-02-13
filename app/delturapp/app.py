@@ -147,6 +147,83 @@ def getTripMetadata(id):
         return getLineMetadataFromDB(id)
     except:
         return getPointMetadataFromDB(id)
+
+@app.route('/numMapviews')
+@login_required
+def getNumMapviews():
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+    
+    sql_string = "select mapviews from \"user\" where id=%s"
+    cursor.execute(sql_string, (current_user.id,))
+    mapviews = cursor.fetchone()[0]
+    conn.commit();
+
+    data = {
+                'mapviews'  : mapviews
+            }
+
+    js = json.dumps(data)
+
+    resp = Response(js, status=200, mimetype='application/json')
+
+    return resp
+
+
+@app.route('/numAPI')
+@login_required
+def getNumAPI():
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+    
+    sql_string = "select api from \"user\" where id=%s"
+    cursor.execute(sql_string, (current_user.id,))
+    api = cursor.fetchone()[0]
+    conn.commit();
+
+    data = {
+                'apicalls'  : api
+            }
+
+    js = json.dumps(data)
+
+    resp = Response(js, status=200, mimetype='application/json')
+
+    return resp
+
+@app.route('/numImages')
+@login_required
+def getNumImages():
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+    
+    sql_string = "select images from \"user\" where id=%s"
+    cursor.execute(sql_string, (current_user.id,))
+    images = cursor.fetchone()[0]
+    conn.commit();
+
+    data = {
+                'images'  : images
+            }
+
+    js = json.dumps(data)
+
+    resp = Response(js, status=200, mimetype='application/json')
+
+    return resp
+    
         
 
 @app.route('/<int:id>/geojson')
