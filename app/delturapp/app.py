@@ -432,7 +432,13 @@ def createPoint(request, lon, lat):
     else:
         return addPointToDB(lon, lat, "", "", "", "")
 
-
+@app.route('/del/addImageCount', methods=['GET'])
+@login_required
+def addImage():
+    increaseNumImages(current_user.id)
+    resp = Response('', status=200, mimetype='application/json')
+    
+    return resp
  
 @app.route('/delturno/gpx', methods = ['POST'])
 @login_required
@@ -982,3 +988,14 @@ def increaseApiAccess(id):
     cursor.execute(sql_string, (id,))
     conn.commit();
 
+def increaseNumImages(id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+    
+    sql_string = "update \"user\" set images=images+1 where id=%s"
+    cursor.execute(sql_string, (id,))
+    conn.commit();

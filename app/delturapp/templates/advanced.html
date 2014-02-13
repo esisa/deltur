@@ -1002,6 +1002,12 @@
         var activeImgId; // Keeps track of id so we can remove the element when added to map
         function setImageOnClick() {
             $('.img').click(function (event) {
+
+                {% if current_user.is_authenticated() %}
+                    $.getJSON( "/del/addImageCount" , function( json ) {
+                        
+                    });
+                {% endif %}
             
                 var imgSrc = $(this).find('img').attr('src');
                 activeImgId = $(this).find('img').attr('id');

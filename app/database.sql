@@ -101,5 +101,7 @@ create table hash(
 );
 ALTER TABLE "user" ADD COLUMN api int;
 Alter table "user" alter column api set default 0;
+ALTER TABLE "user" ADD COLUMN images int;
+Alter table "user" alter column images set default 0;
 Alter table "user" alter column plan set default 'free';
 
