@@ -564,8 +564,9 @@
     }
     
    
-    var graphData = new Array();
     function setElevationProfile(data) {
+        var graphData = new Array();
+        
         // Get features    
         geoJson = data.features;
                
@@ -582,7 +583,7 @@
         
         // Delete old graph
         $('#chart').empty();
-        
+
         // instantiate our graph!
         var graph = new Rickshaw.Graph( {
             element: document.getElementById("chart"),
