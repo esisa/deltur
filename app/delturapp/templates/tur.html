@@ -543,9 +543,11 @@
 
         if(currentElevProfile>lines.length) {
             $('#nextGraph').hide();
+            $('#formerGraph').show();
         }
         else {
-            $('#nextGraph').hide();
+            $('#nextGraph').show();
+            $('#formerGraph').show();
         }
 
     }
@@ -555,9 +557,11 @@
 
         if(currentElevProfile == 0) {
             $('#formerGraph').hide();
+            $('#nextGraph').show();
         }
         else {
-            $('#formerGraph').hide();
+            $('#formerGraph').show();
+            $('#nextGraph').show();
         }
     }
         
