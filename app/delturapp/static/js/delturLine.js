@@ -56,7 +56,7 @@ var delturLine = function () {
         //Upload to deltur.no/del/gpx
         $.ajax({
           type: "POST",
-          url: "/del/geojson",
+          url: delGeoJSONURL,
           data: JSON.stringify(geoObject[0]),
           success: function (response) {
                 id = response.id;
@@ -88,7 +88,7 @@ var delturLine = function () {
 	        //Upload to deltur.no/del/gpx
 	        $.ajax({
 	          type: "POST",
-	          url: "/del/gpx",
+	          url: delGPXURL,
 	          data: data,
 	          success: function (response) {
 	                id = response.id;
@@ -237,7 +237,8 @@ var delturLine = function () {
     	// Upload JSON to save changes to style
         $.ajax({
           type: "POST",
-          url: "/"+id+"/setStyle",
+          url: "/"+id+"/setStyle?auth_token="  + auth_token,
+          // "/" + id+"/" + setStyleUrl
           data: JSON.stringify(style),
           success: function (response) {
                 status = 1;

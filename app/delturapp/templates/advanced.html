@@ -62,7 +62,26 @@
    
        filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
        
-       
+       var auth_token = "WyIyMCIsIjQ0NWYxNGZjYjg4Zjg3MjMzM2UwYjUxZjg2NDI1NjU0Il0.Bd6jcA.f3bJwVnPfJcsz3x1lJld1aght4A";
+       var delGPXURL;
+       var delGeoJSONURL;
+       var delPointURL, delPointToken;
+       var setStyleUrl;
+      {% if current_user.is_authenticated() %}
+          delGPXURL = "/delturno/gpx";
+          delGeoJSONURL = "/delturno/geojson";
+          delPointURL = "/delturno/sted/";
+          delPointToken = ""
+          setStyleUrl = "setStyle";
+      {% else %}    
+          delGPXURL = "/del/gpx?auth_token=" + auth_token;
+          delGeoJSONURL = "/del/geojson?auth_token=" + auth_token;
+          delPointURL = "/del/sted/";
+          delPointToken = "?auth_token=" + auth_token;
+          setStyleUrl = "setStyle?auth_token="  + auth_token;
+      {% endif %}
+
+
        var uploadFile; // Store the URL to the file uploaded
   
   

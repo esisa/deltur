@@ -322,7 +322,17 @@ def getAllPoints():
 ### WRITE ###
 
 @app.route('/hash/<regex("[0-9+]+"):ids>')
-def hashTrip(ids):
+@login_required
+def hashTripToken(ids):
+    return hashTrip(request, ids)
+
+@app.route('/hash/<regex("[0-9+]+"):ids>')
+@auth_token_required
+def hashTripLogin(ids):
+    return hashTrip(request, ids)
+
+
+def hashTrip(request, ids):
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
@@ -404,25 +414,35 @@ def deleteHash(hash):
     return resp
 
 
-@app.route('/del/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])
-def createPointJSON(lon=10, lat=60):
-    #if not current_user.is_authenticated():
-    #    print "ikke autorisert bruker"
+@app.route('/delturno/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])
+@login_required
+def createPointJSONLogin(lon=10, lat=60):
+    return createPoint(request, lon, lat)
 
+@app.route('/del/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])
+@auth_token_required
+def createPointJSONToken(lon=10, lat=60):
+    return createPoint(request, lon, lat)
+
+def createPoint(request, lon, lat):
     if request.method == 'POST':
         return addPointToDB(lon, lat, request.json['url'], request.json['description'], "", request.json['title'])
     else:
         return addPointToDB(lon, lat, "", "", "", "")
+
+
  
+@app.route('/delturno/gpx', methods = ['POST'])
+@login_required
+def createGPXTripLogin(): 
+    return addGPXTrip(request)
 
 @app.route('/del/gpx', methods = ['POST'])
-def createGPXTrip():
-    #file = request.files['file']
-    #if file:
-    #    filename = secure_filename(file.filename)
-    #    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    #print filename   
-    
+@auth_token_required
+def createGPXTripToken():
+    return addGPXTrip(request)  
+
+def addGPXTrip(request):    
     points = list()
     if request.headers['Content-Type'] == 'application/gpx+xml' or request.headers['Content-Type'] == 'application/gpx+xml; charset=UTF-8':
         try:
@@ -443,9 +463,17 @@ def createGPXTrip():
     else:
         return "Feil format!"    
 
+@app.route('/delturno/geojson', methods = ['POST'])
+@login_required
+def createGeoJSONTripLogin():
+    return addGeoJSONTrip(request)
 
 @app.route('/del/geojson', methods = ['POST'])
-def createGeoJSONTrip():
+@auth_token_required
+def createGeoJSONTripToken():
+    return addGeoJSONTrip(request)
+
+def addGeoJSONTrip(request):
 
      # Firefox adds charset automatically    
     if request.headers['Content-Type'] == 'application/json' or request.headers['Content-Type'] == 'application/json; charset=UTF-8':
@@ -462,7 +490,18 @@ def createGeoJSONTrip():
         return "Feil format!"    
 
 @app.route('/<int:id>/setStyle', methods = ['POST'])
-def setStyle(id):
+@auth_token_required
+def setStyleToken(id):
+    #print "token"
+    return setStyle(request, id)
+
+@app.route('/<int:id>/setStyle', methods = ['POST'])
+@login_required
+def setStyleLogin(id):
+    #print "login"
+    return setStyle(request, id)
+
+def setStyle(request, id):
 
      # Firefox adds charset automatically    
     if request.headers['Content-Type'] == 'application/json' or request.headers['Content-Type'] == 'application/json; charset=UTF-8':
@@ -837,7 +876,7 @@ def getLineMetadataFromDB(id):
     cursor = conn.cursor()
     
     sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_text, 45-(now()::date-dato::date) as lifespan, userid  from trips where id=%s"
-    print sql_string
+    #print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();

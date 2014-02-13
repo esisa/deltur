@@ -48,7 +48,7 @@ var delturPoint = function () {
         style.popup.title = _title;
         style.popup.description = _description;
 
-        var url = "/del/sted/" + _lat +"/"+ _lon;
+        var url = delPointURL + _lat +"/"+ _lon + delPointToken;
         var jsonData =  JSON.stringify({"title": style.popup.title,"description":style.popup.description,"url": style.popup.image.url});          
         lat = _lat;
         lon = _lon;
