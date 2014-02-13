@@ -9,12 +9,68 @@
     <!-- Le styles -->
     <link href="{{ url_for('static', filename='css/admin/bootstrap.css') }}" rel="stylesheet">
     <style type="text/css">
-      body {
-     
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
+      
+	    .sidebar-nav {
+	        padding: 9px 0;
+	    }
+
+	    .numberCircle {
+		    border-radius: 50%;
+		    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+		    float: left;
+		    margin-right: 100px;
+		    margin-left: 0px;
+
+		    width: 110px;
+		    height: 110px;
+		    padding: 8px;
+		    
+		    background: #fff;
+		    border: 2px solid #666;
+		    color: #666;
+		    text-align: center;
+		    
+		    font: 92px Arial, sans-serif;
+		}
+		.numberHeader {
+		    float: left;
+		    margin-right: 10px;
+		    margin-left: 0px;
+		    margin-bottom: 20px;
+		    margin-top: 30px;
+		    padding: 8px;
+		    font: 22px Arial, sans-serif;
+		}
+	
+		.circle-text {
+		    width:50%;
+		    padding-left: 8%;
+		}
+		.circle-text:after {
+		    content: "";
+		    display: block;
+		    width: 100%;
+		    height:0;
+		    padding-bottom: 100%;
+		    background: gray; 
+		    -moz-border-radius: 50%; 
+		    -webkit-border-radius: 50%; 
+		    border-radius: 50%;
+		}
+		.circle-text div {
+		    float:left;
+		    width:100%;
+		    padding-top:50%;
+		    line-height:1em;
+		    margin-top:-0.5em;
+		    text-align:center;
+		    color:white;
+		    font-size: 50px;
+		}
+
+		#small {
+			font-size: 16px;
+		}
      
     </style>
 
@@ -108,50 +164,51 @@
 			<!--/breadcrumb-->
 
 		
-			
 		
-		
-			<!--  Shortcut -->
-			<!--div class="row-fluid">		
-				<div class="span12">
-							
-							<div class="shortcuts">
-								
-								<a href="#" class="shortcut" data-trigger="hover" data-placement="top" data-original-title="New Messages">
-								<i class="shortcut-icon icon-comments"> </i><span class="badge badge-important">4</span>
-								<span class="shortcut-label">Nye beskjedre</span>
-								</a>
-								<a href="#" class="shortcut" data-trigger="hover" data-placement="top" data-original-title="File Upload">
-								<i class="shortcut-icon icon-upload-alt"> </i>
-								<span class="shortcut-label">Tilbake til deltur.no</span>
-								</a>
-								<a href="#" class="shortcut" data-trigger="hover" data-placement="top" data-original-title="Stats">
-								<i class="shortcut-icon icon-signal"> </i>
-								<span class="shortcut-label">Statistikk</span>
-								</a>
-								
-							</div>				
-				</div>
-			</div--><!--/row-->
-			<!-- /Shortcut-->
-		
-		
-			<!--Chart -->
 			<div class="row-fluid">
 				<div class="span12">			
 					<div class="widget">
 						<div class="widget-header">
 							<i class="fa fa-bar-chart-o icon-style"></i>
-							<h3>Bruk av API</h3>
+							<h3>Statistikk</h3>
 						</div>
 						<div class="widget-content">
-							<!-- tunechart.js  connected -->
-							<div id="placeholder" style="width:100%;height:300px;"></div>
+							<div id="placeholder" style="width:100%;height:300px;">
+								<div id="big" class="hidden-phone">
+									<div class="row-fluid">
+										<div class="span4">
+											<div class="numberHeader">Kartvisninger per måned</div>
+										</div>
+										<div class="span4">
+											<div id="api" class="numberHeader">API-kall per måned</div>
+										</div>
+										<div class="span4">
+											<div id="images" class="numberHeader">Totalt antall bilder</div>
+										</div>
+									</div>
+									<div class="row-fluid">
+										<div class="span4">
+											<div class="circle-text"><div class="numMapviews"></div></div>
+										</div>
+										<div class="span4">
+											<div class="circle-text"><div class="numAPI"></div></div>
+										</div>
+										<div class="span4">
+											<div class="circle-text"><div class="numImages"></div></div>
+										</div>
+									</div>
+								</div>
+								<div id="small" class="visible-phone">
+									<p>Kartvisninger per måned: <span class="numMapviews"></span></p>
+									<p>API-kall per måned: <span class="numAPI"></span></p>
+									<p>Totalt antall bilder: <span class="numImages"></span></p>
+								</div>
+	
+							</div>
 						</div>
 					</div><!--/widget-->
 				</div><!--/span-->
 			</div><!--/row-->
-			<!--/chart-->
 		
 			
 		
@@ -181,6 +238,20 @@
 	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>	
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
+	<script>
+
+		$(function () {
+			$.getJSON( "/numMapviews" , function( json ) {
+                    $('.numMapviews').html(json.mapviews);
+            });
+            $.getJSON( "/numAPI" , function( json ) {
+                    $('.numAPI').html(json.numapicalls);
+            });
+            $.getJSON( "/numImages" , function( json ) {
+                    $('.numImages').html(json.numimages);
+            });
+		})
+	</script>
 	
 	
 	

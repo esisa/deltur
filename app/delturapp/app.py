@@ -190,7 +190,7 @@ def getNumAPI():
     conn.commit();
 
     data = {
-                'apicalls'  : api
+                'numapicalls'  : api
             }
 
     js = json.dumps(data)
@@ -215,7 +215,7 @@ def getNumImages():
     conn.commit();
 
     data = {
-                'images'  : images
+                'numimages'  : images
             }
 
     js = json.dumps(data)
