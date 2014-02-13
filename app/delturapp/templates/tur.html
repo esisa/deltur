@@ -537,9 +537,11 @@
 
     function showNextElevProfile() {
         currentElevProfile = currentElevProfile + 1;
+        getElevationProfile();
     }
     function showFormerElevProfile() {
         currentElevProfile = currentElevProfile - 1;
+        getElevationProfile();
     }
         
     function getElevationProfile() {
@@ -551,7 +553,7 @@
                       dataType: 'json',
                       type: 'post',
                       contentType: "application/json",
-                      data: JSON.stringify(lines[0].getGeom()),
+                      data: JSON.stringify(lines[currentElevProfile].getGeom()),
                       success: setElevationProfile
                 });
                 
@@ -578,9 +580,10 @@
             graphData.push(tmp);
         });
         
+        // Delete old graph
+        $('#chart').empty();
         
         // instantiate our graph!
-
         var graph = new Rickshaw.Graph( {
             element: document.getElementById("chart"),
             width: $('.container').width(),
