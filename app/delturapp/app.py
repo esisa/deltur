@@ -753,7 +753,7 @@ def getPointMetadataFromDB(id):
                     markerpopup, markerlabel_static, markerlabel_text, image_height, 
                     image_width, st_x(geo), st_y(geo), markercolor, 45-(now()::date-dato::date) as lifespan, userid 
                     from points where id=%s"""
-    #print sql_string
+    print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();
@@ -761,6 +761,7 @@ def getPointMetadataFromDB(id):
     # Check remaining days
     remaining_days = res[13]
     sql_check_plan = 'select plan from "user" where id=%s'
+    print sql_check_plan
     cursor.execute(sql_check_plan, (res[14],))
     userPlan = cursor.fetchone()
     if userPlan[0] != "free":
@@ -807,7 +808,7 @@ def getLineMetadataFromDB(id):
     cursor = conn.cursor()
     
     sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_text, 45-(now()::date-dato::date) as lifespan, userid  from trips where id=%s"
-
+    print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
     conn.commit();
@@ -815,6 +816,7 @@ def getLineMetadataFromDB(id):
     # Check remaining days
     remaining_days = res[9]
     sql_check_plan = 'select plan from "user" where id=%s'
+    print sql_check_plan
     cursor.execute(sql_check_plan, (res[10],))
     userPlan = cursor.fetchone()
     if userPlan[0] != "free":
