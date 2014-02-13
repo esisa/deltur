@@ -541,7 +541,7 @@
         currentElevProfile = currentElevProfile + 1;
         getElevationProfile();
 
-        if(currentElevProfile>lines.length) {
+        if(currentElevProfile==lines.length) {
             $('#nextGraph').hide();
             $('#formerGraph').show();
         }
