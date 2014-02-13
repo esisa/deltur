@@ -99,4 +99,7 @@ create table hash(
     dato timestamp,
     unique (hash, userid)
 );
+ALTER TABLE "user" ADD COLUMN api int;
+Alter table "user" alter column api set default 0;
+Alter table "user" alter column plan set default 'free';
 

@@ -329,6 +329,7 @@ def hashTripToken(ids):
 @app.route('/hash/<regex("[0-9+]+"):ids>')
 @auth_token_required
 def hashTripLogin(ids):
+    increaseApiAccess(current_user.id)
     return hashTrip(request, ids)
 
 
@@ -422,6 +423,7 @@ def createPointJSONLogin(lon=10, lat=60):
 @app.route('/del/sted/<float:lon>/<float:lat>', methods=['POST', 'GET'])
 @auth_token_required
 def createPointJSONToken(lon=10, lat=60):
+    increaseApiAccess(current_user.id)
     return createPoint(request, lon, lat)
 
 def createPoint(request, lon, lat):
@@ -440,6 +442,7 @@ def createGPXTripLogin():
 @app.route('/del/gpx', methods = ['POST'])
 @auth_token_required
 def createGPXTripToken():
+    increaseApiAccess(current_user.id)
     return addGPXTrip(request)  
 
 def addGPXTrip(request):    
@@ -471,6 +474,7 @@ def createGeoJSONTripLogin():
 @app.route('/del/geojson', methods = ['POST'])
 @auth_token_required
 def createGeoJSONTripToken():
+    increaseApiAccess(current_user.id)
     return addGeoJSONTrip(request)
 
 def addGeoJSONTrip(request):
@@ -493,6 +497,7 @@ def addGeoJSONTrip(request):
 @auth_token_required
 def setStyleToken(id):
     #print "token"
+    increaseApiAccess(current_user.id)
     return setStyle(request, id)
 
 @app.route('/<int:id>/setStyle', methods = ['POST'])
@@ -962,6 +967,18 @@ def increasePointAccess(id):
     cursor = conn.cursor()
     
     sql_string = "update points set accessed=accessed+1 where id=%s"
+    cursor.execute(sql_string, (id,))
+    conn.commit();
+
+def increaseApiAccess(id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+    
+    sql_string = "update \"user\" set api=api+1 where id=%s"
     cursor.execute(sql_string, (id,))
     conn.commit();
 
