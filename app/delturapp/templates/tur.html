@@ -95,6 +95,8 @@
             <li><a href="{{ url_for('security.logout') }}?next={{request.path | urlencode}}">Logg ut</a></li>
             <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
           {% else %}
+          <li><a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
+            </li>
            <li><a href="{{ url_for('security.login') }}?next={{request.path | urlencode}}"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
             </li>
             <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->

@@ -62,7 +62,7 @@
    
        filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
        
-       var auth_token = "WyIyMCIsIjQ0NWYxNGZjYjg4Zjg3MjMzM2UwYjUxZjg2NDI1NjU0Il0.Bd6jcA.f3bJwVnPfJcsz3x1lJld1aght4A";
+       var auth_token = "WyIyMCIsIjNiODViMzAzMmY5ZmE3OTdjYTQzOTFhODc3NTczZmNkIl0.Bd-4tA.In6t3ulpVkIY_gZK8WMloQwRUr4";
        var delGPXURL;
        var delGeoJSONURL;
        var delPointURL, delPointToken;
@@ -129,6 +129,8 @@
             <li><a href="{{ url_for('security.logout') }}?next=%2Fadvanced">Logg ut</a></li>
             <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
           {% else %}
+          <li><a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
+            </li>
            <li><a href="{{ url_for('security.login') }}?next=%2Fadvanced"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
             </li>
             <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
