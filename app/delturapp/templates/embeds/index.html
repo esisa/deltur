@@ -83,6 +83,7 @@
         var tileJsonTurkartHighdef = '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}';
         var tileJsonTopokart = '{{ url_for('static', filename='mapconfig/topokart.json') }}';
         var tileJsonTopokartHighdef = '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}';
+        var hash = '{{hash}}';
 
     </script>
         
@@ -122,6 +123,15 @@
         else if({{mapType}}==5) {
             map.addLayer(kartverket);
         }
+        else if({{mapType}}==-1) { //custom map
+            var customMap = L.mapbox.tileLayer("/" + hash + "/tilejson.json", {
+                detectRetina: true,
+                // if retina is detected, this layer is used instead
+                retinaVersion: "/" + hash + "/tilejson.retina.json"
+            });
+            map.addLayer(customMap);
+        }
+            
     	    
 
         var idLists = {{idList}};

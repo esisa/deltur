@@ -321,7 +321,7 @@ def getAllHashes():
         data.append({
                 'hash': hash[0],
                 'ids': hash[1],
-                'date': str(hash[2]),
+                'date': str(hash[2])
             })
     js = json.dumps(data)
     
@@ -670,8 +670,94 @@ def getTripHTMLByHash(hash, mapType='topokart'):
     idString = cursor.fetchone()[0]
     conn.commit();
 
-    map = mapTypesList.index(mapType)
-    return render_template('tur.html', mapType=map, idList=idString)
+
+    #Check if there is a tilejson set
+    if mapType == "custom":
+        map = -1
+    else:
+        map = mapTypesList.index(mapType)
+
+
+    return render_template('tur.html', mapType=map, idList=idString, hash=hash)
+
+@app.route('/<regex("[a-z0-9]+"):hash>/tilejson.json')
+def getTilejson(hash):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    sql_string = "select tilejson from hash where hash=%s"
+    cursor.execute(sql_string, (hash,))
+    tilejson = cursor.fetchone()[0]
+    conn.commit();
+
+    resp = Response(tilejson, status=200, mimetype='application/json')
+    return resp
+
+@app.route('/<regex("[a-z0-9]+"):hash>/tilejson.json', methods = ['PUT'])
+def setTilejson(hash):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    if request.headers['Content-Type'] == 'application/json' or request.headers['Content-Type'] == 'application/json; charset=UTF-8':
+        print "UPDATE"
+        sql_string = "UPDATE hash set tilejson=%s where hash=%s"
+        print request.data
+        cursor.execute(sql_string, (request.data, hash, ))
+        conn.commit();
+
+    resp = Response('{"result": "success"}', status=200, mimetype='application/json')
+    return resp
+
+@app.route('/<regex("[a-z0-9]+"):hash>/tilejson.retina.json', methods = ['PUT'])
+def setTilejsonRetina(hash):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    if request.headers['Content-Type'] == 'application/json' or request.headers['Content-Type'] == 'application/json; charset=UTF-8':
+        print "UPDATE"
+        sql_string = "UPDATE hash set tilejson_retina=%s where hash=%s"
+        print request.data
+        cursor.execute(sql_string, (request.data, hash, ))
+        conn.commit();
+
+    resp = Response('{"result": "success"}', status=200, mimetype='application/json')
+    return resp
+
+@app.route('/<regex("[a-z0-9]+"):hash>/tilejson.retina.json')
+def getRetinaTilejson(hash):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    sql_string = "select tilejson_retina from hash where hash=%s"
+    cursor.execute(sql_string, (hash,))
+    tilejson = cursor.fetchone()[0]
+
+    # If retina is not set, just return regular tilejson
+    if tilejson=='':
+        sql_string = "select tilejson from hash where hash=%s"
+        cursor.execute(sql_string, (hash,))
+        tilejson = cursor.fetchone()[0]
+
+    conn.commit();
+
+    resp = Response(tilejson, status=200, mimetype='application/json')
+    return resp
     
 @app.route('/<regex("[0-9+]+"):ids>/embed')
 @app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>')
@@ -690,7 +776,12 @@ def getTripEmbed(ids, mapType='topokart'):
 @app.route('/<regex("[a-z0-9]+"):hash>/embed')
 @app.route('/<regex("[a-z0-9]+"):hash>/embed/<string:mapType>')
 def getTripEmbedByHash(hash, mapType='topokart'):
-    map = mapTypesList.index(mapType)
+
+    #Check if there is a tilejson set
+    if mapType == "custom":
+        map = -1
+    else:
+        map = mapTypesList.index(mapType)
 
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
@@ -707,11 +798,11 @@ def getTripEmbedByHash(hash, mapType='topokart'):
     embedType = request.args.get('embedType', '')
     if embedType != '':
         try:
-            return render_template('embeds/' + embedType + '.html', mapType=map, idList=idString)
+            return render_template('embeds/' + embedType + '.html', mapType=map, idList=idString, hash=hash)
         except TemplateNotFound:
             return render_template('404.html'), 404
     else:
-        return render_template('embeds/index.html', mapType=map, idList=idString)
+        return render_template('embeds/index.html', mapType=map, idList=idString, hash=hash)
 
 @app.route('/del/kml/', methods = ['POST'])
 def createKMLTrip():

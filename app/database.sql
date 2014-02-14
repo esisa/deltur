@@ -99,6 +99,12 @@ create table hash(
     dato timestamp,
     unique (hash, userid)
 );
+alter table hash add column tilejson varchar(1000);
+alter table hash alter column tilejson set default '';
+alter table hash add column tilejson_retina varchar(1000);
+alter table hash alter column tilejson_retina set default '';
+
+
 ALTER TABLE "user" ADD COLUMN api int;
 Alter table "user" alter column api set default 0;
 ALTER TABLE "user" ADD COLUMN images int;

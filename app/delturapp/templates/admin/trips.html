@@ -28,6 +28,9 @@
 
   <body>
 
+  	<!-- Placeholder for hashes being edited -->
+    <div id="hash-tilejson"></div>
+
   	<div id="deleteHashModal"  class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -136,6 +139,33 @@
              </div>
              <div class="modal-footer">
                <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-success" onClick="saveLineStyle();">Lagre</a>
+             </div>
+           </div>    
+        </div>
+    </div> 
+
+    <div id="tilejsonEditor" class="modal fade">
+      <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+               <h3>Tilejson editor</h3>
+             </div>
+             <div class="modal-body">
+               
+               	<b>Vanlig Tilejson</b>
+                 <textarea id="tilejsonTextarea" class="form-control" rows="7" cols="40" style="font-size: 16px; width: 500px; height: 150px;">
+                </textarea>
+
+                <b>Tilejson for høyoppløslige skjermer</b>
+                 <textarea id="tilejsonRetinaTextarea" class="form-control" rows="7" cols="40" style="font-size: 16px; width: 500px; height: 150px;">
+                </textarea>
+
+                <p><a href="https://www.mapbox.com/developers/tilejson/" target="_new">Beskrivelse av Tilejson</a></p>
+
+             </div>
+             <div class="modal-footer">
+               <a href="#" id="lagrePopup" data-dismiss="modal" class="btn btn-success" onClick="saveTilejson();">Lagre</a>
              </div>
            </div>    
         </div>
@@ -390,7 +420,7 @@
 					var edit = '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteHashModal(&quot;'+data.hash+'&quot;)" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
 					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal(&quot;'+data.hash+'&quot;)" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
 					edit += '&nbsp;<a class="btn btn-small" href="/'+data.hash+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
-					
+					edit += '&nbsp;<a class="btn btn-small" onClick="openTilejsonEditor(&quot;'+data.hash+'&quot;)" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre bakgrunnskart"><i class="fa fa-edit fa-lg"></i></a>'
 
 					var ids = "";
 					var idArray = data.ids.split("+");
@@ -469,7 +499,58 @@
 		}
 
 
+		function openTilejsonEditor(hash) {
 
+			$('#hash-tilejson').html(hash);
+
+			$.getJSON( "/"+hash+"/tilejson.json" , function( json ) {
+				if(json != null) {
+					// Update textarea with json data
+		        	$('#tilejsonTextarea').val(JSON.stringify(json, undefined, 2));
+				}
+				else {
+					$('#tilejsonTextarea').val("");
+				}
+				
+
+		        $.getJSON( "/"+hash+"/tilejson.retina.json" , function( json ) {
+		        	if(json != null) {
+						// Update textarea with json data
+			        	$('#tilejsonRetinaTextarea').val(JSON.stringify(json, undefined, 2));
+					}
+					else {
+						$('#tilejsonRetinaTextarea').val("");
+					}
+
+					// Open modal
+					$('#tilejsonEditor').modal("show");
+	        	});
+        	});
+			
+		}
+
+		function saveTilejson(hash) {
+			$.ajax({
+			    url: "/"+$('#hash-tilejson').html()+"/tilejson.json",
+			    type: 'PUT',
+			    data: $('#tilejsonTextarea').val(),
+			    contentType: "application/json",
+			    success: function(result) {
+			        
+			    }
+			});
+
+			$.ajax({
+			    url: "/"+$('#hash-tilejson').html()+"/tilejson.retina.json",
+			    type: 'PUT',
+			    data: $('#tilejsonRetinaTextarea').val(),
+			    contentType: "application/json",
+			    success: function(result) {
+			        
+			    }
+			});
+
+		}
 
         function opendeletePointModal(id) {
 			$('#deletePointBody').html('<p>Ønsker du virkelig å slette dette punktet?</p><button type="button" onClick="deleteFeature('+id+');" class="btn btn-danger">Ja, slett punktet</button>');
