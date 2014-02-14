@@ -440,7 +440,7 @@
                         if(line.getStatus() === 1) {
                             line.renderToMap(map);
                             featureBounds.extend(line.getBounds());
-                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},10);
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
                             
                             // Stop interval
                             clearInterval(intervalLine);
@@ -479,7 +479,7 @@
                         if(point.getStatus() === 1) {
                             point.renderToMap(map);
                             featureBounds.extend(point.getPoint());
-                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},10);
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
                             
                             // Stop interval
                             clearInterval(intervalPoint);
