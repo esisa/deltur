@@ -129,6 +129,8 @@
 							<div class="widget-content">
 								Hemmelig token til bruk sammen med API: <div class="well well-sm">{{ current_user.get_auth_token() }}</div><br>
 								<button type="button" onClick="deleteUser()" class="btn btn-danger">Slette bruker </button>
+
+								<a href="{{ url_for_security('change_password') }}"><button type="button" class="btn btn-danger">Bytt passord </button></a>
 								
 							</div>						
 					</div><!--/widget-->

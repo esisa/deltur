@@ -1,0 +1,18 @@
+<h1>Velkommen til deltur.no!</h1>
+
+<p>Du kan nå begynne å dele dine turer <a href="http://beta.deltur.no">med en gang</a>. Ønsker du mer enn å bare dele dine GPS-spor så ta en titt på den <a href="http://beta.deltur.no/advanced">avanserte delingen</a>. Der kan du tegne inn markører, linjer og legge til bilder i kartet.</p>
+
+<p>Ta gjerne en titt på <a href="http://beta.deltur.no/info/eksempler">eksemplene</a> for å se hva du kan gjøre med deltur.no og ønsker du mer funksjonalitet så ta en titt på de <a href="http://beta.deltur.no/info/priser">oppgraderte avtalene</a>. </p>
+
+<p>Har du spørsmål til tjenesten så se om <a href="http://beta.deltur.no/info/faq">spørsmålet ditt allerede er besvart</a> eller send en e-post til espen@kresendo.no</p>
+
+<p>Med vennlig hilsen<br>Espen</p>
+
+
+
+
+{% if security.confirmable %}
+<p>You can confirm your email through the link below:</p>
+
+<p><a href="{{ confirmation_link }}">Confirm my account</a></p>
+{% endif %}

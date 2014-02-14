@@ -41,22 +41,34 @@ app.secret_key = '....'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://deltur:dsfdsfdsdeltsur._01@localhost:5432/deltur'
 app.config['SECURITY_TRACKABLE'] = True
 app.config['SECURITY_REGISTERABLE'] = True
-app.config['SECURITY_RECOVERABLE'] = False #Reset password
-app.config['SECURITY_CHANGEABLE'] = False #Change password
-app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
+app.config['SECURITY_RECOVERABLE'] = True #Reset password
+app.config['SECURITY_CHANGEABLE'] = True #Change password
+app.config['SECURITY_SEND_REGISTER_EMAIL'] = True
 app.config['SECURITY_PASSWORD_HASH'] = "bcrypt"
 app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$byc5TEXXKHqMIP9inxqnQO'
+
+app.config['SECURITY_RESET_PASSWORD_TEMPLATE'] = "security/login_user.html"
+
+
+# E-post settings
+#app.config['USER_DOES_NOT_EXIST'] = 'Denne brukeren finnes ikke'
+app.config['SECURITY_EMAIL_SENDER'] = 'espen@kresendo.no'
+app.config['SECURITY_EMAIL_SUBJECT_PASSWORD_RESET'] = 'Instruksjoner for bytte av passord'
+app.config['SECURITY_EMAIL_SUBJECT_PASSWORD_NOTICE'] = 'Ditt passord har blitt byttet'
+app.config['SECURITY_EMAIL_SUBJECT_REGISTER'] = 'Velkommen til deltur.no'
+app.config['SECURITY_EMAIL_SUBJECT_CONFIRM'] = 'Verifiser din e-post adresse'
+app.config['SECURITY_EMAIL_SUBJECT_PASSWORD_CHANGE_NOTICE'] = 'Nytt passord hos deltur.no'
 
 app.config['MAIL_SERVER'] = 'smtp.mandrillapp.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = 'espen@kresendo.no'
 app.config['MAIL_PASSWORD'] = 'tnrGGTWmlGS5Gc6AQSnZYg'
-#mail = Mail(app)
-
-
+app.config['MAIL_DEBUG'] = True
+mail = Mail(app)
 
 #app.messages['USER_DOES_NOT_EXIST'] = 'Det finnes ikke noe bruker med denne e-post adressen'
+
 
 
 
@@ -654,31 +666,7 @@ def getTripHTML(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
     return render_template('tur.html', mapType=map, idList=ids)
 
-# Hash input
-@app.route('/<regex("[a-z0-9]+"):hash>')
-@app.route('/<regex("[a-z0-9]+"):hash>/<string:mapType>')
-def getTripHTMLByHash(hash, mapType='topokart'):
-    try:
-        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
-    except:
-        print "Could not connect to database " + pg_db
-        
-    cursor = conn.cursor()
 
-    sql_string = "select ids from hash where hash=%s"
-    cursor.execute(sql_string, (hash,))
-    idString = cursor.fetchone()[0]
-    conn.commit();
-
-
-    #Check if there is a tilejson set
-    if mapType == "custom":
-        map = -1
-    else:
-        map = mapTypesList.index(mapType)
-
-
-    return render_template('tur.html', mapType=map, idList=idString, hash=hash)
 
 @app.route('/<regex("[a-z0-9]+"):hash>/tilejson.json')
 def getTilejson(hash):

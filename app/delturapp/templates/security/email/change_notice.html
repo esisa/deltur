@@ -1,0 +1,4 @@
+<p>Du har byttet ditt passord.</p>
+{% if security.recoverable %}
+<p>Hvis du ikke har endret på ditt passord selv så <a href="{{ url_for_security('forgot_password', _external=True) }}">klikk her for å resette det.</a>.</p>
+{% endif %}
