@@ -28,17 +28,23 @@ from markupsafe import Markup
 
 import hashlib
 
-pg_db = "deltur"
-pg_host = "localhost"
-pg_user = "deltur"
-pg_passwd = "deltur._01"
-pg_port = "5432"
-
 
 app = Flask(__name__)
+
+# Config file
+app.config.from_pyfile('deltur.cfg')
+
+# Postgres config
+pg_db = app.config['PG_DB']
+pg_host = app.config['PG_HOST']
+pg_user = app.config['PG_USER']
+pg_passwd = app.config['PG_PASSWD']
+pg_port = app.config['PG_PORT']
+
+
 app.debug = True
 app.secret_key = '....'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://deltur:dsfdsfdsdeltsur._01@localhost:5432/deltur'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://'+pg_user+':'+pg_passwd+'@'+pg_host+':'+pg_port+'/'+pg_db
 app.config['SECURITY_TRACKABLE'] = True
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True #Reset password
@@ -68,8 +74,6 @@ app.config['MAIL_DEBUG'] = True
 mail = Mail(app)
 
 #app.messages['USER_DOES_NOT_EXIST'] = 'Det finnes ikke noe bruker med denne e-post adressen'
-
-
 
 
 # Used to encode URLs
