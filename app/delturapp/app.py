@@ -765,6 +765,28 @@ def getTripEmbed(ids, mapType='topokart'):
     else:
         return render_template('embeds/index.html', mapType=map, idList=ids)
 
+# Hash input
+@app.route('/<regex("[a-z0-9]+"):hash>')
+@app.route('/<regex("[a-z0-9]+"):hash>/<string:mapType>')
+def getTripHTMLByHash(hash, mapType='topokart'):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    sql_string = "select ids from hash where hash=%s"
+    cursor.execute(sql_string, (hash,))
+    idString = cursor.fetchone()[0]
+    conn.commit();
+
+    if mapType == "custom":
+        map = -1
+    else:
+        map = mapTypesList.index(mapType)
+    return render_template('tur.html', mapType=map, idList=idString, hash=hash)
+
 @app.route('/<regex("[a-z0-9]+"):hash>/embed')
 @app.route('/<regex("[a-z0-9]+"):hash>/embed/<string:mapType>')
 def getTripEmbedByHash(hash, mapType='topokart'):
