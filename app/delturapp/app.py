@@ -124,10 +124,7 @@ app.url_map.converters['regex'] = RegexConverter
 # 2 = skikart
 # 3 = kartverket
 # 4 = satellitt
-# 4 = kartverket
-
-
-
+# 5 = kartverket
 mapTypesList = ['turkart','skikart','veikart','topokart', 'satellitt', 'kartverket']
 
 

@@ -175,6 +175,10 @@
 
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
+
+        // Increase mapview in database
+        $.getJSON( "/del/addMapviewCount/" + "{{idList}}" , function( json ) {
+        });
         
         var myStyle = {
             "color": "#ff7800",
@@ -220,7 +224,7 @@
                         if(line.getStatus() === 1) {
                             line.renderToMap(map);
                             featureBounds.extend(line.getBounds());
-                            map.fitBounds(featureBounds.pad(0.1));
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},10);
                             
                             // Stop interval
                             clearInterval(intervalLine);
@@ -245,7 +249,7 @@
                         if(point.getStatus() === 1) {
                             point.renderToMap(map);
                             featureBounds.extend(point.getPoint());
-                            map.fitBounds(featureBounds.pad(0.1));
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},10);
 
                             if(point.getMarkerType() != "number") {
                                 $("#point-info-block ul").append('<li class="list-group-item"><i class="fa fa-'+point.getMarkerSymbol()+'"></i> <a href="javascript:void(0)" onClick="zoomToMarker('+point.getLat()+','+point.getLon()+')">'+point.getTitle()+'</a></li>');

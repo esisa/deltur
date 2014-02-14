@@ -126,6 +126,10 @@
 
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
+
+        // Increase mapview in database
+        $.getJSON( "/del/addMapviewCount/" + "{{idList}}" , function( json ) {
+        });
         
     	var myStyle = {
             "color": "#ff7800",
@@ -171,7 +175,7 @@
                         if(line.getStatus() === 1) {
                             line.renderToMap(map);
                             featureBounds.extend(line.getBounds());
-                            map.fitBounds(featureBounds.pad(0.1));
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},10);
                             
                             // Stop interval
                             clearInterval(intervalLine);
@@ -196,7 +200,7 @@
                         if(point.getStatus() === 1) {
                             point.renderToMap(map);
                             featureBounds.extend(point.getPoint());
-                            map.fitBounds(featureBounds.pad(0.1));
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},10);
                             
                             // Stop interval
                             clearInterval(intervalPoint);
