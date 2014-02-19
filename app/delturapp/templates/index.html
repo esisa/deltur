@@ -101,6 +101,27 @@
           text-align: center;
           display: none;
       }
+
+        /* Style upload button */
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 999px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
       
       
     </style>
@@ -113,16 +134,34 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-   
-   <script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>   
+     
    <script type="text/javascript" src="{{ url_for('static', filename='js/spin.js') }}"></script>
    
    <script>
 
-       filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
        var auth_token = "{{config['TOKEN']}}";
        
        var uploadFile; // Store the URL to the file uploaded
+
+
+       var auth_token = "{{config['TOKEN']}}";
+       var delGPXURL;
+       var delGeoJSONURL;
+       var delPointURL, delPointToken;
+       var setStyleUrl;
+      {% if current_user.is_authenticated() %}
+          delGPXURL = "/delturno/gpx";
+          delGeoJSONURL = "/delturno/geojson";
+          delPointURL = "/delturno/sted/";
+          delPointToken = ""
+          setStyleUrl = "setStyle";
+      {% else %}    
+          delGPXURL = "/del/gpx?auth_token=" + auth_token;
+          delGeoJSONURL = "/del/geojson?auth_token=" + auth_token;
+          delPointURL = "/del/sted/";
+          delPointToken = "?auth_token=" + auth_token;
+          setStyleUrl = "setStyle?auth_token="  + auth_token;
+      {% endif %}
        
       
        
@@ -249,18 +288,12 @@
         
 
         <div id="enkelTur">
-                    <!-- Vises på vanlig desktop -->
-                    <div class="hidden-xs">
-                        <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="1048576"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="COMPUTER,DROPBOX,GOOGLE_DRIVE,URL" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
-                    </div>
+            <span class="btn btn-primary btn-file" id="fileButton">
+                Legg til GPS-fil... <input type="file" id="fileInput">
+            </span>
+        </div>
 
-                    <!-- Skjuler opplasting fra COMPUTER på Android/iOS siden det funka dårlig. -->
-                    <div class="visible-xs">
-                        <input type="filepicker-dragdrop" name="myName" data-fp-maxSize="1048576"  onchange="$('#delturbutton').attr('disabled', false); uploadFile = event.fpfile.url" data-fp-extension=".gpx" data-fp-services="DROPBOX,GMAIL,URL,EVERNOTE,FTP,GOOGLE_DRIVE" data-fp-drag-text="Eller dra fil hit" data-fp-button-text="Last opp GPS-fil..." data-fp-button-class="btn btn-primary"/>
-                    </div>
-                </div>
-
-            <p style="text-align: center; font-size:12px;"><br><a href="advanced">Eller bruk avansert opplasting</a><p>
+        <p style="text-align: center; font-size:12px;"><br><a href="advanced">Eller bruk avansert opplasting</a><p>
         
         <!--div class="tabbable"> 
           <ul class="nav nav-tabs">
@@ -356,8 +389,39 @@
     <script src="{{ url_for('static', filename='js/fileupload/jquery.iframe-transport.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fileupload/jquery.fileupload.js') }}"></script>
 
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.0.0/leaflet-omnivore.min.js'></script>
+    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+
+
     <script>
+    var geojson;
     $(function () {
+        var fileInput = document.getElementById('fileInput');
+        var geojson;
+
+        fileInput.addEventListener('change', function(e) {
+            var file = fileInput.files[0];
+
+            if (file.type === "application/gpx+xml") {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var gpxdom = (new DOMParser()).parseFromString(reader.result, 'text/xml');
+                    geojson = toGeoJSON.gpx(gpxdom);
+                    console.log(geojson);
+                    $('#delturbutton').attr('disabled', false);
+                    $('#fileButton').html("Filen "+file.name+" er klar til deling");
+                    $('#fileButton').attr('class', 'btn btn-default btn-file');
+                }
+
+                reader.readAsText(file);    
+            } else {
+                alert("File not supported!");
+            }
+        });
+
         
         $('#delturbutton').click(function () {
 
@@ -365,50 +429,39 @@
             $('#apilink').css('visibility','hidden');
             $('#termslink').css('visibility','hidden');
             $('#delturbutton').text("Laster opp...");
-            
-            /*FPFile from a previous pick, etc.*/
-            var fpfile = {url: uploadFile,
-                filename: 'hello.txt', mimetype: 'text/plain', isWriteable: false, size: 100};
-            filepicker.read(fpfile, function(data){
-                //console.log(data);
-                
-                // Check maptype
-                var maptype = topokart;
-                if(jQuery("#turkart-radio").is(":checked")) {
-                    maptype = "turkart";
-                }
-                else if(jQuery("#skikart-radio").is(":checked")) {
-                    maptype = "skikart";
-                }
-                else {
-                    maptype = "topokart";
-                }
-                
-                var delURL;
-                {% if current_user.is_authenticated() %}
-                    delURL = "/delturno/gpx";
-                {% else %}    
-                    delURL = "/del/gpx?auth_token=" + auth_token;
-                {% endif %}
-                
 
-                //Upload to deltur.no/del/gpx
-                $.ajax({
-                  type: "POST",
-                  url: delURL,
-                  data: data,
-                  success: function (response) {
-                          document.location.href = "/"+response.id+"/" + maptype;
-                        },
-                        error: function (response) {
-                          alert("Klarte dessverre ikke å laste opp filen!");
-                        },
-                  contentType: "application/gpx+xml",
-                  dataType: "json"
-                });
-                
-            })
+
+            var maptype = topokart;
+            if(jQuery("#turkart-radio").is(":checked")) {
+                maptype = "turkart";
+            }
+            else if(jQuery("#skikart-radio").is(":checked")) {
+                maptype = "skikart";
+            }
+            else {
+                maptype = "topokart";
+            }
+
+            // Create new line object
+            var line = new delturLine();
+
+            // Init line
+            line.initWithGeo([geojson.features[0].geometry], "", "");
+
+            // Check when the file is uploaded and render to map
+            // and stop spinner
+            var interval = setInterval(function(){
+                if(line.getStatus() === 1) {
+                    document.location.href = "/"+line.getId()+"/" + maptype;
+                    
+                    // Stop interval
+                    clearInterval(interval);
+                }
+            },100);
+            
         });
+
+
         
         // Check if mapped is clicked
         $('#turkart').click(function () {
