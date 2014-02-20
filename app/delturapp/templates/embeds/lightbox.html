@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)http://twitter.github.com/bootstrap/examples/sticky-footer.html -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>deltur.no</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+
+    <script type=text/javascript>
+  	     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.colorbox-min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/colorbox.css') }}">
+
+    <script src='{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}'></script>
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.3/leaflet-image.js'></script>
+
+    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>   
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
+    
+	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
+    <style type="text/css">
+
+        html,
+        body {
+            height: 100%;
+            /* The html and body elements cannot have any padding or margin. */
+        }
+
+        /* Override default shadowing */
+        .mapContainer > header {
+            text-align: center;
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+				
+    	
+    	
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-40003995-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+      		
+    <div id="map" style="height: 100%; ">
+        <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
+        <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
+        </a>
+    </div>
+
+    <script type="text/javascript">
+
+        // Set up dynamic variables used in delturMap.js
+        var tileJsonSkikart = '{{ url_for('static', filename='mapconfig/skikart.json') }}';
+        var tileJsonSkikartHighdef = '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}';
+        var tileJsonTurkart = '{{ url_for('static', filename='mapconfig/turkart.json') }}';
+        var tileJsonTurkartHighdef = '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}';
+        var tileJsonTopokart = '{{ url_for('static', filename='mapconfig/topokart.json') }}';
+        var tileJsonTopokartHighdef = '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}';
+        var hash = '{{hash}}';
+
+    </script>
+        
+
+    <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>            
+
+
+    <script type="text/javascript">
+
+
+   
+
+        var lines = new Array();
+        var points = new Array();
+
+        $.fn.preload = function() {
+            this.each(function(){
+                $('<img/>')[0].src = this;
+            });
+        }
+
+
+        if({{mapType}}==0) {
+            map.addLayer(turkart);
+        }
+        else if({{mapType}}==1) {
+            map.addLayer(skikart);
+        }
+        else if({{mapType}}==2) {
+            map.addLayer(veikart);
+        }
+        else if({{mapType}}==3) {
+            map.addLayer(topokart);
+        }
+        else if({{mapType}}==4) {
+            map.addLayer(satellite);
+        }
+        else if({{mapType}}==5) {
+            map.addLayer(kartverket);
+        }
+        else if({{mapType}}==-1) { //custom map
+            var customMap = L.mapbox.tileLayer("/" + hash + "/tilejson.json", {
+                detectRetina: true,
+                // if retina is detected, this layer is used instead
+                retinaVersion: "/" + hash + "/tilejson.retina.json"
+            });
+            map.addLayer(customMap);
+        }
+            
+    	    
+
+        var idLists = {{idList}};
+        var ids = "{{idList}}".split("+");
+
+        // Increase mapview in database
+        $.getJSON( "/del/addMapviewCount/" + "{{idList}}" , function( json ) {
+        });
+        
+    	var myStyle = {
+            "color": "#ff7800",
+            "weight": 5,
+            "opacity": 0.65
+        };
+
+        var geoObject;
+        var markerGroup = new L.LayerGroup();
+        var numLines = 0;
+        var lineFeature;
+        var trip = L.geoJson();
+        trip.addTo(map);
+        var featureBounds = new L.LatLngBounds();
+
+        $.each(ids, function (index, value) {
+            var id = value;
+
+
+            $.getJSON('/' + id + '/geojson', function (data) {
+                geoObject = [data];
+
+                var line = true;
+                if (data.type == "Point") {
+                    line = false;
+                }
+
+                map.addLayer(markerGroup);
+                var marker;
+                if(line) { // Line
+
+                    // Create new line object
+                    var line = new delturLine();
+
+                    // Save a reference to this line
+                    lines.push(line);
+
+                    // Init line
+                    line.initWithId(id);
+
+                    // Check when the line is ready for use
+                    var intervalLine = setInterval(function(){
+                        if(line.getStatus() === 1) {
+                            line.renderToMap(map);
+                            featureBounds.extend(line.getBounds());
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
+                            
+                            // Stop interval
+                            clearInterval(intervalLine);
+                        }
+                    },100);
+
+                    
+                }
+                else { // Point
+
+                    // Create new line object
+                    var point = new delturPoint();
+
+                    // Save a reference to this line
+                    points.push(point);
+
+                    // Init line
+                    point.initWithId(id);
+
+                    // Check when the point is ready for use
+                    var intervalPoint = setInterval(function(){
+                        if(point.getStatus() === 1) {
+
+                            var imageIcon = L.icon({
+                                    iconUrl: point.getUrl(),
+                                   
+                                    iconSize:     [50, 50], // size of the icon
+                                    iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+                                    popupAnchor:  [0, -25] // point from which the popup should open relative to the iconAnchor
+                                });
+
+                            var marker  = L.marker([point.getLat(), point.getLon()], {icon: imageIcon});
+                            map.addLayer(marker);
+                            marker.on('click', function(e) {
+                                var title = point.getTitle()
+                                var description = point.getDescription();
+                                if(description != "") {
+                                    title += ": " + description
+                                }
+                                $.colorbox({title:title ,close: "Steng vindu", initialHeight: "500", innerWidth: "600", inline:true, href:"<img width=600 src="+point.getUrl()+">", photo:true});
+                            });
+
+
+                            //point.renderToMap(map);
+                            featureBounds.extend(point.getPoint());
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
+                            
+                            // Stop interval
+                            clearInterval(intervalPoint);
+                        }
+                    },100);
+                    
+                }
+
+
+
+                // TODO: Rewrite
+                /*setTimeout(function () {
+                    map.fitBounds(featureBounds);
+                    setTimeout(function () {
+                        if (numLines == 0 && map.getZoom() > 11) {
+                            map.setZoom(11);
+                        }
+
+
+                    }, 300);
+                }, 300);*/
+
+
+
+            });
+
+        });
+
+        
+
+    </script>
+
+</html>

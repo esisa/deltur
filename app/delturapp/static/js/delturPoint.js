@@ -81,6 +81,10 @@ var delturPoint = function () {
         return status;
     };
 
+    this.getUrl = function () {  //public
+        return style.popup.image.url;
+    };
+
     this.getLat = function () {  //public
         return lat;
     };
