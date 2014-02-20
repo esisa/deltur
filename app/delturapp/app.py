@@ -28,6 +28,8 @@ from markupsafe import Markup
 
 import hashlib
 
+from datetime import timedelta
+
 
 app = Flask(__name__)
 
@@ -54,6 +56,8 @@ app.config['SECURITY_PASSWORD_HASH'] = "bcrypt"
 app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$byc5TEXXKHqMIP9inxqnQO'
 
 app.config['SECURITY_RESET_PASSWORD_TEMPLATE'] = "security/login_user.html"
+
+#app.config['REMEMBER_COOKIE_DURATION'] = timedelta(microseconds=-1)
 
 
 # E-post settings
@@ -595,17 +599,19 @@ def addGeoJSONTrip(request):
         return "Feil format!"    
 
 @app.route('/<int:id>/setStyle', methods = ['POST'])
+@login_required
+def setStyleLogin(id):
+    #print "login"
+    return setStyle(request, id)
+
+@app.route('/<int:id>/setStyle', methods = ['POST'])
 @auth_token_required
 def setStyleToken(id):
     #print "token"
     increaseApiAccess(current_user.id)
     return setStyle(request, id)
 
-@app.route('/<int:id>/setStyle', methods = ['POST'])
-@login_required
-def setStyleLogin(id):
-    #print "login"
-    return setStyle(request, id)
+
 
 def setStyle(request, id):
 
