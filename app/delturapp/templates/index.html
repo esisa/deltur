@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fileupload-ui.css') }}">
     <!--link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet"-->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.pnotify.default.css') }}">
     <style type="text/css">
       body {
@@ -365,7 +365,7 @@
         <div id ="spinner" style="margin-top: 15px;"></div>
 
         
-        <div id="termslink">Alle turer er tilgjengelig i 40 dager. Ønsker du lengre tilgjengelighet så ta en kikk på våre <a href="{{ url_for('infopriser') }}">svært billige månedspriser.</a></div>
+        <div id="termslink">Alle turer er tilgjengelig i 10 dager. <a href="{{ url_for('infopriser') }}">Registrer du deg får du lengre tilgjengelighet.</a></div>
         <div id="apilink"><a href="{{ url_for('infoapi') }}">Mer glad i API enn GUI?</a></div>
         
 		<div style="color:F8F8F8; font-size: 12px; text-align: center;">
