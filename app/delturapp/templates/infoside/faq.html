@@ -28,7 +28,7 @@
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
 	<script>!window.jQuery && document.write(unescape('%3Cscript src="{{ url_for('static', filename='infoside/js/jquery-1.8.3.min.js') }}"%3E%3C/script%3E'))</script>
 	<script type="text/javascript">
 
@@ -97,31 +97,65 @@
 		<ol>
 			<li>
 				<h3>Hvor lenge ligger turen min på deltur.no?</h3>
-				<p>Cupcake ipsum dolor sit amet wafer gummi bears pudding applicake. </p>
-			</li>
-			<li>
-				<h3>Kan jeg laste opp filer uten å bruke API'et?</h3>
-				<p>Cupcake ipsum dolor sit amet wafer gummi bears pudding applicake. Jujubes brownie powder. Sweet roll powder gingerbread gummies. Cupcake ice cream sweet roll pie lollipop. Jelly-o jelly-o apple pie chupa chups jelly jujubes gingerbread. Icing carrot cake powder chupa chups. Pudding sweet roll jelly-o muffin faworki biscuit. Marzipan marshmallow cake tiramisu caramels bear claw carrot cake cotton candy. Toffee danish sweet roll. Cookie topping powder toffee ice cream muffin dragée. Soufflé caramels apple pie chocolate cake cookie cake. Macaroon tiramisu halvah soufflé. Dessert toffee halvah chocolate cake bear claw.</p>
+				<p>Hvis du ikke er registrert bruker av deltur.no så vil turen din ligge ute i 10 dager. Registrering er gratis og ved registrering forlenger du tida turen ligger ute til 45 dager. Ved registrering og ved kjøp av deltur.no Standard eller høyere så vil turen alltid være tilgjengelig.  </p>
 			</li>
 			<li>
 				<h3>Jeg får en veldig lang URL, kan den kortes ned?</h3>
-				<p>Cupcake ipsum dolor sit amet wafer gummi bears pudding applicake. Jujubes brownie powder. Sweet roll powder gingerbread gummies. Cupcake ice cream sweet roll pie lollipop. Jelly-o jelly-o apple </p>
+				<p>Gjennom bruk av API'et kan du lage en unik hash som erstatter alle de unike id'ene. F. eks så kan en URL som <div class="well"><a href="http://beta.deltur.no/10432+10532432+32432423+324234+333+2323+2323+2323+22323+1213435">http://beta.deltur.no/10432+10532432+32432423+324234+333+2323+2323+2323+22323+1213435</a></div> enkelt endres til <div class="well"><a href="http://beta.deltur.no/ebd5b796948b76e3faa729c8470a1bfb">http://beta.deltur.no/ebd5b796948b76e3faa729c8470a1bfb</a></div> </p>
 			</li>
 			<li>
-				<h3>Hva skjer når jeg går over antall API-kall?</h3>
-				<p>Cupcake ipsum dolor sit amet wafer gummi bears pudding applicake. Jujubes brownie powder. Sweet roll powder gingerbread gummies. Cupcake ice cream sweet roll pie lollipop. Jelly-o jelly-o apple pie chupa chups jelly jujubes gingerbread. Icing carrot cake powder chupa chups. Pudding sweet roll jelly-o muffin faworki biscuit. Marzipan marshmallow cake tiramisu caramels bear claw carrot cake cotton candy. Toffee danish sweet roll. Cookie topping powder toffee ice cream muffin dragée. Soufflé caramels apple pie chocolate cake cookie cake. Macaroon tiramisu halvah soufflé. Dessert toffee halvah chocolate cake bear claw.</p>
+				<h3>Hvordan telles antall API-kall?</h3>
+				<p>Alle abbonement på deltur.no har begrenset antall API-kall. API-kall telles hver gang bruker API'et med din token. Bruk av deltur.no til å dele turer og endre turer har ingen begrensninger.</p>
 			</li>
 			<li>
-				<h3>Hvordan kan jeg få et spesialdesignet bakgrunnskart?</h3>
-				<p>Cupcake ipsum dolor sit amet wafer gummi bears pudding applicake. Jujubes brownie powder. Sweet roll powder gingerbread gummies. Cupcake ice cream sweet roll pie lollipop. Jelly-o jelly-o apple pie chupa chups jelly jujubes gingerbread. Icing carrot cake powder chupa chups. Pudding sweet roll jelly-o muffin faworki biscuit. Marzipan marshmallow cake tiramisu caramels bear claw carrot cake cotton candy. Toffee danish sweet roll. Cookie topping powder toffee ice cream muffin dragée. Soufflé caramels apple pie chocolate cake cookie cake. Macaroon tiramisu halvah soufflé. Dessert toffee halvah chocolate cake bear claw.</p>
+				<h3>Hvordan telles antall kartvisninger?</h3>
+				<p>Alle abbonement på deltur.no har begrenset antall kartvisninger. Alle linjer og markører på deltur.no har en unik id. Ved visning av et kart sjekkes det om linjene/markørene som vises i kartet tilhører din konto. Hvis et av elementene tilhører din konto så telles en kartvisning. </p>
 			</li>
 			<li>
-				<h3>Jeg vil style om markører og linjer. Hva gjør jeg?</h3>
-				<p>Cupcake ipsum dolor sit amet wafer gummi bears pudding applicake. Jujubes brownie powder. Sweet roll powder gingerbread gummies. Cupcake ice cream sweet roll pie lollipop. Jelly-o jelly-o apple pie chupa chups jelly jujubes gingerbread. Icing carrot cake powder chupa chups. Pudding sweet roll jelly-o muffin faworki biscuit. Marzipan marshmallow cake tiramisu caramels bear claw carrot cake cotton candy. Toffee danish sweet roll. Cookie topping powder toffee ice cream muffin dragée. Soufflé caramels apple pie chocolate cake cookie cake. Macaroon tiramisu halvah soufflé. Dessert toffee halvah chocolate cake bear claw.</p>
+				<h3>Hvordan telles antall bilder?</h3>
+				<p>Alle abbonement på deltur.no har begrenset antall bilder. Antall bilder telles opp mot de bildene du laster opp på deltur.no. Bilder som du hoster selv telles ikke med. </p>
 			</li>
 			<li>
-				<h3>Hvordan endre jeg bakgrunnskart?</h3>
-				<p>Cupcake ipsum dolor sit amet wafer gummi bears pudding applicake. Jujubes brownie powder. Sweet roll powder gingerbread gummies. Cupcake ice cream sweet roll pie lollipop. Jelly-o jelly-o apple pie chupa chups jelly jujubes gingerbread. Icing carrot cake powder chupa chups. Pudding sweet roll jelly-o muffin faworki biscuit. Marzipan marshmallow cake tiramisu caramels bear claw carrot cake cotton candy. Toffee danish sweet roll. Cookie topping powder toffee ice cream muffin dragée. Soufflé caramels apple pie chocolate cake cookie cake. Macaroon tiramisu halvah soufflé. Dessert toffee halvah chocolate cake bear claw.</p>
+				<h3>Hva skjer når jeg går over antall lovlige API-kall/kartvisninger/bilder?</h3>
+				<p>Går du over antall lovlige antall API-kall/kartvisninger/bilder vil du få en e-post om å oppgradere ditt abbonement. deltur.no vil ikke automatisk stenge din konto selv om du har gått over lovlig bruk. </p>
+			</li>
+			<li>
+				<h3>Jeg vil style om markører og linjer. Hvordan gjør jeg dette?</h3>
+				<p>Har du et Pro abbonnement eller høyere kan du style om alle linjer og markører til det utseendet du selv ønsker. Dette kan du gjøre når du deler turen fra avansert deling eller du kan endre det i etterkant i admin-panelet.  </p>
+				<p>Se <a href="{{ url_for('infoapi') }}">dokumentasjonen</a> for mer informasjon på hva du kan style. </p>
+			</li>
+			<li>
+				<h3>Finnes det flere typer standard bakgrunnskart?</h3>
+				<p>deltur.no har i dag fem standard karttyper. Du kan velge mellom: 
+					<ol>
+						<li>Topokart</li>
+						<li>Turkart</li>
+						<li>Skikart</li>
+						<li>Kartverket</li>
+						<li>Satellitt</li>
+						<li>Veikart</li>
+					</ol>
+				</p>
+				<p>
+					Du kan enkelt bytte mellom disse ved å legge til navnet på karttypen du ønsker i URL'en. F. eks. kan du vise en tur med standard topokart <a href="http://beta.deltur.no/104+105/topokart">topokart</a> eller med <a href="http://beta.deltur.no/104+105/satellitt">satellitt</a>. 
+				</p>
+			</li>
+			<li>
+				<h3>Hvordan endrer jeg til egendefinert bakgrunnskart?</h3>
+				<p>Har du et Ekspert abbonnement kan du bruke dine egne bakgrunnskart. I admin-panelet kan du trykke på "Endre bakgrunnskart" på et kart og du vil deretter få opp et vindu der du kan legge inn koden for ditt eget bakgrunnskart.</p> 
+				<img class="well" src="{{ url_for('static', filename='img/bakgrunnskart.png') }}">
+				<p>Koden følger <a href="https://www.mapbox.com/developers/tilejson/" target="_new">Tilejson standarden</a>. Eksempel på en slik kode kan være så enkel som denne: 
+<pre>
+{
+  "tilejson": "2.0.0",
+  "tiles": [
+    "http://a.tiles.mapbox.com/v3/examples.map-9ijuk24y/{z}/{x}/{y}.png"
+  ]
+}</pre> 
+				</p> 
+				<p>
+					Husk også at hvis du har spesielle ønsker til hvordan kartet skal se ut så kan <a href="{{ url_for('infokontakt') }}">Kresendo</a> som står bak deltur.no hjelpe til med det. 
+				</p>
 			</li>
 			
 
@@ -183,7 +217,7 @@
 	<script type="text/javascript" src="{{ url_for('static', filename='infoside/js/jquery.isotope.min.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='infoside/js/jquery.touchSwipe.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='infoside/js/jquery.hotkeys.min.js') }}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='infoside/js/functions.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='infoside/js/functions.js') }}"></script>
 
 </body>
 </html>

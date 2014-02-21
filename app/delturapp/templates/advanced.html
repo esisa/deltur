@@ -644,16 +644,25 @@
     }
 
     function openLineStyleEditor(arrayId) {
-        var line = lines[arrayId];
+        {% if current_user.plan=="pro" or current_user.plan=="expert" %}
 
-        // Save id so we can save to the same id later on
-        $('#currentLine').html(arrayId);
+            var line = lines[arrayId];
 
-        // Update textarea with json data
-        $('#line-style').val(JSON.stringify(line.getStyle(), undefined, 2));
+            // Save id so we can save to the same id later on
+            $('#currentLine').html(arrayId);
 
-        // Open modal
-        $('#lineStyleEditor').modal();
+            // Update textarea with json data
+            $('#line-style').val(JSON.stringify(line.getStyle(), undefined, 2));
+
+            // Open modal
+            $('#lineStyleEditor').modal();
+
+        {% else %} 
+
+            alert("Not allowed");
+
+        {% endif %}
+       
         
     }
 
@@ -671,16 +680,26 @@
     }
 
     function openPointStyleEditor(arrayId) {
-        var point = points[arrayId];
 
-        // Save id so we can save to the same id later on
-        $('#currentMarker').html(arrayId);
+        {% if current_user.plan=="pro" or current_user.plan=="expert" %}
 
-        // Update textarea with json data
-        $('#marker-style').val(JSON.stringify(point.getStyle(), undefined, 2));
+            var point = points[arrayId];
 
-        // Open modal
-        $('#markerStyleEditor').modal();
+            // Save id so we can save to the same id later on
+            $('#currentMarker').html(arrayId);
+
+            // Update textarea with json data
+            $('#marker-style').val(JSON.stringify(point.getStyle(), undefined, 2));
+
+            // Open modal
+            $('#markerStyleEditor').modal();
+
+        {% else %} 
+
+            alert("Not allowed");
+
+        {% endif %}
+        
         
     }
 

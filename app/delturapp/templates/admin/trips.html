@@ -586,27 +586,31 @@
 		var point;
 		function openPointStyleEditor(id) {
 
+			{% if current_user.plan=="pro" or current_user.plan=="expert" %}
 
-	        // Create new line object
-            point = new delturPoint();
+		        // Create new line object
+	            point = new delturPoint();
 
-            // Init line
-            point.initWithId(id);
+	            // Init line
+	            point.initWithId(id);
 
-            var interval = setInterval(function(){
-	            if(point.getStatus() === 1) {
-	            	// Update textarea with json data
-			        $('#marker-style').val(JSON.stringify(point.getStyle(), undefined, 2));
+	            var interval = setInterval(function(){
+		            if(point.getStatus() === 1) {
+		            	// Update textarea with json data
+				        $('#marker-style').val(JSON.stringify(point.getStyle(), undefined, 2));
 
-	                 // Open modal
-			        $('#markerStyleEditor').modal("show");
+		                 // Open modal
+				        $('#markerStyleEditor').modal("show");
 
-	                // Stop interval
-	                clearInterval(interval);
-            	}
-        	},500);
+		                // Stop interval
+		                clearInterval(interval);
+	            	}
+	        	},500);
+	        {% else %} 
 
-	        
+            	alert("Not allowed");
+
+        	{% endif %}
 	        
 	    }
 	    function savePointStyle() {
@@ -618,26 +622,32 @@
 
 	    var line;
 		function openLineStyleEditor(id) {
+			{% if current_user.plan=="pro" or current_user.plan=="expert" %}
 
+		        // Create new line object
+	            line = new delturLine();
 
-	        // Create new line object
-            line = new delturLine();
+	            // Init line
+	            line.initWithId(id);
 
-            // Init line
-            line.initWithId(id);
+	            var interval = setInterval(function(){
+		            if(line.getStatus() === 1) {
+		            	// Update textarea with json data
+				        $('#line-style').val(JSON.stringify(line.getStyle(), undefined, 2));
 
-            var interval = setInterval(function(){
-	            if(line.getStatus() === 1) {
-	            	// Update textarea with json data
-			        $('#line-style').val(JSON.stringify(line.getStyle(), undefined, 2));
+		                 // Open modal
+				        $('#lineStyleEditor').modal("show");
 
-	                 // Open modal
-			        $('#lineStyleEditor').modal("show");
+		                // Stop interval
+		                clearInterval(interval);
+	            	}
+	        	},500);
+	        {% else %} 
 
-	                // Stop interval
-	                clearInterval(interval);
-            	}
-        	},500);
+            	alert("Not allowed");
+
+        	{% endif %}
+
 	    }
 		function saveLineStyle() {
 	        line.setStyle(JSON.parse($('#line-style').val()));

@@ -5,11 +5,11 @@ jQuery('html').removeClass('no-js').addClass('js');
 if ( navigator.appVersion.indexOf("Mac")!=-1 ) 
 	jQuery('html').addClass('osx');
 
-/* Opera fix: */
+/* Opera fix:
 if ($.browser.opera) {
 	$('.fade').removeClass('fade');
 	$('.slide').removeClass('slide');
-}
+} */
 
 
 // When DOM is fully loaded
