@@ -1,0 +1,5 @@
+lon, lat, title, description, imageurl
+10, 60, "Testtittel", "TestBeskrivelse kommer her", "http://bildeurl.com"
+
+
+ Lese inn fila og legge i teksteditor. 

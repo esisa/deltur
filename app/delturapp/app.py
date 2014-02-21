@@ -914,10 +914,14 @@ def adminInvoice():
 @login_required
 def adminSettings():
     return render_template('admin/settings.html')
-@app.route('/admin/turer')
+@app.route('/admin/trips')
 @login_required
 def adminTrips():
     return render_template('admin/trips.html')
+@app.route('/admin/tools')
+@login_required
+def adminTools():
+    return render_template('admin/tools.html')
 
  ### UTILITY FUNCTIONS ### 
 

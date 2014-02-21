@@ -17,6 +17,31 @@
       .sidebar-nav {
         padding: 9px 0;
       }
+
+      #csv-format {
+      	font-size: 16px;
+      }
+
+        /* Style upload button */
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 999px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
      
     </style>
 
@@ -87,10 +112,10 @@
 			<ul id="nav">
 			  <li><a href="{{ url_for('adminIndex') }}"><i class="fa fa-bar-chart-o fa-2x icon-style"></i> Statistikk</a></li>
               <li><a href="{{ url_for('adminTrips') }}"><i class="fa fa-picture-o fa-2x icon-style"></i> Turer</a></li>
-              <li><a class="active"  href="{{ url_for('adminSettings') }}"><i class="fa fa-wrench fa-2x icon-style"></i>Innstillinger</a></li>
+              <li><a href="{{ url_for('adminSettings') }}"><i class="fa fa-wrench fa-2x icon-style"></i>Innstillinger</a></li>
               <li><a href="{{ url_for('adminInvoice') }}"><i class="fa fa-dollar fa-2x icon-style"></i>Abbonement</a></li>
               {% if current_user.plan == "expert" %}
-			  <li><a href="{{ url_for('adminTools') }}"><i class="fa fa-dollar fa-2x icon-style"></i>Ekspertverktøy</a></li>
+			  <li><a class="active"  href="{{ url_for('adminTools') }}"><i class="fa fa-dollar fa-2x icon-style"></i>Ekspertverktøy</a></li>
 			  {% endif %}
 			</ul>	
         </div><!--/span-->
@@ -107,7 +132,7 @@
 				<div class="span12">
 					<ul class="breadcrumb">
 						<li><a href="#">Hjem</a> <span class="divider">/</span></li>
-						<li class="active">Innstillinger</li>
+						<li class="active">Ekspertverktøy</li>
 					</ul>
 				</div><!--/span-->
 			</div><!--/row-->
@@ -127,13 +152,24 @@
 					<div class="widget">
 							<div class="widget-header">
 								<i class="fa fa-wrench icon-style"></i>
-								<h3>Innstillinger</h3>
+								<h3>Ekspertverktøy</h3>
 							</div>
 							<div class="widget-content">
-								Hemmelig token til bruk sammen med API: <div class="well well-sm">{{ current_user.get_auth_token() }}</div><br>
-								<button type="button" onClick="deleteUser()" class="btn btn-danger">Slette bruker </button>
+								<p>
+									Her kan du importere mange markører av gangen. Les inn kommaseparert CSV-fil eller skriv manuelt inn i feltet nedenfor. Format må være:
+									<div class="well" id="csv-format">
+										lon, lat, title, description, imageurl
+									</div>
+								</p>
 
-								<a href="{{ url_for_security('change_password') }}"><button type="button" class="btn btn-danger">Bytt passord </button></a>
+								<textarea id="textarea-csv" class="form-control" rows="7" cols="40" style="font-size: 16px; width: 500px; height: 150px;">
+                				</textarea>
+                				<br><br>
+                				<span class="btn btn-primary btn-file" id="fileButton">
+					                Hent CSV-fil med markører <input type="file" id="fileInput">
+					            </span>
+                				<button type="button" onClick="uploadCSV()" class="btn btn-primary">Last inn markører til deltur.no </button>
+
 								
 							</div>						
 					</div><!--/widget-->
@@ -167,14 +203,79 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>	
+	<script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>	
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
 
 	<script>
-		function deleteUser() {
-			alert("Foreløpig kan du ikke slette din bruker!");
-		}
+
+
+	$(function () {
+        var fileInput = document.getElementById('fileInput');
+
+        fileInput.addEventListener('change', function(e) {
+            var file = fileInput.files[0];
+
+            if (file.name.match(/(\.|\/)(csv)$/i)) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+
+                	$('#textarea-csv').val(reader.result);
+                    
+                }
+
+                reader.readAsText(file);    
+            } else {
+                /*$.pnotify({
+                    title: 'No Icon Error',
+                    text: 'I have no icon.',
+                    type: 'error',
+                    icon: false
+                });*/
+                alert("Filen du valgte er ikke en GPS-fil!");
+            }
+        });
+        
+    });
+
+    function uploadCSV() {
+    	var csv = $('#textarea-csv').val();
+
+    	// Validate csv
+
+    	// Get each line
+    	/*for eachline {
+	    	var lat = 
+	    	var lon =
+	    	var title =
+	    	var description =
+	    	var imageurl = 
+
+	    	// Run ajax query on each line
+	    	var delPointURL = "/delturno/sted/";
+	    	var url = delPointURL + lat +"/"+ lon;
+	        var jsonData =  JSON.stringify({"title": title,"description":description,"url": imageurl});          
+
+	        $.ajax({
+	            type: "POST",
+	            url: url,
+	            data: jsonData,
+	            contentType : 'application/json',
+	            success: function (response) {
+	                id = response.id;
+	                status = 1;
+	            },
+	            error: function (response) {
+	                status = -1; // Error in uploaded file
+	            }
+	        });
+	    }*/
+
+	    // Give user an alert if everything went fine
+	    alert("Gratulerer, alle punkter er lastet inn. Du kan nå lage nye kart under Turer. ")
+    }
+		
 	</script>
 	
 	
