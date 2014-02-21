@@ -766,15 +766,21 @@ def getTripEmbed(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
 
     showLogo = showLogoInMap(ids)
+    plan = getLowestPlan(ids)
 
     embedType = request.args.get('embedType', '')
+    
     if embedType != '':
-        try:
-            return render_template('embeds/' + embedType + '.html', mapType=map, idList=ids)
-        except TemplateNotFound:
+        if plan == "expert":
+            try:
+                return render_template('embeds/' + embedType + '.html', mapType=map, idList=ids)
+            except TemplateNotFound:
+                return render_template('404.html'), 404
+        else:
             return render_template('404.html'), 404
     else:
         return render_template('embeds/index.html', mapType=map, idList=ids, showLogo=showLogo)
+    
 
 # Hash input
 @app.route('/<regex("[a-z0-9]+"):hash>')
@@ -824,15 +830,21 @@ def getTripEmbedByHash(hash, mapType='topokart'):
     conn.commit();
 
     showLogo = showLogoInMap(idString)
+    plan = getLowestPlan(idString)
 
+    
     embedType = request.args.get('embedType', '')
     if embedType != '':
-        try:
-            return render_template('embeds/' + embedType + '.html', mapType=map, idList=idString, hash=hash)
-        except TemplateNotFound:
+        if plan == "expert":
+            try:
+                return render_template('embeds/' + embedType + '.html', mapType=map, idList=idString, hash=hash)
+            except TemplateNotFound:
+                return render_template('404.html'), 404
+        else:   
             return render_template('404.html'), 404
     else:
         return render_template('embeds/index.html', mapType=map, idList=idString, hash=hash, showLogo=showLogo)
+    
 
 @app.route('/del/kml/', methods = ['POST'])
 def createKMLTrip():
@@ -1245,5 +1257,44 @@ def showLogoInMap(idString):
             showLogo = True;
 
     return showLogo;
+
+def getLowestPlan(idString):
+
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    ids = idString.split("+")
+    lowestplan = "expert"
+    for id in ids:
+        if isPoint(id):
+            sql_string = "select p.userid, u.plan from points p, \"user\" u where p.id=%s and p.userid=u.id"
+        else:
+            sql_string = "select t.userid, u.plan from trips t, \"user\" u where t.id=%s and t.userid=u.id"                    
+        cursor.execute(sql_string, (id,))
+
+        plan = cursor.fetchone()[1]
+        if lowestplan=="expert":
+            if plan == "free":
+                lowestplan = "free"
+            if plan == "standard":
+                lowestplan = "standard"
+            if plan == "pro":
+                lowestplan = "pro"
+        if lowestplan=="pro":
+            if plan == "free":
+                lowestplan = "free"
+            if plan == "standard":
+                lowestplan = "standard"
+        if lowestplan=="standard":
+            if plan == "free":
+                lowestplan = "free"
+            
+
+    return lowestplan;
+
 
 
