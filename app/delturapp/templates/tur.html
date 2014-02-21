@@ -14,12 +14,13 @@
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
     
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
     <script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
     <script src="{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}"></script>
     <script src="{{ url_for('static', filename='js/rickshaw.js') }}"></script>
-    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+    <script src="{{ url_for('static', filename='js/mapbox.js') }}"></script>
+    <!--script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script-->
 
     
     
@@ -35,7 +36,8 @@
     <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/detail.css">
     <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
     <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
-    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+    <!--link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' /-->
+    <link href='{{ url_for('static', filename='css/mapbox.css') }}' rel='stylesheet' />
 
 
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.3/leaflet-image.js'></script>
@@ -276,15 +278,10 @@
         <br>
         
         <div id="map">
-            {% if current_user.plan=="pro" or current_user.plan=="expert" %}
-
-               
-            {% else %} 
-
-                <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
+            {% if showLogo %}
+             <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
             <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
             </a>
-
             {% endif %}
         </div>
         

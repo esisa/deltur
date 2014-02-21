@@ -88,9 +88,11 @@
 <body>
             
     <div id="map" style="height: 100%; ">
-        <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
-        <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
-        </a>
+        {% if showLogo %}
+             <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
+            <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
+            </a>
+        {% endif %}
     </div>
 
 

@@ -674,7 +674,10 @@ def setStyle(request, id):
 @app.route('/<regex("[0-9+]+"):ids>/<string:mapType>')
 def getTripHTML(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
-    return render_template('tur.html', mapType=map, idList=ids)
+
+    showLogo = showLogoInMap(ids)
+
+    return render_template('tur.html', mapType=map, idList=ids, showLogo=showLogo)
 
 
 
@@ -762,6 +765,8 @@ def getRetinaTilejson(hash):
 def getTripEmbed(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
 
+    showLogo = showLogoInMap(ids)
+
     embedType = request.args.get('embedType', '')
     if embedType != '':
         try:
@@ -769,7 +774,7 @@ def getTripEmbed(ids, mapType='topokart'):
         except TemplateNotFound:
             return render_template('404.html'), 404
     else:
-        return render_template('embeds/index.html', mapType=map, idList=ids)
+        return render_template('embeds/index.html', mapType=map, idList=ids, showLogo=showLogo)
 
 # Hash input
 @app.route('/<regex("[a-z0-9]+"):hash>')
@@ -787,11 +792,13 @@ def getTripHTMLByHash(hash, mapType='topokart'):
     idString = cursor.fetchone()[0]
     conn.commit();
 
+    showLogo = showLogoInMap(idString)
+
     if mapType == "custom":
         map = -1
     else:
         map = mapTypesList.index(mapType)
-    return render_template('tur.html', mapType=map, idList=idString, hash=hash)
+    return render_template('tur.html', mapType=map, idList=idString, hash=hash, showLogo=showLogo)
 
 @app.route('/<regex("[a-z0-9]+"):hash>/embed')
 @app.route('/<regex("[a-z0-9]+"):hash>/embed/<string:mapType>')
@@ -810,10 +817,13 @@ def getTripEmbedByHash(hash, mapType='topokart'):
         
     cursor = conn.cursor()
 
+
     sql_string = "select ids from hash where hash=%s"
     cursor.execute(sql_string, (hash,))
     idString = cursor.fetchone()[0]
     conn.commit();
+
+    showLogo = showLogoInMap(idString)
 
     embedType = request.args.get('embedType', '')
     if embedType != '':
@@ -822,7 +832,7 @@ def getTripEmbedByHash(hash, mapType='topokart'):
         except TemplateNotFound:
             return render_template('404.html'), 404
     else:
-        return render_template('embeds/index.html', mapType=map, idList=idString, hash=hash)
+        return render_template('embeds/index.html', mapType=map, idList=idString, hash=hash, showLogo=showLogo)
 
 @app.route('/del/kml/', methods = ['POST'])
 def createKMLTrip():
@@ -1212,3 +1222,28 @@ def increaseNumMapviews(idString):
         sql_string = "update \"user\" set mapviews=mapviews+1 where id=%s"
         cursor.execute(sql_string, (userid,))
         conn.commit();
+
+def showLogoInMap(idString):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    ids = idString.split("+")
+    showLogo = False
+    for id in ids:
+        if isPoint(id):
+            sql_string = "select p.userid, u.plan from points p, \"user\" u where p.id=%s and p.userid=u.id"
+        else:
+            sql_string = "select t.userid, u.plan from trips t, \"user\" u where t.id=%s and t.userid=u.id"                    
+        cursor.execute(sql_string, (id,))
+
+        plan = cursor.fetchone()[1]
+        if plan == "free" or plan== "standard":
+            showLogo = True;
+
+    return showLogo;
+
+
