@@ -225,7 +225,7 @@
         fileInput.addEventListener('change', function(e) {
             var file = fileInput.files[0];
 
-            if (file.name.match(/(\.|\/)(csv)$/i)) {
+            if (file.name.match(/(\.|\/)(csv|txt|text)$/i)) {
                 var reader = new FileReader();
 
                 reader.onload = function(e) {
@@ -242,7 +242,7 @@
                     type: 'error',
                     icon: false
                 });*/
-                alert("Filen du valgte er ikke en GPS-fil!");
+                alert("Filen du valgte ser ikke ut til å være en CSV-fil!");
             }
         });
         
