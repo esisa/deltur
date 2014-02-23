@@ -22,6 +22,13 @@
       	font-size: 16px;
       }
 
+      #textarea-csv {
+      	font-size: 16px; 
+      	width: 600px; 
+      	height: 150px;
+      }
+
+
         /* Style upload button */
         .btn-file {
             position: relative;
@@ -158,11 +165,11 @@
 								<p>
 									Her kan du importere mange markører av gangen. Les inn kommaseparert CSV-fil eller skriv manuelt inn i feltet nedenfor. Format må være:
 									<div class="well" id="csv-format">
-										lon, lat, title, description, imageurl
+										lon,lat,title,description,imageurl
 									</div>
 								</p>
 
-								<textarea id="textarea-csv" class="form-control" rows="7" cols="40" style="font-size: 16px; width: 500px; height: 150px;">
+								<textarea id="textarea-csv" autocomplete="off" class="form-control" rows="7" cols="40">
                 				</textarea>
                 				<br><br>
                 				<span class="btn btn-primary btn-file" id="fileButton">
@@ -206,6 +213,8 @@
 	<script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>	
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/jquery.csv-0.71.min.js') }}"></script>
+	
 
 	<script>
 
@@ -242,15 +251,19 @@
     function uploadCSV() {
     	var csv = $('#textarea-csv').val();
 
-    	// Validate csv
+    	// Read csv input
+    	var points = $.csv.toArrays(csv);
 
-    	// Get each line
-    	/*for eachline {
-	    	var lat = 
-	    	var lon =
-	    	var title =
-	    	var description =
-	    	var imageurl = 
+    	// Share each line
+    	var error = false;
+	    var numErrors = 0;
+    	$.each(points, function(index, point){
+
+	    	var lon = point[0];
+	    	var lat = point[1];
+	    	var title = point[2];
+	    	var description = point[3];
+	    	var imageurl = point[4];
 
 	    	// Run ajax query on each line
 	    	var delPointURL = "/delturno/sted/";
@@ -267,13 +280,22 @@
 	                status = 1;
 	            },
 	            error: function (response) {
-	                status = -1; // Error in uploaded file
+	                error = True;
+	                errors += 1;
 	            }
 	        });
-	    }*/
+	    });
 
-	    // Give user an alert if everything went fine
-	    alert("Gratulerer, alle punkter er lastet inn. Du kan nå lage nye kart under Turer. ")
+
+    	if(!error) {
+    		// Give user an alert if everything went fine
+	    	alert("Gratulerer, alle punkter er lastet inn. Du kan nå lage nye kart under Turer. ")
+    	}
+    	else {
+
+    	}
+
+	    
     }
 		
 	</script>
