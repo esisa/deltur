@@ -222,7 +222,7 @@
                <p>Tittel og beskrivelse vil bli lagt til i popup-boksen som kan aktiveres når trykker på linja. Er du registrert 
                 vil du også se disse beskrivelsene i ditt adminpanel.  <br><br></p>
                
-                 <form id="markerInfo" class="form-horizontal" role="form">
+                 <form autocomplete="off" id="markerInfo" class="form-horizontal" role="form">
 
                   <div class="form-group">
                     <label for="inputTittel" class="col-sm-2 control-label">Tittel</label>
@@ -233,7 +233,7 @@
                   <div class="form-group">
                     <label for="inputBeskrivelse" class="col-sm-2 control-label">Beskrivelse</label>
                     <div class="col-sm-10">
-                      <textarea id="inputBeskrivelse" class="form-control" rows="3"></textarea>
+                      <textarea id="inputBeskrivelse" class="form-control" rows="3" placeholder="Beskrivelse"></textarea>
                     </div>
                   </div>
                  </form>
@@ -255,7 +255,7 @@
              <div class="modal-body">
                <p>Hvis du fyller inn tittel og beskrivelse så blir det lettere å finne igjen turen seinere i admin-panelet. Tittel og beskrivelse kan også bl lagt til i popup-boksen som vises når du trykker på markøren.<br><br></p>
                
-                 <form id="lineInfo" class="form-horizontal" role="form">
+                 <form id="lineInfo" autocomplete="off" class="form-horizontal" role="form">
 
                   <div class="form-group">
                     <label for="inputLineTittel" class="col-sm-2 control-label">Tittel</label>
@@ -266,7 +266,7 @@
                   <div class="form-group">
                     <label for="inputLineBeskrivelse" class="col-sm-2 control-label">Beskrivelse</label>
                     <div class="col-sm-10">
-                      <textarea id="inputLineBeskrivelse" class="form-control" rows="3"></textarea>
+                      <textarea id="inputLineBeskrivelse" class="form-control" rows="3"  placeholder="Beskrivelse"></textarea>
                     </div>
                   </div>
                  </form>
@@ -576,12 +576,14 @@
                       left: 'auto' // Left position relative to parent in px
                     };
 
-        // Open modal
+        // Erase fields and Open modal
+        $('#inputLineTittel').val("");
+        $('#inputLineBeskrivelse').val("");
         $('#lineInfo').modal();
 
         // When users clicks save in modal
         $('#lagreLineButton').click(function () {
-          debugger;
+
             // Remove button to upload another GPX file            
             $('#enkelTur').hide();
 
@@ -976,7 +978,9 @@
             //debugger;
             if (type === 'polyline') {
 
-                // Open modal
+                // Erase fields and Open modal
+                $('#inputLineTittel').val("");
+                $('#inputLineBeskrivelse').val("");
                 $('#lineInfo').modal();
 
                 // When users clicks save in modal
@@ -1034,8 +1038,11 @@
             }
             else if (type === 'marker') {
                         
-                // Open modal
+                // Erase fields and Open modal
+                $('#inputTittel').val("");
+                $('#inputBeskrivelse').val("");
                 $('#markerInfo').modal();
+
 
                 // When users clicks save in modal
                 $('#lagrePopup').click(function () {
