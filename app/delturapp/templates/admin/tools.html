@@ -54,6 +54,7 @@
 
     <link href="{{ url_for('static', filename='css/admin/bootstrap-responsive.min.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static', filename='css/admin/style.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>							
 	
@@ -214,6 +215,7 @@
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/jquery.csv-0.71.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
 	
 
 	<script>
@@ -265,6 +267,7 @@
 	    	var description = point[3];
 	    	var imageurl = point[4];
 
+	    	debugg
 	    	// Run ajax query on each line
 	    	var delPointURL = "/delturno/sted/";
 	    	var url = delPointURL + lat +"/"+ lon;
@@ -274,26 +277,31 @@
 	            type: "POST",
 	            url: url,
 	            data: jsonData,
+	            async: 	false,
 	            contentType : 'application/json',
 	            success: function (response) {
-	                id = response.id;
-	                status = 1;
+
 	            },
 	            error: function (response) {
-	                error = True;
-	                errors += 1;
+	                error = true;
+	                numErrors += 1;
 	            }
 	        });
 	    });
 
-
-    	if(!error) {
-    		// Give user an alert if everything went fine
-	    	alert("Gratulerer, alle punkter er lastet inn. Du kan nå lage nye kart under Turer. ")
+    	if(points.length) {
+    		if(!error) {
+	    		// Give user an alert if everything went fine
+		    	humane.log("<p>Gratulerer, alle punkter er lastet inn.</p> <p>Du kan nå lage nye kart under Turer.</p>", { waitForMove: true});
+	    	}
+	    	else {
+	    		humane.log("<p>Noen av punktene dine kunne ikke lastes inn. </p> <p>Vi fant "+numErrors+" feil.</p>", { waitForMove: true});
+	    	}
     	}
     	else {
-
+    		humane.log("<p>Du må legge til noen punkter først!</p>");
     	}
+    	
 
 	    
     }
