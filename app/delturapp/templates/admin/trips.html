@@ -22,6 +22,7 @@
     <link href="{{ url_for('static', filename='css/admin/bootstrap-responsive.min.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static', filename='css/admin/style.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
+	<link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>		
 	
   </head>
@@ -392,6 +393,7 @@
 	<script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
 
 	
 	
@@ -589,7 +591,7 @@
 		var point;
 		function openPointStyleEditor(id) {
 
-			{% if current_user.plan=="pro" or current_user.plan=="expert" %}
+			{% if current_user.is_authenticated() and (current_user.plan=="standard" or current_user.plan=="pro" or current_user.plan=="expert") %}
 
 		        // Create new line object
 	            point = new delturPoint();
@@ -611,7 +613,7 @@
 	        	},500);
 	        {% else %} 
 
-            	alert("Not allowed");
+            	humane.log("<p>Du må ha et betalt abbonement for å endre på markøren!</p>", { waitForMove: true});
 
         	{% endif %}
 	        
@@ -625,7 +627,7 @@
 
 	    var line;
 		function openLineStyleEditor(id) {
-			{% if current_user.plan=="pro" or current_user.plan=="expert" %}
+			{% if current_user.is_authenticated() and (current_user.plan=="standard" or current_user.plan=="pro" or current_user.plan=="expert") %}
 
 		        // Create new line object
 	            line = new delturLine();
@@ -647,7 +649,7 @@
 	        	},500);
 	        {% else %} 
 
-            	alert("Not allowed");
+            	humane.log("<p>Du må ha et betalt abbonement for å endre på linjen!</p>", { waitForMove: true});
 
         	{% endif %}
 

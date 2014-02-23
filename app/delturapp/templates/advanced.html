@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
+    <link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
 
     <!--script src='{{ url_for('static', filename='js/mapbox.js') }}'></script-->
     <!--script src='{{ url_for('static', filename='js/leaflet.draw.js') }}'></script-->
@@ -442,12 +443,9 @@
     <script src="{{ url_for('static', filename='js/fileupload/jquery.iframe-transport.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fileupload/jquery.fileupload.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.tab.min.js') }}"></script>
-
-
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-editable.css') }}">
-    <script src="{{ url_for('static', filename='js/bootstrap-editable.min.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
+    <!--link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-editable.css') }}">
+    <script src="{{ url_for('static', filename='js/bootstrap-editable.min.js') }}"></script-->
     <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
 
     <script>
@@ -646,7 +644,7 @@
     }
 
     function openLineStyleEditor(arrayId) {
-        {% if current_user.plan=="pro" or current_user.plan=="expert" %}
+        {% if not current_user.is_authenticated() or (current_user.is_authenticated() and (current_user.plan=="standard" or current_user.plan=="pro" or current_user.plan=="expert")) %}
 
             var line = lines[arrayId];
 
@@ -661,7 +659,7 @@
 
         {% else %} 
 
-            alert("Not allowed");
+            humane.log("<p>Du må ha et betalt abbonement for å endre på linjen!</p>", { waitForMove: true});
 
         {% endif %}
        
@@ -683,7 +681,7 @@
 
     function openPointStyleEditor(arrayId) {
 
-        {% if current_user.plan=="pro" or current_user.plan=="expert" %}
+        {% if not current_user.is_authenticated() or (current_user.is_authenticated() and (current_user.plan=="standard" or current_user.plan=="pro" or current_user.plan=="expert")) %}
 
             var point = points[arrayId];
 
@@ -698,7 +696,7 @@
 
         {% else %} 
 
-            alert("Not allowed");
+            humane.log("<p>Du må ha et betalt abbonement for å endre på markøren!</p>", { waitForMove: true});
 
         {% endif %}
         
@@ -1062,7 +1060,7 @@
 
                     // Add a custom footer to popup
                     var currentPlaceInArray = points.length-1;
-                    var customPopupFooter = '<div id="change-marker-link"><a onClick="openPointStyleEditor('+ currentPlaceInArray +')" href="javascript:void(0)">Endre på ikon</a></div>';
+                    var customPopupFooter = '<div id="change-marker-link"><a onClick="openPointStyleEditor('+ currentPlaceInArray +')" href="javascript:void(0)">Endre på markøren</a></div>';
                     point.addCustomPopupFooter(customPopupFooter);
 
                     var interval = setInterval(function(){

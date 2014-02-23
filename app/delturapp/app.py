@@ -601,15 +601,16 @@ def addGeoJSONTrip(request):
 @app.route('/<int:id>/setStyle', methods = ['POST'])
 @login_required
 def setStyleLogin(id):
-    #print "login"
     return setStyle(request, id)
 
 @app.route('/<int:id>/setStyle', methods = ['POST'])
 @auth_token_required
 def setStyleToken(id):
-    #print "token"
-    increaseApiAccess(current_user.id)
-    return setStyle(request, id)
+    if current_user.plan != "free":
+        increaseApiAccess(current_user.id)
+        return setStyle(request, id)
+    else:
+        abort(403)
 
 
 
