@@ -115,7 +115,7 @@
               <li><a href="{{ url_for('adminSettings') }}"><i class="fa fa-wrench fa-2x icon-style"></i>Innstillinger</a></li>
               <li><a href="{{ url_for('adminInvoice') }}"><i class="fa fa-dollar fa-2x icon-style"></i>Abbonement</a></li>
               {% if current_user.plan == "expert" %}
-			  <li><a class="active"  href="{{ url_for('adminTools') }}"><i class="fa fa-dollar fa-2x icon-style"></i>Ekspertverktøy</a></li>
+			  <li><a class="active"  href="{{ url_for('adminTools') }}"><i class="fa fa-leaf fa-2x icon-style"></i>Ekspertverktøy</a></li>
 			  {% endif %}
 			</ul>	
         </div><!--/span-->
@@ -151,7 +151,7 @@
 				<div class="span12">			
 					<div class="widget">
 							<div class="widget-header">
-								<i class="fa fa-wrench icon-style"></i>
+								<i class="fa fa-leaf icon-style"></i>
 								<h3>Ekspertverktøy</h3>
 							</div>
 							<div class="widget-content">

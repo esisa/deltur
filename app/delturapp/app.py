@@ -879,6 +879,10 @@ def home():
     return render_template('index.html')
 
 
+@app.route('/closed/')
+def closedTrip():
+    return render_template('closedTrip.html')
+
 @app.route('/info')
 def infohome():
     return render_template('infoside/index.html')

@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>deltur.no</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <style type="text/css">
+      body {
+        padding-bottom: 40px;
+        background-color: rgb(39,43,48);
+      }
+
+      #logo {
+          float: left;
+      }
+
+      .form-signin {
+        max-width: 400px;
+        padding: 19px 29px 29px;
+        margin: 50px auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+       text-align: center;
+      }
+
+
+      
+      #text {
+          margin-left: auto;
+          margin-right: auto;
+      }
+      
+    
+
+      #register-button, #copy-trip-button {
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          margin-top: 30px;
+      }
+      
+      
+    </style>
+   <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    
+   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+       <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+       <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+   <script>
+       $(function() {
+           $( document ).tooltip();
+       });
+       </script>
+       <style>
+       label {
+           display: inline-block;
+           width: 5em;
+       }
+       </style>
+									   
+       <script type="text/javascript">
+
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-40003995-1']);
+         _gaq.push(['_trackPageview']);
+
+         (function() {
+           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+
+       </script>
+   
+  </head>
+
+  <body>
+      
+          
+    <div class="menu">
+        <ul>
+          {% if current_user.is_authenticated() %}
+            
+            <li><a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+            <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
+          {% else %}
+          <li><a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
+            </li> 
+           <li><a href="{{ url_for('security.login') }}"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
+            </li>
+            <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
+          {% endif %}
+            
+        </ul>
+    </div>    
+    
+             
+
+    <div class="container">
+      <form class="form-signin">
+          
+        <div id="logo"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></div>
+        <h1 style="text-align: center;font-size:4em;" class="form-signin-heading">deltur.no</h1>
+        <div style="text-align: center; font-size:20px;">Del din tur p&aring; 1-2-3!</div>
+        <hr>
+       
+        <div id="text">
+        {% if current_user.is_authenticated() %}
+            <p>
+                Turen du vil vise er ikke lengre tilgjengelig. Siden du er registert bruker kan du kopiere turen til din egen konto. 
+            <p>
+            <a id="copy-trip-button" class="btn btn-success btn-large" href="#">Kopier turen</a>
+        {% else %}
+            <p>
+                Turen du vil vise er ikke lengre tilgjengelig. Registrerer du deg med et av betalingsabbonnementene for å kopiere turen til din konto. 
+            <p>
+            <a id="register-button" class="btn btn-success btn-large" href="{{ url_for('security.register') }}">Registrer deg</a>
+        {% endif %}
+            
+        </div>
+        
+        
+      </form>
+      
+      
+
+    </div> <!-- /container -->
+    
+    
+    
+
+  </body>
+</html>
