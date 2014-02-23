@@ -214,10 +214,15 @@ var delturPoint = function () {
 
         _map.closePopup(); // Close poup to make sure title/description/image er rerendered
 
-        if(style.popup.url != "")
-            imageHtml ='<img width="'+imgWidth+'" src="'+ style.popup.image.url +'"><br>'
-        else
-            imageHtml = ''
+        if(typeof style.popup.image.url == "undefined") {
+            imageHtml = '';
+        }
+        else {
+            if(style.popup.image.url != "")
+                imageHtml ='<img width="'+imgWidth+'" src="'+ style.popup.image.url +'"><br>';
+            else
+                imageHtml = '';
+        }
 
         if(style.popup.show) // Show popup
             imgMarker.bindPopup('<h3 id="popupText_title" style="width:'+imgWidth+'px">'+style.popup.title+'</h3>'+imageHtml+'<div id="popupText_description" style="width:'+imgWidth+'px">' + style.popup.description + '</div>' + custom_popup_footer, {"minWidth": imgWidth + 20});
