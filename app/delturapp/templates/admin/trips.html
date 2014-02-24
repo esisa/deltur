@@ -621,6 +621,7 @@
 	    function savePointStyle() {
 	        point.setStyle(JSON.parse($('#marker-style').val()));
 	        renderTables(); // In case user changes title/description
+	        humane.log("<p>Markøren "+point.getId()+" har blitt lagret!</p>", { timeout: 2000});
 	    }
 
 
@@ -657,6 +658,7 @@
 		function saveLineStyle() {
 	        line.setStyle(JSON.parse($('#line-style').val()));
 	        renderTables(); // In case user changes title/description
+	        humane.log("<p>Linjen "+line.getId()+" har blitt lagret!</p>", { timeout: 2000});
 	    }
 
 
