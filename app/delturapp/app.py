@@ -908,16 +908,19 @@ def getTripEmbed(ids, mapType='topokart'):
 
     embedType = request.args.get('embedType', '')
     
-    if embedType != '':
-        if plan == "expert":
-            try:
-                return render_template('embeds/' + embedType + '.html', mapType=map, idList=ids)
-            except TemplateNotFound:
+    if plan != "noreg":
+        if embedType != '':
+            if plan == "expert":
+                try:
+                    return render_template('embeds/' + embedType + '.html', mapType=map, idList=ids)
+                except TemplateNotFound:
+                    return render_template('404.html'), 404
+            else:
                 return render_template('404.html'), 404
         else:
-            return render_template('404.html'), 404
+            return render_template('embeds/index.html', mapType=map, idList=ids, showLogo=showLogo)
     else:
-        return render_template('embeds/index.html', mapType=map, idList=ids, showLogo=showLogo)
+        abort(403)
     
 
 # Hash input
@@ -970,18 +973,20 @@ def getTripEmbedByHash(hash, mapType='topokart'):
     showLogo = showLogoInMap(idString)
     plan = getLowestPlan(idString)
 
-    
-    embedType = request.args.get('embedType', '')
-    if embedType != '':
-        if plan == "expert":
-            try:
-                return render_template('embeds/' + embedType + '.html', mapType=map, idList=idString, hash=hash)
-            except TemplateNotFound:
+    if plan != "noreg":
+        embedType = request.args.get('embedType', '')
+        if embedType != '':
+            if plan == "expert":
+                try:
+                    return render_template('embeds/' + embedType + '.html', mapType=map, idList=idString, hash=hash)
+                except TemplateNotFound:
+                    return render_template('404.html'), 404
+            else:   
                 return render_template('404.html'), 404
-        else:   
-            return render_template('404.html'), 404
+        else:
+            return render_template('embeds/index.html', mapType=map, idList=idString, hash=hash, showLogo=showLogo)
     else:
-        return render_template('embeds/index.html', mapType=map, idList=idString, hash=hash, showLogo=showLogo)
+        abort(403)
     
 
 @app.route('/del/kml/', methods = ['POST'])
@@ -1424,6 +1429,8 @@ def getLowestPlan(idString):
 
         plan = cursor.fetchone()[1]
         if lowestplan=="expert":
+            if plan == "noreg":
+                lowestplan = "noreg"
             if plan == "free":
                 lowestplan = "free"
             if plan == "standard":
@@ -1431,13 +1438,20 @@ def getLowestPlan(idString):
             if plan == "pro":
                 lowestplan = "pro"
         if lowestplan=="pro":
+            if plan == "noreg":
+                lowestplan = "noreg"
             if plan == "free":
                 lowestplan = "free"
             if plan == "standard":
                 lowestplan = "standard"
         if lowestplan=="standard":
+            if plan == "noreg":
+                lowestplan = "noreg"
             if plan == "free":
                 lowestplan = "free"
+        if lowestplan=="free":
+            if plan == "noreg":
+                lowestplan = "noreg"
             
 
     return lowestplan;
