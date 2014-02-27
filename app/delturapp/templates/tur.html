@@ -206,6 +206,24 @@
         </div>
     </div>
 
+    <div id="copyModal"  class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Kopier turen</h3>
+                </div>
+                <div class="modal-body">
+                  <p>Ønsker du å kopiere denne turen? Kopieringen innebærer at alle linjer/markører blir kopiert inn til din konto. Eier du noen av markørene/linjene fra før av vil disse dupliseres på din konto. </p>
+                  <button type="button" onClick="copyTrip()" class="btn btn-success">Kopier turen og åpne den nye turen automatisk</button>
+                </div>
+                <div class="modal-footer">
+                  <a href="#" class="btn" data-dismiss="modal" >Lukk</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="imgModal"  class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -242,6 +260,12 @@
             <span class="hint--top" data-hint="Legg kartet på eget nettsted">
                 <a id="embedButton" style="text-decoration: none;" data-toggle="modal" href="#embedModal"><i class="fa fa-map-marker"></a></i>&nbsp;
             </span>
+            {% if current_user.is_authenticated() %}
+                <span class="hint--top" data-hint="Kopier denne turen">
+                    <a id="copyButton" style="text-decoration: none;" data-toggle="modal" href="#copyModal"><i class="fa fa-copy"></a></i>&nbsp;
+                </span>
+            {% endif %}
+            
             <!--span class="hint--top" data-hint="Last ned kartet som et bilde">
                 <a onClick="createImg()" id="embedButton" style="text-decoration: none;" data-toggle="modal" href="javacript:void(0)"><i class="fa fa-picture-o"></a></i>&nbsp;
             </span-->
@@ -697,6 +721,39 @@
         var type = $("#placeDownloadType option:selected").text().toLowerCase();
         window.open("/" + id + "/" + type);
     });
+
+    /*
+        Copy trip to new ids
+    */
+    function copyTrip() {
+
+        var newIds = new Array();
+
+        // Go through each id and copy the feature
+        $.each(ids, function(index, id) {
+            $.ajax({
+              dataType: "json",
+              async: false,
+              url: id + "/delturno/copy"
+            }).done(function(json) {
+              newIds.push(json.id);
+            });
+        });
+
+        // Make string of new ids
+        var idString = "";
+        $.each(newIds, function(index, currentId) {
+            if(idString=="")
+                idString = currentId;
+            else
+                idString = idString + "+" + currentId;
+        });
+
+        // Open new trip
+        document.location.href = "/"+idString;
+
+
+    }
 
     // Create image of map
     function createImg() {
