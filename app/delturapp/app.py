@@ -1404,7 +1404,7 @@ def showLogoInMap(idString):
         cursor.execute(sql_string, (id,))
 
         plan = cursor.fetchone()[1]
-        if plan == "free" or plan== "standard":
+        if plan == "noreg" or plan == "free" or plan== "standard":
             showLogo = True;
 
     return showLogo;
