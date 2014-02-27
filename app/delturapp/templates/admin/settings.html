@@ -135,13 +135,15 @@
 								<h4>Token</h4>
 								Hemmelig token til bruk sammen med API: <div class="well well-sm">{{ current_user.get_auth_token() }}</div><br>
 
-								<h4>Andre innstillinger</h4>
-								<div class="checkbox">
-								  <label>
-								    <input id="copy-trip-checkbox" type="checkbox" value="">
-								    Registrerte deltur.no brukere kan kopiere mine turer
-								  </label>
-								</div><br>
+								{% if current_user.is_authenticated() and (current_user.plan=="pro" or current_user.plan=="expert") %}
+									<h4>Andre innstillinger</h4>
+									<div class="checkbox">
+									  <label>
+									    <input id="copy-trip-checkbox" type="checkbox" value="">
+									    Registrerte deltur.no brukere kan kopiere mine turer
+									  </label>
+									</div><br>
+								{% endif %}
 
 								<h4>Brukerinformasjon</h4>
 
@@ -189,17 +191,19 @@
 	<script>
 
 		$(function() {
-			/*
-				Check if trip copy is allowed or not and set checkbox accordingly
-			*/
-		    $.getJSON( "/delturno/getCopyAllowed", function( json ) { 
-		    	if(json.copyallowed) {
-		    		$('#copy-trip-checkbox').attr('checked', true);
-		    	}
-		    	else {
-		    		$('#copy-trip-checkbox').attr('checked', false);
-		    	}
-		    });
+			{% if current_user.is_authenticated() and (current_user.plan=="pro" or current_user.plan=="expert") %}
+				/*
+					Check if trip copy is allowed or not and set checkbox accordingly
+				*/
+			    $.getJSON( "/delturno/getCopyAllowed", function( json ) { 
+			    	if(json.copyallowed) {
+			    		$('#copy-trip-checkbox').attr('checked', true);
+			    	}
+			    	else {
+			    		$('#copy-trip-checkbox').attr('checked', false);
+			    	}
+			    });
+			{% endif %}
 		});
 
 
@@ -208,28 +212,30 @@
 		}
 
 
-		$('#copy-trip-checkbox').change(function() {
-		   if($(this).is(":checked")) {
-				$.ajax({
-	              dataType: "json",
-	              url: "/setCopyAllowed"
-	            }).done(function(json) {
-	            	humane.log("<p>Lagret!</p>", { timeout: 2000});
-	            }).fail(function(json) {
-	              	humane.log("<p>Klarte dessverre ikke å lagre!</p>", { timeout: 2000});
-	            });
-		   }
-		   else {
-		   		$.ajax({
-	              dataType: "json",
-	              url: "/removeCopyAllowed"
-	            }).done(function(json) {
-	              	humane.log("<p>Lagret!</p>", { timeout: 2000});
-	            }).fail(function(json) {
-	              	humane.log("<p>Klarte dessverre ikke å lagre!</p>", { timeout: 2000});
-	            });
-		   }
-		});
+		{% if current_user.is_authenticated() and (current_user.plan=="pro" or current_user.plan=="expert") %}
+			$('#copy-trip-checkbox').change(function() {
+			   if($(this).is(":checked")) {
+					$.ajax({
+		              dataType: "json",
+		              url: "/setCopyAllowed"
+		            }).done(function(json) {
+		            	humane.log("<p>Lagret!</p>", { timeout: 2000});
+		            }).fail(function(json) {
+		              	humane.log("<p>Klarte dessverre ikke å lagre!</p>", { timeout: 2000});
+		            });
+			   }
+			   else {
+			   		$.ajax({
+		              dataType: "json",
+		              url: "/removeCopyAllowed"
+		            }).done(function(json) {
+		              	humane.log("<p>Lagret!</p>", { timeout: 2000});
+		            }).fail(function(json) {
+		              	humane.log("<p>Klarte dessverre ikke å lagre!</p>", { timeout: 2000});
+		            });
+			   }
+			});
+		{% endif %}
 	</script>
 	
 	
