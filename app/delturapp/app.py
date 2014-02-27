@@ -650,7 +650,6 @@ def copyId(request, id):
         return resp
 
     else:
-        print "abort"
         abort(403)
 
     
@@ -671,7 +670,7 @@ def copyAllowed(id):
         cursor.execute(sql_string, (id, ))
         copyAllowed = cursor.fetchone()[0]
 
-    print "copyallowed: " , copyAllowed
+    #print "copyallowed: " , copyAllowed
     return copyAllowed
 
 @app.route('/delturno/getCopyAllowed', methods = ['GET'])
