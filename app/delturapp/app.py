@@ -1205,8 +1205,8 @@ def getPointMetadataFromDB(id):
         cursor.execute(sql_check_plan, (userid,))
         userPlan = cursor.fetchone()[0]
     else: 
-        userPlan = "free"
-    if userPlan != "free":
+        userPlan = "noreg"
+    if userPlan != "noreg":
         remaining_days = -1
 
     data = {
@@ -1263,8 +1263,8 @@ def getLineMetadataFromDB(id):
         cursor.execute(sql_check_plan, (userid,))
         userPlan = cursor.fetchone()[0]
     else: 
-        userPlan = "free"
-    if userPlan != "free":
+        userPlan = "noreg"
+    if userPlan != "noreg":
         remaining_days = -1
 
     
