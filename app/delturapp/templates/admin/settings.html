@@ -23,7 +23,8 @@
     <link href="{{ url_for('static', filename='css/admin/bootstrap-responsive.min.css') }}" rel="stylesheet">
 	<link href="{{ url_for('static', filename='css/admin/style.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>							
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>		
+	<link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">					
 	
   </head>
 
@@ -130,7 +131,20 @@
 								<h3>Innstillinger</h3>
 							</div>
 							<div class="widget-content">
+
+								<h4>Token</h4>
 								Hemmelig token til bruk sammen med API: <div class="well well-sm">{{ current_user.get_auth_token() }}</div><br>
+
+								<h4>Andre innstillinger</h4>
+								<div class="checkbox">
+								  <label>
+								    <input id="copy-trip-checkbox" type="checkbox" value="" checked>
+								    Andre registrerte deltur.no kan kopiere mine turer
+								  </label>
+								</div><br>
+
+								<h4>Brukerinformasjon</h4>
+
 								<button type="button" onClick="deleteUser()" class="btn btn-danger">Slette bruker </button>
 
 								<a href="{{ url_for_security('change_password') }}"><button type="button" class="btn btn-danger">Bytt passord </button></a>
@@ -167,14 +181,39 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>	
+	<script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>	
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
 
 	<script>
 		function deleteUser() {
 			alert("Foreløpig kan du ikke slette din bruker!");
 		}
+
+
+		$('#copy-trip-checkbox').change(function() {
+		   if($(this).is(":checked")) {
+				$.ajax({
+	              dataType: "json",
+	              url: "/setCopyAllowed"
+	            }).done(function(json) {
+	            	humane.log("<p>Lagret!</p>", { timeout: 2000});
+	            }).fail(function(json) {
+	              	humane.log("<p>Klarte dessverre ikke å lagre!</p>", { timeout: 2000});
+	            });
+		   }
+		   else {
+		   		$.ajax({
+	              dataType: "json",
+	              url: "/removeCopyAllowed"
+	            }).done(function(json) {
+	              	humane.log("<p>Lagret!</p>", { timeout: 2000});
+	            }).fail(function(json) {
+	              	humane.log("<p>Klarte dessverre ikke å lagre!</p>", { timeout: 2000});
+	            });
+		   }
+		});
 	</script>
 	
 	

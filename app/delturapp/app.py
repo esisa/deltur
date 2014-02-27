@@ -616,38 +616,96 @@ def copyId(request, id):
             
     cursor = conn.cursor()
 
-    if isPoint(id):
-        sql_string = """INSERT INTO points(title, url, description, markertype, dato, token, geo, markercolor, 
-                                markerpopup, markerlabel_static, markerlabel_text, image_width, image_height, 
-                                userid, accessed) 
-                        SELECT title, url, description, markertype, dato, token, geo, markercolor, 
-                                markerpopup, markerlabel_static, markerlabel_text, image_width, image_height, 
-                                %s, 0 FROM points where id=%s RETURNING id
-                    """
-        cursor.execute(sql_string, (current_user.id, id))
-        id = cursor.fetchone()[0]
-        conn.commit();
-    else:
-        sql_string = """INSERT INTO trips(title, dato, geo, style_color, style_width, style_opacity, style_start_icon,
-                                        style_end_icon, style_popup, style_label_text, style_label_static, description,
-                                        userid, accessed) 
-                        SELECT title, dato, geo, style_color, style_width, style_opacity, style_start_icon,
-                                        style_end_icon, style_popup, style_label_text, style_label_static, description,
-                                        %s, 0 FROM trips where id=%s RETURNING id
-                    """
-        cursor.execute(sql_string, (current_user.id, id))
-        id = cursor.fetchone()[0]
-        conn.commit();
+    if copyAllowed(id):
+        if isPoint(id):
+            sql_string = """INSERT INTO points(title, url, description, markertype, dato, token, geo, markercolor, 
+                                    markerpopup, markerlabel_static, markerlabel_text, image_width, image_height, 
+                                    userid, accessed) 
+                            SELECT title, url, description, markertype, dato, token, geo, markercolor, 
+                                    markerpopup, markerlabel_static, markerlabel_text, image_width, image_height, 
+                                    %s, 0 FROM points where id=%s RETURNING id
+                        """
+            cursor.execute(sql_string, (current_user.id, id))
+            id = cursor.fetchone()[0]
+            conn.commit();
+        else:
+            sql_string = """INSERT INTO trips(title, dato, geo, style_color, style_width, style_opacity, style_start_icon,
+                                            style_end_icon, style_popup, style_label_text, style_label_static, description,
+                                            userid, accessed) 
+                            SELECT title, dato, geo, style_color, style_width, style_opacity, style_start_icon,
+                                            style_end_icon, style_popup, style_label_text, style_label_static, description,
+                                            %s, 0 FROM trips where id=%s RETURNING id
+                        """
+            cursor.execute(sql_string, (current_user.id, id))
+            id = cursor.fetchone()[0]
+            conn.commit();
 
+
+        data = {
+                'id'  : id
+            }
+        js = json.dumps(data)
+
+        resp = Response(js, status=200, mimetype='application/json')
+        return resp
+
+    else:
+        abort(403)
+
+    
+
+def copyAllowed(id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
+    if isPoint(id):
+        sql_string = "select u.copyallowed from \"user\" u, points p where p.userid=u.id and p.id=%s"
+        cursor.execute(sql_string, (id, ))
+        copyAllowed = cursor.fetchone()[0]
+    else:
+        sql_string = "select u.copyallowed from \"user\" u, trips t where t.userid=u.id and t.id=%s"
+        cursor.execute(sql_string, (id, ))
+        copyAllowed = cursor.fetchone()[0]
+
+    return copyAllowed;
+
+@app.route('/setCopyAllowed', methods = ['GET'])
+@login_required
+def setCopyAllowed():
+    return setCopyAllowedInDB(True)
+
+@app.route('/removeCopyAllowed', methods = ['GET'])
+@login_required
+def removeCopyAllowed():
+    return setCopyAllowedInDB(False)
+
+def setCopyAllowedInDB(allowed):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
+    print current_user.email
+    print cursor.mogrify("update \"user\" set copyallowed=%s where id=%s;", (allowed, current_user.id ) )
+    sql_string = "update \"user\" set copyallowed=%s where id=%s"
+    cursor.execute(sql_string, (allowed, current_user.id ))
+    conn.commit()
+    conn.close()
+    cursor.close()
+    #copyAllowed = cursor.fetchone()[0]
 
     data = {
-            'id'  : id
+            'copyallowed'  : allowed
         }
     js = json.dumps(data)
 
     resp = Response(js, status=200, mimetype='application/json')
-
     return resp
+
 
 
 @app.route('/<int:id>/delturno/setStyle', methods = ['POST'])

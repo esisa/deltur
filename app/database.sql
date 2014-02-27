@@ -112,4 +112,5 @@ Alter table "user" alter column images set default 0;
 ALTER TABLE "user" ADD COLUMN mapviews int;
 Alter table "user" alter column mapviews set default 0;
 Alter table "user" alter column plan set default 'free';
-
+ALTER TABLE "user" ADD COLUMN copyallowed boolean;
+Alter table "user" alter column copyallowed set default true;
