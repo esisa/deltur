@@ -1191,7 +1191,7 @@ def getPointMetadataFromDB(id):
     
     sql_string = """Select url, description, title, markerType, markersymbol, 
                     markerpopup, markerlabel_static, markerlabel_text, image_height, 
-                    image_width, st_x(geo), st_y(geo), markercolor, 45-(now()::date-dato::date) as lifespan, userid 
+                    image_width, st_x(geo), st_y(geo), markercolor, 14-(now()::date-dato::date) as lifespan, userid 
                     from points where id=%s"""
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
@@ -1249,7 +1249,7 @@ def getLineMetadataFromDB(id):
             
     cursor = conn.cursor()
     
-    sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_text, 45-(now()::date-dato::date) as lifespan, userid  from trips where id=%s"
+    sql_string = "Select title, description, style_color, style_width, style_opacity, style_start_icon, style_end_icon, style_popup, style_label_text, 14-(now()::date-dato::date) as lifespan, userid  from trips where id=%s"
     #print sql_string
     cursor.execute(sql_string, (id,))
     res = cursor.fetchone()
