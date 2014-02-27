@@ -13,6 +13,9 @@
     <script type=text/javascript>
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
+
+    <link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
     
     <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
@@ -728,6 +731,7 @@
     function copyTrip() {
 
         var newIds = new Array();
+        var allIdsCopied = true;
 
         // Go through each id and copy the feature
         $.each(ids, function(index, id) {
@@ -737,6 +741,8 @@
               url: id + "/delturno/copy"
             }).done(function(json) {
               newIds.push(json.id);
+            }).fail(function(json) {
+              allIdsCopied = false;
             });
         });
 
@@ -750,7 +756,10 @@
         });
 
         // Open new trip
-        document.location.href = "/"+idString;
+        if(allIdsCopied)
+            document.location.href = "/"+idString;
+        else
+            humane.log("<p>Det gikk dessverre ikke å kopiere denne turen!</p>", { waitForMove: true});
 
 
     }
