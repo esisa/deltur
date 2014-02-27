@@ -619,23 +619,23 @@ def copyId(request, id):
     if isPoint(id):
         sql_string = """INSERT INTO points(title, url, description, markertype, dato, token, geo, markercolor, 
                                 markerpopup, markerlabel_static, markerlabel_text, image_width, image_height, 
-                                plan, userid, accessed) 
+                                userid, accessed) 
                         SELECT title, url, description, markertype, dato, token, geo, markercolor, 
                                 markerpopup, markerlabel_static, markerlabel_text, image_width, image_height, 
-                                %s, %s, 0 FROM points where id=%s RETURNING id
+                                %s, 0 FROM points where id=%s RETURNING id
                     """
-        cursor.execute(sql_string, (current_user.plan, current_user.id, id))
+        cursor.execute(sql_string, (current_user.id, id))
         id = cursor.fetchone()[0]
         conn.commit();
     else:
         sql_string = """INSERT INTO trips(title, dato, geo, style_color, style_width, style_opacity, style_start_icon,
                                         style_end_icon, style_popup, style_label_text, style_label_static, description,
-                                        plan, userid, accessed) 
+                                        userid, accessed) 
                         SELECT title, dato, geo, style_color, style_width, style_opacity, style_start_icon,
                                         style_end_icon, style_popup, style_label_text, style_label_static, description,
-                                        %s, %s, 0 FROM trips where id=%s RETURNING id
+                                        %s, 0 FROM trips where id=%s RETURNING id
                     """
-        cursor.execute(sql_string, (current_user.plan, current_user.id, id))
+        cursor.execute(sql_string, (current_user.id, id))
         id = cursor.fetchone()[0]
         conn.commit();
 
