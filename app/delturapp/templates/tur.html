@@ -738,7 +738,7 @@
             $.ajax({
               dataType: "json",
               async: false,
-              url: id + "/delturno/copy"
+              url: "/" + id + "/delturno/copy"
             }).done(function(json) {
               newIds.push(json.id);
             }).fail(function(json) {
