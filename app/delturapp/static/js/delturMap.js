@@ -1,4 +1,4 @@
-var map = new L.Map('map', {keyboard: true, attributionControl: true, zoom: 4, center: [65.2 ,10.572]});
+var map = new L.Map('map', {fullscreenControl: true, keyboard: true, attributionControl: true, zoom: 4, center: [65.2 ,10.572]});
 
 map.attributionControl.setPrefix(""); // Fjerner powered by Leaflet
         

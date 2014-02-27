@@ -6,6 +6,7 @@ var delturPoint = function () {
     var point = L.geoJson();
     var lat, lon;
     var custom_popup_footer = "";
+    var imgMarker;
 
     var style =  {
                     "popup": {
@@ -68,6 +69,10 @@ var delturPoint = function () {
         });
 
     };
+
+    this.updateStyle = function () { //public
+        downloadStyle();
+    }
 
     var setId = function(_id) { //private
     	id = _id;
@@ -145,6 +150,10 @@ var delturPoint = function () {
     	return "geoObject";
     };
 
+    this.removeFromMap = function (_map) {
+        _map.removeLayer(imgMarker);
+    };
+
     this.updateRendering = function (_map) {  //public
     	//_map.removeLayer(point);
 
@@ -189,7 +198,7 @@ var delturPoint = function () {
         }
 
 
-        var imgMarker = L.marker([lat, lon], {icon: icon});
+        imgMarker = L.marker([lat, lon], {icon: icon});
 
         if(style.popup.image.width==-1 && style.popup.image.width==-1) {
             var imgWidth = $('body').width()*0.4; // Use body width to calculate image width
@@ -255,6 +264,7 @@ var delturPoint = function () {
         });
     }; 
     var downloadStyle = function() { //private
+        status = 0;
 
     	// Download style and set all style variables
     	$.getJSON('/'+id+'/metadata', function (data) { 

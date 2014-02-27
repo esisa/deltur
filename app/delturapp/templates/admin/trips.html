@@ -9,12 +9,27 @@
 	<link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
 
     <link href="{{ url_for('static', filename='css/admin/bootstrap.css') }}" rel="stylesheet">
+    <!--link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"-->
     <style type="text/css">
       body {
      
       }
       .sidebar-nav {
         padding: 9px 0;
+      }
+
+      #map {
+      	height: 300px;
+      	width: 98%;
+      	margin-bottom: 16px;
+      }
+
+      #map-buttons {
+      	margin-bottom: 15px;
+      }
+
+      #big-map-link {
+      	color: #2A5DB0;
       }
      
     </style>
@@ -23,7 +38,10 @@
 	<link href="{{ url_for('static', filename='css/admin/style.css') }}" rel="stylesheet">
 	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
 	<link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>		
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>	
+	<link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />	
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
+	<link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 	
   </head>
 
@@ -261,12 +279,21 @@
 		<!-- Select All table -->
 		<div class="row-fluid">		
             <div class="span12">
+            	<a id="big-map-link" href="javascript:void(0)" onClick="map.toggleFullscreen()">Vis stort kart</a>
+            	<div id="map"></div>
+            	<div id="map-buttons">
+	            	<button id="create-map-button" type="button" onClick="shareNewMap()" class="btn btn-primary">Del dette kartet </button>
+	            	<!--button id="delete-features-button" type="button" onClick="deleteUser()" class="btn btn-primary">Slett merka objekter </button-->
+	            </div>
+					
 
-        	    <ul class="nav nav-tabs">
-				    <li><a href="#kart" data-toggle="tab">Kart</a></li>
+        	    <ul id="tabMenu" class="nav nav-tabs">
+				    <li><a class="active" href="#kart" data-toggle="tab">Kart</a></li>
 				    <li><a href="#linjer" data-toggle="tab">Linjer</a></li>
 				    <li><a href="#punkter" data-toggle="tab">Markører</a></li>
 				</ul>
+
+
 
 				<div class="tab-content">
 					<div class="tab-pane active" id="kart">
@@ -281,6 +308,7 @@
 								  <caption></caption>
 								  <thead>
 									<tr>
+									  <th></th>
 									  <th class="col-md-1">Hash</th>
 									  <th>Sammensatt av</th>
 									  <th>Opprettet</th>
@@ -305,6 +333,7 @@
 								  <caption></caption>
 								  <thead>
 									<tr>
+									  <th></th>
 									  <th>Id</th>
 									  <th>Tittel</th>
 									  <th>Beskrivelse</th>
@@ -330,6 +359,7 @@
 								  <caption></caption>
 								  <thead>
 									<tr>
+									  <th></th>	  
 									  <th>Id</th>
 									  <th>Tittel</th>
 									  <th>Beskrivelse</th>
@@ -383,7 +413,18 @@
      <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>	
+    <script type="text/javascript">
+
+        // Set up dynamic variables used in delturMap.js
+        var tileJsonSkikart = '{{ url_for('static', filename='mapconfig/skikart.json') }}';
+        var tileJsonSkikartHighdef = '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}';
+        var tileJsonTurkart = '{{ url_for('static', filename='mapconfig/turkart.json') }}';
+        var tileJsonTurkartHighdef = '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}';
+        var tileJsonTopokart = '{{ url_for('static', filename='mapconfig/topokart.json') }}';
+        var tileJsonTopokartHighdef = '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}';
+
+    </script>
+    <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>	
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-dropdown.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-collapse.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/admin/bootstrap-tooltip.js') }}"></script>
@@ -394,6 +435,11 @@
 	<script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
+	<script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.1/Leaflet.fullscreen.min.js'></script>
 
 	
 	<!-- tooltip -->
@@ -421,8 +467,28 @@
 		$('a,.btn').tooltip('hide')
 		renderTables();
 
+		var linesArr = new Array();
+	 	var pointsArr = new Array();
+	 	var hashArr = new Array();
+	 	var featureBounds = new L.LatLngBounds();
+
 		 $(function () {
-			$('#myTab a:last').tab('show');
+
+		 	// Show first tab as selected
+			$('#tabMenu a:first').tab('show'); 
+
+			// Add default map
+			map.addLayer(topokart);
+
+		    // Utility function to preload images
+	        $.fn.preload = function() {
+	            this.each(function(){
+	                $('<img/>')[0].src = this;
+	            });
+	        }
+
+
+	   
 		})
 
 
@@ -440,8 +506,23 @@
 
 				$.each(json, function(i, data){
 
+					var isChecked = false;
+					$.each(hashArr, function(index, hash){
+						if(hash == data.hash) {
+							isChecked = true;
+							return false;
+						}
+					});
+					var checkbox;
+					if(isChecked) {
+						checkbox = '<td><input class="hash-checkbox" type="checkbox" checked value="'+data.hash+'"></td>'
+					}
+					else {
+						checkbox = '<td><input class="hash-checkbox" type="checkbox" value="'+data.hash+'"></td>'
+					}
 					
-					var edit = '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteHashModal(&quot;'+data.hash+'&quot;)" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
+					var edit = '';
+					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteHashModal(&quot;'+data.hash+'&quot;)" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
 					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal(&quot;'+data.hash+'&quot;)" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
 					edit += '&nbsp;<a class="btn btn-small" href="/'+data.hash+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
 					edit += '&nbsp;<a class="btn btn-small" onClick="openTilejsonEditor(&quot;'+data.hash+'&quot;)" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre bakgrunnskart"><i class="fa fa-edit fa-lg"></i></a>'
@@ -453,9 +534,62 @@
 					});
 					ids = ids.substring(0, ids.length - 1); // Delete last pluss sign
 
-					$("#hashes").append("<tr><td><a href='/"+data.hash+"'>"+data.hash+"</a></td><td>"+ids+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+					$("#hashes").append("<tr>"+checkbox+"<td><a href='/"+data.hash+"'>"+data.hash+"</a></td><td>"+ids+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
 
 				});
+
+				$('.hash-checkbox').off('change');
+				$('.hash-checkbox').change(function() {
+					var hash = $(this).val();
+			    	if($(this).is(":checked")) {
+
+			    		// Add to array
+			    		hashArr.push(hash);
+
+			    		$.getJSON( "/"+hash+"/metadata", function( json ) { 
+
+			    			// Go through points
+			    			$.each(json.points, function(index, id) {
+			    				addPointToMap(id);
+			    			});
+
+			    			// Go through lines
+			    			$.each(json.lines, function(index, id) {
+			    				addLineToMap(id);
+			    			});
+
+			    			renderTables(); // rerender so points/line get checked
+
+			    		});
+		            }
+		            else {
+		            	// Delete from array
+		            	$.each(hashArr, function(index, arrHash){
+			        		if(hash == arrHash) {
+			        			hashArr.splice(index, 1);
+			        			return false; // Break out of loop
+			        		}
+			        	});
+
+
+		            	$.getJSON( "/"+hash+"/metadata", function( json ) { 
+
+			    			// Go through points
+			    			$.each(json.points, function(index, id) {
+			    				removePointFromMap(id);
+			    			});
+
+			    			// Go through lines
+			    			$.each(json.lines, function(index, id) {
+			    				removeLineFromMap(id);
+			    			});
+
+			    			renderTables(); // rerender so points/line get unchecked
+
+			    		});
+		            }
+
+			    });
 			});
 
 			$.getJSON( "/lines", function( json ) {
@@ -463,13 +597,41 @@
 
 				$.each(json, function(i, data){
 
-					var edit = '&nbsp;<a class="btn btn-small" onClick="openLineStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a>'
+					var isChecked = false;
+					$.each(linesArr, function(index, line){
+						if(line.getId() == data.id) {
+							isChecked = true;
+							return false;
+						}
+					});
+					var checkbox;
+					if(isChecked) {
+						checkbox = '<td><input class="line-checkbox" type="checkbox" checked value="'+data.id+'"></td>';
+					}
+					else {
+						checkbox = '<td><input class="line-checkbox" type="checkbox" value="'+data.id+'"></td>';
+					}
+
+					var edit = '';
+					edit += '&nbsp;<a class="btn btn-small" onClick="openLineStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a>'
 					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="opendeleteLineModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
 					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
 					edit += '&nbsp;<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
 					edit += '&nbsp;<a  class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
 
-					$("#lines").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+					$("#lines").append("<tr>"+checkbox+"<td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+
+
+					$('.line-checkbox').off('change');
+					$('.line-checkbox').change(function() {
+				    	if($(this).is(":checked")) {
+							addLineToMap($(this).val());			    		
+			            }
+			            else {
+			            	removeLineFromMap($(this).val());
+			            }
+
+				    });
 
 				});
 			});
@@ -477,20 +639,47 @@
 			$.getJSON( "/points", function( json ) {
 				$.each(json, function(i, data){
 
-					var edit = '&nbsp;<a class="btn btn-small" onClick="openPointStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a>'
+					var edit = '';
+
+					var isChecked = false;
+					$.each(pointsArr, function(index, point){
+						if(point.getId() == data.id) {
+							isChecked = true;
+							return false;
+						}
+					});
+					var checkbox;
+					if(isChecked){
+						checkbox = '<td><input class="point-checkbox" type="checkbox" checked value="'+data.id+'"></td>';
+					}
+					else {
+						checkbox = '<td><input class="point-checkbox" type="checkbox" value="'+data.id+'"></td>';
+					}
+
+					edit += '&nbsp;<a class="btn btn-small" onClick="openPointStyleEditor('+data.id+')" href="javascript:void(0)" data-trigger="hover" data-placement="top" data-original-title="Endre utseende"><i class="fa fa-edit fa-lg"></i></a>'
 					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="opendeletePointModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Slett"><i class="fa fa-eraser fa-lg"></i></a>';
 					edit += '&nbsp;<a class="btn btn-small" href="javascript:void(0)" onClick="openEmbedModal('+data.id+')" data-trigger="hover" data-placement="top" data-original-title="Embedkode"><i class="fa fa-map-marker fa-lg"></i></a>'
 					edit += '&nbsp;<a class="btn btn-small" href="/'+data.id+'/embed"  data-trigger="hover" data-placement="top" data-original-title="Vis i embedversjon"><i class="fa fa-picture-o fa-lg"></i></a>'
 					edit += '&nbsp;<a class="btn btn-small" href="/'+data.id+'/geojson" data-trigger="hover" data-placement="top" data-original-title="Last ned turen"><i class="fa fa-arrow-down fa-lg"></i></a>'
 
 
-					$("#points").append("<tr><td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
+					$("#points").append("<tr>"+checkbox+"<td><a href='/"+data.id+"'>"+data.id+"</a></td><td>"+data.title+"</td><td>"+data.description+"</td><td>"+data.date+"</td><td>"+edit+"</td></tr>");
 
 				});
 				
 				// Activate tooltip
 				$('.btn').tooltip();
 
+				$('.point-checkbox').off('change');
+				$('.point-checkbox').change(function() {
+			    	if($(this).is(":checked")) {
+			    		addPointToMap($(this).val());
+		            }
+		            else {
+		            	removePointFromMap($(this).val());
+		            }
+
+			    });
 			});
 
 	
@@ -504,22 +693,71 @@
 			$.ajax({
 			    url: '/' + id,
 			    type: 'DELETE',
-			    success: function(result) {
-			        renderTables();
-			    }
-			});
+			    dataType: "json"
+			}).done(function(json) {
+
+				removePointFromMap(id);
+
+				removeLineFromMap(id);
+
+            	renderTables();
+
+            	reRenderMap();
+
+            	humane.log("<p>Sletting er utført</p>", { timeout: 2000});
+
+            }).fail(function(json) {
+              	humane.log("<p>Klarte dessverre ikke å slette!</p>", { timeout: 2000});
+            });;
 		}
 
 
 		function deleteHash(hash, cascade) {
 			$('#deleteHashModal').modal("hide");
-			$.ajax({
-			    url: '/' + hash + '?cascade=' + cascade,
-			    type: 'DELETE',
-			    success: function(result) {
-			        renderTables();
-			    }
-			});
+
+
+			// First delete points/lines
+        	$.getJSON( "/"+hash+"/metadata", function( json ) { 
+
+    			// Go through points
+    			$.each(json.points, function(index, id) {
+    				removePointFromMap(id);
+    			});
+
+    			// Go through lines
+    			$.each(json.lines, function(index, id) {
+    				removeLineFromMap(id);
+    			});
+
+    			// Then delete hash
+    			$.ajax({
+				    url: '/' + hash + '?cascade=' + cascade,
+				    type: 'DELETE',
+				    dataType: "json"
+				}).done(function(json) {
+
+					// Delete from array as well
+	            	$.each(hashArr, function(index, arrHash){
+		        		if(hash == arrHash) {
+		        			hashArr.splice(index, 1);
+		        			return false; // Break out of loop
+		        		}
+		        	});
+
+	            	renderTables(); // Rerender tables
+
+	            	reRenderMap(); // Rerender map
+
+	            	humane.log("<p>Sletting er utført</p>", { timeout: 2000});
+
+	            }).fail(function(json) {
+	              	humane.log("<p>Klarte dessverre ikke å slette kartet!</p>", { timeout: 2000});
+	            });
+
+    		});
+
+
+			
 		}
 
 
@@ -638,6 +876,7 @@
 	    function savePointStyle() {
 	        point.setStyle(JSON.parse($('#marker-style').val()));
 	        renderTables(); // In case user changes title/description
+	        reRenderMap();
 	        humane.log("<p>Markøren "+point.getId()+" har blitt lagret!</p>", { timeout: 2000});
 	    }
 
@@ -675,7 +914,147 @@
 		function saveLineStyle() {
 	        line.setStyle(JSON.parse($('#line-style').val()));
 	        renderTables(); // In case user changes title/description
+	        reRenderMap();
 	        humane.log("<p>Linjen "+line.getId()+" har blitt lagret!</p>", { timeout: 2000});
+	    }
+
+	    /*
+			Resets map bound when user remove a feature from the map
+	    */
+	    function resetMapBounds() {
+	    	featureBounds = new L.LatLngBounds();
+
+	    	$.each(linesArr, function(index, line){
+	    		featureBounds.extend(line.getBounds());
+	    	});
+
+	    	$.each(pointsArr, function(index, point){
+	    		featureBounds.extend(point.getPoint());
+	    	});
+
+	    	setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
+	    }
+
+	    function reRenderMap() {
+
+	    	$.each(linesArr, function(index, line){
+	    		line.updateStyle();
+	    		var intervalLine = setInterval(function(){
+                    if(line.getStatus() === 1) {
+                        line.updateRendering(map);
+                        
+                        // Stop interval
+                        clearInterval(intervalLine);
+                    }
+                },100);
+	    		
+	    	});
+
+	    	$.each(pointsArr, function(index, point){
+	    		point.updateStyle();
+	    		var intervalPoint = setInterval(function(){
+                    if(point.getStatus() === 1) {
+                        point.updateRendering(map);
+                        
+                        // Stop interval
+                        clearInterval(intervalPoint);
+                    }
+                },100);
+	    	});
+	    }
+
+	    function addLineToMap(id) {
+    		// Create new line object
+            var line = new delturLine();
+
+            // Save a reference to this line
+            linesArr.push(line);
+
+            // Init line
+            line.initWithId(id);
+
+            // Check when the line is ready for use
+            var intervalLine = setInterval(function(){
+                if(line.getStatus() === 1) {
+                    line.renderToMap(map);
+                    featureBounds.extend(line.getBounds());
+                    setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
+                    
+                    // Stop interval
+                    clearInterval(intervalLine);
+                }
+            },100);
+
+	    }
+	    function addPointToMap(id) {
+	    	// Create new line object
+            var point = new delturPoint();
+
+            // Save a reference to this line
+            pointsArr.push(point);
+
+            // Init line
+            point.initWithId(id);
+
+            // Check when the point is ready for use
+            //debugger;
+            var intervalPoint = setInterval(function(){
+                if(point.getStatus() === 1) {
+                    point.renderToMap(map);
+                    featureBounds.extend(point.getPoint());
+                    setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
+                    
+                    // Stop interval
+                    clearInterval(intervalPoint);
+                }
+            },100);
+
+	    }
+	    function removePointFromMap(id) {
+        	$.each(pointsArr, function(index, point){
+        		if(point.getId() == id) {
+        			point.removeFromMap(map);
+        			pointsArr.splice(index, 1);
+        			return false; // Break out of loop
+        		}
+        	});
+        	resetMapBounds();
+	    }
+	    function removeLineFromMap(id) {
+        	$.each(linesArr, function(index, line){
+        		if(line.getId() == id) {
+        			line.removeFromMap(map);
+        			linesArr.splice(index, 1);
+        			return false; // Break out of loop
+        		}
+        	});
+        	resetMapBounds();
+	    }
+	    function shareNewMap() {
+
+	    	if(linesArr.length>0 || pointsArr.length>0) {
+		    	// Make string of new ids
+		        var idString = "";
+		        $.each(pointsArr, function(index, point) {
+		            if(idString=="")
+		                idString = point.getId();
+		            else
+		                idString = idString + "+" + point.getId();
+		        });
+
+		        $.each(linesArr, function(index, line) {
+		            if(idString=="")
+		                idString = line.getId();
+		            else
+		                idString = idString + "+" + line.getId();
+		        });
+
+		        // Open new trip
+		        document.location.href = "/"+idString;
+		    }
+		    else {
+		    	humane.log("<p>Du må først velge noen objekter som du vil dele!</p>", { waitForMove: true});
+		    }
 	    }
 
 

@@ -109,6 +109,12 @@ var delturLine = function () {
         }); // END FILEPICKER
     };
 
+    this.updateStyle = function () { //public
+        downloadStyle();
+    }
+
+    
+
     var getPopup = function() { //private
         return '<h3 id="popupText_title">'+style.popup.title+'</h3><div id="popupText_description">' + style.popup.description + '</div>' + custom_popup_footer;
     }
@@ -156,6 +162,10 @@ var delturLine = function () {
     		
     	});*/
     	return geoObject[0];
+    };
+
+    this.removeFromMap = function (_map) {
+        _map.removeLayer(trip);
     };
 
     this.updateRendering = function (_map) {  //public
@@ -251,6 +261,7 @@ var delturLine = function () {
         });
     }; 
     var downloadStyle = function() { //private
+        status = 0;
 
     	// Download style and set all style variables
     	$.getJSON('/'+id+'/metadata', function (data) { 

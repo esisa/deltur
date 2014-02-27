@@ -158,6 +158,44 @@ mapTypesList = ['turkart','skikart','veikart','topokart', 'satellitt', 'kartverk
 def test():
     return current_user.get_auth_token()
 
+
+@app.route('/<regex("[a-z0-9]+"):hash>/metadata', methods=['GET'])
+@login_required
+def getHashMetadata(hash):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+        
+    cursor = conn.cursor()
+
+    sql_string = "select ids from hash where hash=%s"
+    cursor.execute(sql_string, (hash,))
+    idString = cursor.fetchone()[0]
+    conn.commit();
+
+    ids = idString.split("+")
+    points = []
+    lines = []
+    for id in ids:
+        if isPoint(id):
+            points.append(id)
+        else:
+            lines.append(id)
+
+    data = {
+            'lines': lines,
+            'points': points
+            }
+        
+    js = json.dumps(data)
+    
+    resp = Response(js, status=200, mimetype='application/json')
+    
+    return resp
+
+
+
 @app.route('/<int:id>/metadata')
 def getTripMetadata(id):
     try:
@@ -477,7 +515,7 @@ def deleteTrip(id):
         cursor.execute(sql_string, (id,))
         conn.commit();
 
-    resp = Response('', status=200, mimetype='application/json')
+    resp = Response('', status=204)
     
     return resp
 
@@ -504,7 +542,7 @@ def deleteHash(hash):
     cursor.execute(sql_string, (hash,))
     conn.commit();
 
-    resp = Response('', status=200, mimetype='application/json')
+    resp = Response('', status=204)
     
     return resp
 
@@ -831,7 +869,10 @@ def getTilejson(hash):
     sql_string = "select tilejson from hash where hash=%s"
     cursor.execute(sql_string, (hash,))
     tilejson = cursor.fetchone()[0]
+    if tilejson == '':
+        tilejson = json.dumps({})
     conn.commit();
+    print tilejson
 
     resp = Response(tilejson, status=200, mimetype='application/json')
     return resp
@@ -865,9 +906,9 @@ def setTilejsonRetina(hash):
     cursor = conn.cursor()
 
     if request.headers['Content-Type'] == 'application/json' or request.headers['Content-Type'] == 'application/json; charset=UTF-8':
-        print "UPDATE"
+        #print "UPDATE"
         sql_string = "UPDATE hash set tilejson_retina=%s where hash=%s"
-        print request.data
+        #print request.data
         cursor.execute(sql_string, (request.data, hash, ))
         conn.commit();
 
@@ -892,6 +933,8 @@ def getRetinaTilejson(hash):
         sql_string = "select tilejson from hash where hash=%s"
         cursor.execute(sql_string, (hash,))
         tilejson = cursor.fetchone()[0]
+        if tilejson == '':
+            tilejson = json.dumps({})
 
     conn.commit();
 
