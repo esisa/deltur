@@ -237,7 +237,7 @@ var delturLine = function () {
     	// Upload JSON to save changes to style
         $.ajax({
           type: "POST",
-          url: "/"+id+"/setStyle?auth_token="  + auth_token,
+          url: "/"+id+setStyleUrl,
           // "/" + id+"/" + setStyleUrl
           data: JSON.stringify(style),
           success: function (response) {

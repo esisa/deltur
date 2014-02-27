@@ -329,7 +329,7 @@ def getAllHashes():
         print "Could not connect to database " + pg_db
             
     cursor = conn.cursor()
-    sql_string = """select hash, ids, dato::date as dato from hash where userid=%s order by id"""
+    sql_string = """select hash, ids, dato::date as dato from hash where userid=%s order by id desc"""
     #print sql_string , current_user.id
     cursor.execute(sql_string, [current_user.id],)
 
@@ -358,7 +358,7 @@ def getAllLines():
         print "Could not connect to database " + pg_db
             
     cursor = conn.cursor()
-    sql_string = """select id, title, description, dato::date from trips where userid=%s order by id"""
+    sql_string = """select id, title, description, dato::date from trips where userid=%s order by id desc"""
     #print sql_string , current_user.id
     cursor.execute(sql_string, [current_user.id],)
 
@@ -388,7 +388,7 @@ def getAllPoints():
         print "Could not connect to database " + pg_db
             
     cursor = conn.cursor()
-    sql_string = """select id, title, description, dato::date from points where userid=%s order by id"""
+    sql_string = """select id, title, description, dato::date from points where userid=%s order by id desc"""
     #print sql_string , current_user.id
     cursor.execute(sql_string, [current_user.id],)
 
@@ -598,7 +598,7 @@ def addGeoJSONTrip(request):
     else:
         return "Feil format!"    
 
-@app.route('/<int:id>/setStyle', methods = ['POST'])
+@app.route('/<int:id>/delturno/setStyle', methods = ['POST'])
 @login_required
 def setStyleLogin(id):
     return setStyle(request, id)

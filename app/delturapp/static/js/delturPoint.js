@@ -242,7 +242,7 @@ var delturPoint = function () {
     	// Upload JSON to save changes to style
         $.ajax({
           type: "POST",
-          url: "/"+id+"/setStyle",
+          url: "/"+id+setStyleUrl,
           data: JSON.stringify(style),
           success: function (response) {
                 

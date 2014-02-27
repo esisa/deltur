@@ -74,13 +74,13 @@
           delGeoJSONURL = "/delturno/geojson";
           delPointURL = "/delturno/sted/";
           delPointToken = ""
-          setStyleUrl = "setStyle";
+          setStyleUrl = "/delturno/setStyle";
       {% else %}    
           delGPXURL = "/del/gpx?auth_token=" + auth_token;
           delGeoJSONURL = "/del/geojson?auth_token=" + auth_token;
           delPointURL = "/del/sted/";
           delPointToken = "?auth_token=" + auth_token;
-          setStyleUrl = "setStyle?auth_token="  + auth_token;
+          setStyleUrl = "/setStyle?auth_token="  + auth_token;
       {% endif %}
 
 

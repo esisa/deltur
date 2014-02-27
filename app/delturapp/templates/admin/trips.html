@@ -396,10 +396,27 @@
 	<script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
 
 	
-	
 	<!-- tooltip -->
 	<script>
 		var auth_token = "{{config['TOKEN']}}";
+		var delGPXURL;
+		var delGeoJSONURL;
+		var delPointURL, delPointToken;
+		var setStyleUrl;
+		{% if current_user.is_authenticated() %}
+		  delGPXURL = "/delturno/gpx";
+		  delGeoJSONURL = "/delturno/geojson";
+		  delPointURL = "/delturno/sted/";
+		  delPointToken = ""
+		  setStyleUrl = "/delturno/setStyle";
+		{% else %}    
+		  delGPXURL = "/del/gpx?auth_token=" + auth_token;
+		  delGeoJSONURL = "/del/geojson?auth_token=" + auth_token;
+		  delPointURL = "/del/sted/";
+		  delPointToken = "?auth_token=" + auth_token;
+		  setStyleUrl = "/setStyle?auth_token="  + auth_token;
+		{% endif %}
+
 
 		$('a,.btn').tooltip('hide')
 		renderTables();
