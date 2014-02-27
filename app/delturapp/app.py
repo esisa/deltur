@@ -650,6 +650,7 @@ def copyId(request, id):
         return resp
 
     else:
+        print "abort"
         abort(403)
 
     
@@ -670,7 +671,34 @@ def copyAllowed(id):
         cursor.execute(sql_string, (id, ))
         copyAllowed = cursor.fetchone()[0]
 
-    return copyAllowed;
+    print "copyallowed: " , copyAllowed
+    return copyAllowed
+
+@app.route('/delturno/getCopyAllowed', methods = ['GET'])
+@login_required
+def getCopyAllowed():
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
+    sql_string = "select copyallowed from \"user\" where id=%s"
+    cursor.execute(sql_string, (current_user.id, ))
+    copyAllowed = cursor.fetchone()[0]
+    conn.commit()
+    conn.close()
+    cursor.close()
+
+    data = {
+            'copyallowed'  : copyAllowed
+        }
+    js = json.dumps(data)
+
+    resp = Response(js, status=200, mimetype='application/json')
+    return resp
+
+
 
 @app.route('/setCopyAllowed', methods = ['GET'])
 @login_required
@@ -689,8 +717,8 @@ def setCopyAllowedInDB(allowed):
         print "Could not connect to database " + pg_db
             
     cursor = conn.cursor()
-    print current_user.email
-    print cursor.mogrify("update \"user\" set copyallowed=%s where id=%s;", (allowed, current_user.id ) )
+    #print current_user.email
+    #print cursor.mogrify("update \"user\" set copyallowed=%s where id=%s;", (allowed, current_user.id ) )
     sql_string = "update \"user\" set copyallowed=%s where id=%s"
     cursor.execute(sql_string, (allowed, current_user.id ))
     conn.commit()
