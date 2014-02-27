@@ -274,10 +274,16 @@
           <dd>Last ned metadata for denne turen. Returnerer et JSON-dokument med ulike attributter for punkt og linje. </dd>
         </dl>
         
-        <h3>Konverter id:</h3>
+        <h2>Konverter id:</h2>
         <dl>
           <dt>deltur.no/hash/[id]+[id]+[id] </dt>
           <dd>Returnerer en hash du kan bruke som id istedenfor for å legge sammen id'ene. Du får da en enklere id du kan bruke til å hente den sammensatte turen med. Brukes på samme måte som en vanlig id.  </dd>
+        </dl>
+
+        <h2>Kopier id:</h2>
+        <dl>
+          <dt>deltur.no/[id]/copy </dt>
+          <dd>Kopierer en markør eller linje. Hvis det er din egen så lager du en duplikat. Hvis du ikke eier id'en så kopieres markøren/linjen inn til deg. Styling av linje/markør medfølger. Endepunktet returner den nye id'en.   </dd>
         </dl>
         
        

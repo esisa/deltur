@@ -598,6 +598,58 @@ def addGeoJSONTrip(request):
     else:
         return "Feil format!"    
 
+@app.route('/<int:id>/delturno/copy', methods = ['GET'])
+@login_required
+def copyIdLogin(id):
+    return copyId(request, id)
+
+@app.route('/<int:id>/copy', methods = ['GET'])
+@auth_token_required
+def copyIdToken(id):
+    return copyId(request, id)
+
+def copyId(request, id):
+    try:
+        conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
+    except:
+        print "Could not connect to database " + pg_db
+            
+    cursor = conn.cursor()
+
+    if isPoint(id):
+        sql_string = """INSERT INTO points(title, url, description, markertype, dato, token, geo, markercolor, 
+                                markerpopup, markerlabel_static, markerlabel_text, image_width, image_height, 
+                                plan, userid, accessed) 
+                        SELECT title, url, description, markertype, dato, token, geo, markercolor, 
+                                markerpopup, markerlabel_static, markerlabel_text, image_width, image_height, 
+                                %s, %s, 0 FROM points where id=%s RETURNING id
+                    """
+        cursor.execute(sql_string, (current_user.plan, current_user.id, id))
+        id = cursor.fetchone()[0]
+        conn.commit();
+    else:
+        sql_string = """INSERT INTO trips(title, dato, geo, style_color, style_width, style_opacity, style_start_icon,
+                                        style_end_icon, style_popup, style_label_text, style_label_static, description,
+                                        plan, userid, accessed) 
+                        SELECT title, dato, geo, style_color, style_width, style_opacity, style_start_icon,
+                                        style_end_icon, style_popup, style_label_text, style_label_static, description,
+                                        %s, %s, 0 FROM trips where id=%s RETURNING id
+                    """
+        cursor.execute(sql_string, (current_user.plan, current_user.id, id))
+        id = cursor.fetchone()[0]
+        conn.commit();
+
+
+    data = {
+            'id'  : id
+        }
+    js = json.dumps(data)
+
+    resp = Response(js, status=200, mimetype='application/json')
+
+    return resp
+
+
 @app.route('/<int:id>/delturno/setStyle', methods = ['POST'])
 @login_required
 def setStyleLogin(id):
