@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)http://twitter.github.com/bootstrap/examples/sticky-footer.html -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>deltur.no</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+
+    <script type=text/javascript>
+  	     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="{{ url_for('static', filename='js/lib/proj4s/proj4js-combined.js') }}"></script>
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.3/leaflet-image.js'></script>
+
+    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>   
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
+    <link rel="stylesheet" href="http://bootswatch.com/slate/bootstrap.min.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/graph.css">
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/detail.css">
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/src/css/legend.css">
+    <link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/examples/css/lines.css">
+
+    <style type="text/css">
+
+        html,
+        body {
+            height: 100%;
+            /* The html and body elements cannot have any padding or margin. */
+        }
+
+        /* Override default shadowing */
+        .mapContainer > header {
+            text-align: center;
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        #elevationProfile {
+            height: 25%;
+        }
+        #map {
+            height: 75%;
+        }
+
+
+        .rickshaw_graph .detail .x_label { display: none }
+        .rickshaw_graph .detail .item { line-height: 1.4; padding: 0.5em }
+        .detail_swatch { float: right; display: inline-block; width: 10px; height: 10px; margin: 0 4px 0 0 }
+        .rickshaw_graph .detail .date { color: #a0a0a0 }
+    
+        #chart {
+            position: relative;
+            left: 0px;
+            /*width: 680px;*/
+        }
+        #y_axis {
+            position: absolute;
+            left: -40px;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+        }
+
+        #formerNextElevProfileButtons {
+            display: none;
+        }
+
+        #formerGraph {
+            display: none;;
+        }
+
+    </style>
+				
+    	
+    	
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-40003995-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+      		
+    <div id="map">
+        {% if showLogo %}
+             <a id="cartodb_logo" style="position:absolute; bottom:4px; left:4px; display:block; z-index:10000;" href="http://deltur.no" target="_blank">
+            <img title="deltur.no" width="50" alt="deltur.no" style="outline: medium none; border: medium none;" src="{{ url_for('static', filename='img/map_logo.png') }}">
+            </a>
+        {% endif %}
+    </div>
+    <div id="elevationProfile">
+        <div id="chart_container">
+            <div id="y_axis"></div>
+            <div id="chart"></div>
+            <div id="legend_container">
+                <div id="smoother" title="Smoothing"></div>
+                <div id="legend"></div>
+            </div>
+            <div id="slider"></div>
+        </div>
+
+        <div id="formerNextElevProfileButtons" style="color:F8F8F8; font-size: 12px; float:right;">
+            <a id="formerGraph" href="javascript:void(0)" onClick="showFormerElevProfile();"><i class="fa fa-chevron-left"></i></a>
+            &nbsp;&nbsp;
+            <a id="nextGraph" href="javascript:void(0)" onClick="showNextElevProfile();"><i class="fa fa-chevron-right"></i></a>
+        </div> 
+    </div>
+
+    <script type="text/javascript">
+
+        // Set up dynamic variables used in delturMap.js
+        var tileJsonSkikart = '{{ url_for('static', filename='mapconfig/skikart.json') }}';
+        var tileJsonSkikartHighdef = '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}';
+        var tileJsonTurkart = '{{ url_for('static', filename='mapconfig/turkart.json') }}';
+        var tileJsonTurkartHighdef = '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}';
+        var tileJsonTopokart = '{{ url_for('static', filename='mapconfig/topokart.json') }}';
+        var tileJsonTopokartHighdef = '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}';
+        var hash = '{{hash}}';
+
+    </script>
+        
+
+    <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script> 
+    <script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
+    <script src="{{ url_for('static', filename='js/rickshaw.js') }}"></script>           
+
+
+    <script type="text/javascript">
+
+        var lines = new Array();
+        var points = new Array();
+
+        $.fn.preload = function() {
+            this.each(function(){
+                $('<img/>')[0].src = this;
+            });
+        }
+
+
+        if({{mapType}}==0) {
+            map.addLayer(turkart);
+        }
+        else if({{mapType}}==1) {
+            map.addLayer(skikart);
+        }
+        else if({{mapType}}==2) {
+            map.addLayer(veikart);
+        }
+        else if({{mapType}}==3) {
+            map.addLayer(topokart);
+        }
+        else if({{mapType}}==4) {
+            map.addLayer(satellite);
+        }
+        else if({{mapType}}==5) {
+            map.addLayer(kartverket);
+        }
+        else if({{mapType}}==-1) { //custom map
+            var customMap = L.mapbox.tileLayer("/" + hash + "/tilejson.json", {
+                detectRetina: true,
+                // if retina is detected, this layer is used instead
+                retinaVersion: "/" + hash + "/tilejson.retina.json"
+            });
+            map.addLayer(customMap);
+        }
+            
+    	    
+
+        var idLists = {{idList}};
+        var ids = "{{idList}}".split("+");
+
+        // Increase mapview in database
+        $.getJSON( "/del/addMapviewCount/" + "{{idList}}" , function( json ) {
+        });
+        
+    	var myStyle = {
+            "color": "#ff7800",
+            "weight": 5,
+            "opacity": 0.65
+        };
+
+        var geoObject;
+        var markerGroup = new L.LayerGroup();
+        var numLines = 0;
+        var lineFeature;
+        var trip = L.geoJson();
+        trip.addTo(map);
+        var featureBounds = new L.LatLngBounds();
+
+        $.each(ids, function (index, value) {
+            var id = value;
+
+
+            $.getJSON('/' + id + '/geojson', function (data) {
+                geoObject = [data];
+
+                var line = true;
+                if (data.type == "Point") {
+                    line = false;
+                }
+
+                map.addLayer(markerGroup);
+                var marker;
+                if(line) { // Line
+
+                    // Create new line object
+                    var line = new delturLine();
+
+                    // Save a reference to this line
+                    lines.push(line);
+
+                    // Init line
+                    line.initWithId(id);
+
+                    // Check when the line is ready for use
+                    var intervalLine = setInterval(function(){
+                        if(line.getStatus() === 1) {
+                            line.renderToMap(map);
+                            featureBounds.extend(line.getBounds());
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
+                            
+                            // Stop interval
+                            clearInterval(intervalLine);
+                        }
+                    },100);
+
+                    numLines++;
+                    
+                }
+                else { // Point
+
+                    // Create new line object
+                    var point = new delturPoint();
+
+                    // Save a reference to this line
+                    points.push(point);
+
+                    // Init line
+                    point.initWithId(id);
+
+                    // Check when the point is ready for use
+                    var intervalPoint = setInterval(function(){
+                        if(point.getStatus() === 1) {
+                            point.renderToMap(map);
+                            featureBounds.extend(point.getPoint());
+                            setTimeout(function(){map.fitBounds(featureBounds.pad(0.1))},100);
+                            
+                            // Stop interval
+                            clearInterval(intervalPoint);
+                        }
+                    },100);
+                    
+                }
+
+                if(numLines==1) {
+                    // Request elevation profile
+                    currentElevProfile = 0
+                    getElevationProfile(); 
+                    
+                }
+                else if(numLines>1) {
+                    // Show buttons for switching elev profile
+                    $('#formerNextElevProfileButtons').show();
+                }
+            });
+
+        });
+
+    function showNextElevProfile() {
+        currentElevProfile = currentElevProfile + 1;
+        getElevationProfile();
+
+        if(currentElevProfile==lines.length-1) {
+            $('#nextGraph').hide();
+            $('#formerGraph').show();
+        }
+        else {
+            $('#nextGraph').show();
+            $('#formerGraph').show();
+        }
+
+    }
+    function showFormerElevProfile() {
+        currentElevProfile = currentElevProfile - 1;
+        getElevationProfile();
+
+        if(currentElevProfile == 0) {
+            $('#formerGraph').hide();
+            $('#nextGraph').show();
+        }
+        else {
+            $('#formerGraph').show();
+            $('#nextGraph').show();
+        }
+    }
+        
+    function getElevationProfile() {
+
+         var intervalProfile = setInterval(function(){
+            if(lines[currentElevProfile].getStatus() === 1) {
+                $.ajax({
+                      url: "/elev/elevationprofile.json",
+                      dataType: 'json',
+                      type: 'post',
+                      contentType: "application/json",
+                      data: JSON.stringify(lines[currentElevProfile].getGeom()),
+                      success: setElevationProfile
+                });
+                
+                // Stop interval
+                clearInterval(intervalProfile);
+            }
+        },100);
+    }
+    
+   
+    function setElevationProfile(data) {
+        var graphData = new Array();
+
+        // Get features    
+        geoJson = data.features;
+               
+        // Go through each point
+        $.each(data.features, function(index, value) { 
+            elev = value.properties.elev;
+            // Check for negative values. The graph does not draw null values
+            if(elev < 0) { 
+                elev = null;
+            }
+            tmp = {x:parseFloat(value.properties.distance), y:parseFloat(elev)};
+            graphData.push(tmp);
+        });
+        
+        // Delete old graph
+        $('#chart').empty();
+
+        // instantiate our graph!
+        var graph = new Rickshaw.Graph( {
+            element: document.getElementById("chart"),
+            width: $('.container').width(),
+            height: 100,
+            renderer: 'area',
+            min: 'auto',
+            series: [
+                {
+                    color: "#F8F8F8",
+                    data: graphData,
+                    name: 'elevation'
+                }
+            ]
+        } );
+    
+        /*
+        var y_ticks = new Rickshaw.Graph.Axis.Y( {
+            graph: graph,
+            orientation: 'left',
+            tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+            element: document.getElementById('y_axis'),
+        } );
+        */
+
+        graph.render();
+
+        var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+            graph: graph,
+            formatter: function(series, x, y) {
+                var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
+                var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
+                var km = parseInt(x)/1000;
+                var content =  "Meter over havet: " + parseInt(y) + '<br>' + "Antall km: "+ km +"km";
+                
+                for(i=0; i<geoJson.length; i++) {
+                    if(parseFloat(geoJson[i].properties.distance) == x) {
+                        
+                        markerGroup.clearLayers(); 
+                        
+                        var source = new Proj4js.Proj('EPSG:900913');    //source coordinates will be in Longitude/Latitude
+                        var dest = new Proj4js.Proj('EPSG:4326');     //destination coordinates in LCC, south of France
+                        var p = new Proj4js.Point(geoJson[i].geometry.coordinates[0], geoJson[i].geometry.coordinates[1]);  
+                        Proj4js.transform(source, dest, p);      //do the transformation.  x and y are modified in place
+                    
+                        var latlng = new L.LatLng(p.y, p.x);
+                        marker = new L.CircleMarker(latlng);
+                        markerGroup.addLayer(marker);
+                    }
+                }
+        
+                return content;
+        
+            }
+        } );
+    }
+        
+
+    </script>
+
+</html>
