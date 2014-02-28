@@ -150,10 +150,10 @@ footer input[type=submit].btn {
 		-ms-transition:all 0.3s;
 		transition:all 0.3s;
 	}
-	footer .social-networks .icon-facebook, footer .social-networks a { 
+	footer .social-networks .fa-facebook, footer .social-networks a { 
 		border:3px solid #3B5998;
 	}
-	footer .social-networks .icon-facebook:hover {
+	footer .social-networks .fa-facebook:hover {
 		background:#3B5998
 	}
 
@@ -170,17 +170,17 @@ footer input[type=submit].btn {
 	footer .social-networks .icon-pinterest:hover {
 		background:#DE2C6C
 	}
-	footer .social-networks .icon-twitter {
+	footer .social-networks .fa-twitter {
 		border:3px solid #31CDFD;
 	}
-	footer .social-networks .icon-twitter:hover {
+	footer .social-networks .fa-twitter:hover {
 		background:#31CDFD;
 	}
 
-	footer .social-networks .icon-google-plus {
+	footer .social-networks .fa-google-plus {
 		border:3px solid #C9402E;
 	}
-	footer .social-networks .icon-google-plus:hover {
+	footer .social-networks .fa-google-plus:hover {
 		background:#C9402E;
 	}
 	footer .social-networks a:hover {
@@ -1331,288 +1331,89 @@ ul.the-icons li:hover {
 }
 
 
-#plans,#plans ul,#plans ul li {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
+/*a {color:#666;}*/
 
-#pricePlans:after {
-	content: '';
-	display: table;
-	clear: both;
-}
-
-#pricePlans {
-	zoom: 1;
-}
-
-#pricePlans {
-	max-width: 69em;
-	margin: 0 auto;
-}
-
-#pricePlans #plans .plan {
-	background: #fff;
-	float: left;
-	width: 100%;
-	text-align: center;
-	border-radius: 5px;
-	margin: 0 0 20px 0;
-
-	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.planContainer .title h2 {
-	font-size: 2.125em;
-	font-weight: 300;
-	color: #3e4f6a;
-	margin: 0;
-	padding: .6em 0;
-}
-
-.planContainer .title h2.bestPlanTitle {
-	background: #3e4f6a;
-
-	background: -webkit-linear-gradient(top, #475975, #364761);
-	background: -moz-linear-gradient(top, #475975, #364761);
-	background: -o-linear-gradient(top, #475975, #364761);
-	background: -ms-linear-gradient(top, #475975, #364761);
-	background: linear-gradient(top, #475975, #364761);
-	color: #fff;
-	border-radius: 5px 5px 0 0;
-}
-
-
-.planContainer .price p {
-	background: #3e4f6a;
-
-	background: -webkit-linear-gradient(top, #475975, #364761);
-	background: -moz-linear-gradient(top, #475975, #364761);
-	background: -o-linear-gradient(top, #475975, #364761);
-	background: -ms-linear-gradient(top, #475975, #364761);
-	background: linear-gradient(top, #475975, #364761);
-	color: #fff;
-	font-size: 1.2em;
-	font-weight: 700;
-	height: 2.6em;
-	line-height: 2.6em;
-	margin: 0 0 1em;
-}
-
-.planContainer .price p.bestPlanPrice {
-	background: #f7814d;
-}
-
-.planContainer .price p span {
-	color: #8394ae;
-}
-
-.planContainer .options {
-	margin-top: 10em;
-}
-
-.planContainer .options li {
-	font-weight: 700;
-	color: #364762;
-	line-height: 2.5;
-}
-
-.planContainer .options li span {
-	font-weight: 400;
-	color: #979797;
-}
-
-.planContainer .button a {
-	text-transform: uppercase;
-	text-decoration: none;
-	color: #3e4f6a;
-	font-weight: 700;
-	letter-spacing: 3px;
-	line-height: 2.8em;
-	border: 2px solid #3e4f6a;
-	display: inline-block;
-	width: 80%;
-	height: 2.8em;
-	border-radius: 4px;
-	margin: 1.5em 0 1.8em;
-}
-
-.planContainer .button a.bestPlanButton {
-	color: #fff;
-	background: #f7814d;
-	border: 2px solid #f7814d;
-}
-
-#credits {
-	text-align: center;
-	font-size: .8em;
-	font-style: italic;
-	color: #777;
-}
-
-#credits a {
-	color: #333;
-}
-
-#credits a:hover {
-	text-decoration: none;
-}
-
-@media screen and (min-width: 481px) and (max-width: 768px) {
-
-#pricePlans #plans .plan {
-	width: 49%;
-	margin: 0 2% 20px 0;
-}
-
-#pricePlans #plans > li:nth-child(2n) {
-	margin-right: 0;
-}
-
-}
-
-@media screen and (min-width: 769px) and (max-width: 1024px) {
-
-#pricePlans #plans .plan {
-	width: 49%;
-	margin: 0 2% 20px 0;
-}
-
-#pricePlans #plans > li:nth-child(2n) {
-	margin-right: 0;
-}
-
-}
-
-@media screen and (min-width: 1025px) {
-
-#pricePlans {
-	margin: 2em auto;
-}
-
-#pricePlans #plans .plan {
-	width: 15%;
-	margin: 0 1.33% 20px 0;
-
-	-webkit-transition: all .25s;
-	   -moz-transition: all .25s;
-	    -ms-transition: all .25s;
-	     -o-transition: all .25s;
-	        transition: all .25s;
-}
-
-#pricePlans #plans > li:last-child {
-	margin-right: 0;
-}
-
-/*#pricePlans #plans .plan:hover {
-	-webkit-transform: scale(1.04);
-	   -moz-transform: scale(1.04);
-	    -ms-transform: scale(1.04);
-	     -o-transform: scale(1.04);
-	        transform: scale(1.04);
-}*/
-
-.planContainer .button a {
-	-webkit-transition: all .25s;
-	   -moz-transition: all .25s;
-	    -ms-transition: all .25s;
-	     -o-transition: all .25s;
-	        transition: all .25s;
-}
-
-.planContainer .button a:hover {
-	background: #3e4f6a;
-	color: #fff;
-}
-
-.planContainer .button a.bestPlanButton:hover {
-	background: #ff9c70;
-	border: 2px solid #ff9c70;
-}
-
-}
-
-
-	a {color:#666;}
 	
-	#content {width:65%; max-width:690px; margin:6% auto 0;}
+#content {width:65%; max-width:690px; margin:0% auto 0;}
 	
-	/*
-	Pretty Table Styling
-	CSS Tricks also has a nice writeup: http://css-tricks.com/feature-table-design/
-	*/
 	
-	table {
-		overflow:hidden;
-		border:1px solid #d3d3d3;
-		background:#fefefe;
-		width:70%;
-		margin:5% auto 0;
-		-moz-border-radius:5px; /* FF1+ */
-		-webkit-border-radius:5px; /* Saf3-4 */
-		border-radius:5px;
-		-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-		-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-	}
+
+/*
+Pretty Table Styling
+CSS Tricks also has a nice writeup: http://css-tricks.com/feature-table-design/
+*/
+
+table {
+	overflow:hidden;
+	border:1px solid #d3d3d3;
+	background:#fefefe;
+	width:70%;
+	margin:5% auto 0;
+	-moz-border-radius:5px; /* FF1+ */
+	-webkit-border-radius:5px; /* Saf3-4 */
+	border-radius:5px;
+	-moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+th, td {padding:18px 28px 18px; text-align:center; }
+
+th {padding-top:22px; text-shadow: 1px 1px 1px #fff; background:#e8eaeb;}
+
+td {border-top:1px solid #e0e0e0; border-right:1px solid #e0e0e0;}
+
+tr.odd-row td {background:#f6f6f6;}
+
+td.first, th.first {text-align:left}
+
+td.last {border-right:none;}
+
+/*
+Background gradients are completely unnecessary but a neat effect.
+*/
+
+td {
+	background: -moz-linear-gradient(100% 25% 90deg, #fefefe, #f9f9f9);
+	background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f9f9f9), to(#fefefe));
+}
+
+tr.odd-row td {
+	background: -moz-linear-gradient(100% 25% 90deg, #f6f6f6, #f1f1f1);
+	background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f1f1f1), to(#f6f6f6));
+}
+
+th {
+	background: -moz-linear-gradient(100% 20% 90deg, #e8eaeb, #ededed);
+	background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#ededed), to(#e8eaeb));
+}
+
+/*
+I know this is annoying, but we need additional styling so webkit will recognize rounded corners on background elements.
+Nice write up of this issue: http://www.onenaught.com/posts/266/css-inner-elements-breaking-border-radius
+
+And, since we've applied the background colors to td/th element because of IE, Gecko browsers also need it.
+*/
+
+tr:first-child th.first {
+	-moz-border-radius-topleft:5px;
+	-webkit-border-top-left-radius:5px; /* Saf3-4 */
+}
+
+tr:first-child th.last {
+	-moz-border-radius-topright:5px;
+	-webkit-border-top-right-radius:5px; /* Saf3-4 */
+}
+
+tr:last-child td.first {
+	-moz-border-radius-bottomleft:5px;
+	-webkit-border-bottom-left-radius:5px; /* Saf3-4 */
+}
+
+tr:last-child td.last {
+	-moz-border-radius-bottomright:5px;
+	-webkit-border-bottom-right-radius:5px; /* Saf3-4 */
+}
+
+
 	
-	th, td {padding:18px 28px 18px; text-align:center; }
-	
-	th {padding-top:22px; text-shadow: 1px 1px 1px #fff; background:#e8eaeb;}
-	
-	td {border-top:1px solid #e0e0e0; border-right:1px solid #e0e0e0;}
-	
-	tr.odd-row td {background:#f6f6f6;}
-	
-	td.first, th.first {text-align:left}
-	
-	td.last {border-right:none;}
-	
-	/*
-	Background gradients are completely unnecessary but a neat effect.
-	*/
-	
-	td {
-		background: -moz-linear-gradient(100% 25% 90deg, #fefefe, #f9f9f9);
-		background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f9f9f9), to(#fefefe));
-	}
-	
-	tr.odd-row td {
-		background: -moz-linear-gradient(100% 25% 90deg, #f6f6f6, #f1f1f1);
-		background: -webkit-gradient(linear, 0% 0%, 0% 25%, from(#f1f1f1), to(#f6f6f6));
-	}
-	
-	th {
-		background: -moz-linear-gradient(100% 20% 90deg, #e8eaeb, #ededed);
-		background: -webkit-gradient(linear, 0% 0%, 0% 20%, from(#ededed), to(#e8eaeb));
-	}
-	
-	/*
-	I know this is annoying, but we need additional styling so webkit will recognize rounded corners on background elements.
-	Nice write up of this issue: http://www.onenaught.com/posts/266/css-inner-elements-breaking-border-radius
-	
-	And, since we've applied the background colors to td/th element because of IE, Gecko browsers also need it.
-	*/
-	
-	tr:first-child th.first {
-		-moz-border-radius-topleft:5px;
-		-webkit-border-top-left-radius:5px; /* Saf3-4 */
-	}
-	
-	tr:first-child th.last {
-		-moz-border-radius-topright:5px;
-		-webkit-border-top-right-radius:5px; /* Saf3-4 */
-	}
-	
-	tr:last-child td.first {
-		-moz-border-radius-bottomleft:5px;
-		-webkit-border-bottom-left-radius:5px; /* Saf3-4 */
-	}
-	
-	tr:last-child td.last {
-		-moz-border-radius-bottomright:5px;
-		-webkit-border-bottom-right-radius:5px; /* Saf3-4 */
-	}
 

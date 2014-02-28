@@ -15,7 +15,7 @@
 	<!-- Custom css -->
 	<link href="{{ url_for('static', filename='infoside/css/style.uncompressed.css') }}" rel="stylesheet">
 
-	<link href="{{ url_for('static', filename='infoside/css/font-awesome/font-awesome.css') }}" rel="stylesheet">
+	<link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
 	<!--[if IE 7]>
 		<link href="css/font-awesome/font-awesome-ie7.css" rel="stylesheet">
 	<![endif]-->
@@ -82,111 +82,165 @@
 			</div><!-- end .navbar-inner -->
 		</div><!-- end .navbar -->
 
-	<!-- Content
-	================================================== -->
 	<div id="content" class="container">
-	<div class="hero-unit">
-		<div class="container">
-			<h1 class="ac">Standard eller Ekspert?</h1>
-			<p class="ac">
-				Bruk deltur.no gratis eller velg en betalings-versjon og få mange flere muligheter!
-			</p>
+		<div class="hero-unit">
+			<div class="ac">
+				<h1>Standard eller Ekspert?</h1>
+				<p>Bruk deltur.no gratis eller velg en betalings-versjon og få mange flere muligheter!</p>
+			</div>
+		</div>
+
+		<hr />
+
+		<div class="row">
+			 <table cellspacing="0">
+			    <tr>
+			    	<th><img src="{{ url_for('static', filename='img/map_logo.png') }}" height="40" width="40" ><br>deltur.no abbonement</th>
+			    	<th>Ingen registrering</th>
+			    	<th>Gratis</th><th>Standard</th>
+			    	<th>Pro</th>
+			    	<th>Ekspert</th>
+			    </tr>
+			    <tr>
+			    	<td><b>Per måned</b></td>
+			    	<td>0,-</td>
+			    	<td>0,-</td>
+			    	<td>6,-</td>
+			    	<td>35,-</td>
+			    	<td>299,-</td>
+			    </tr>
+			    <tr>
+			    	<td><b>For hvem</b></td>
+			    	<td>Enkel deling på sosiale medier</td>
+			    	<td>Den enkle bloggen</td>
+			    	<td>Bloggeren med sans for design</td>
+			    	<td>Hotell og reiseliv</td>
+			    	<td>Eksperten</td>
+			    </tr>
+			    <tr>
+			    	<td><b>Varighet på turen</b></td>
+			    	<td>Slettes etter 14 dager</td>
+			    	<td>Slettes aldri</td>
+			    	<td>Slettes aldri</td>
+			    	<td>Slettes aldri</td>
+			    	<td>Slettes aldri</td>
+			    </tr>
+			    <tr>
+			    	<td><b>Kartvisninger</b></td>
+			    	<td>Ingen begrensninger</td>
+			    	<td>1000</td>
+			    	<td>3000</td>
+			    	<td>20 000</td>
+			    	<td>200 000</td>
+			    </tr>
+			    <tr>
+			    	<td><b>API-kall</b></td>
+			    	<td>Ingen begrensninger</td>
+			    	<td>100</td>
+			    	<td>250</td>
+			    	<td>1 000</td>
+			    	<td>10 000</td>
+			    </tr>
+			    <tr>
+			    	<td><b>Antall opplastede bilder</b></td>
+			    	<td>Ingen begrensninger</td>
+			    	<td>10</td>
+			    	<td>100</td>
+			    	<td>250</td>
+			    	<td>2 000</td>
+			    </tr>
+			    <tr>
+			    	<td><b>Del og miks turer</b></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			     <tr>
+			    	<td><b>Tilgang til <a href="/info/api">API</a></b></td>
+			    	<td></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			    <tr>
+			    	<td><b>Embed tur på eget nettsted</b></td>
+			    	<td></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			    <tr>
+			    	<td><b>Endre farger og stil</b></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			    <tr>
+			    	<td><b>Ingen logo i kartet</b></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			    <tr>
+			    	<td><b>Skru av kopiering av dine turer</b></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			    <tr>
+			    	<td><b>Ingen reklame i kartet</b></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			    <tr>
+			    	<td><b>Bruk ulike <a href="/info/api#visningstype">visningsvarianter</a></b></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			    <tr>
+			    	<td><b>Eget bakgrunnskart</b></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			    <tr>
+			    	<td><b>Egne opplastingsverktøy</b></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td></td>
+			    	<td><i class="fa fa-check fa-2x"></i></td>
+			    </tr>
+			   </table>
 		</div>
 	</div>
+	<br><br>
+	<div class="well ac">
 
-	<!-- Example pricing -->
-	<div class="row pricing">
-
-		<div class="span3">
-			<div class="well">
-				<h2>Gratis</h2>
-				<ul>
-					<li>&#10004; 100 kall til <a href="/info/api">API</a></li>
-					<li>&#10004; 1000 kartvisninger</li>
-					<li>&#10004; 50 bilder</li>
-					<li>&#10004; Del og miks turer</li>
-                    <li>&#10004; Embedde tur på eget nettsted</li>
-                    <li>&#10004; Tur tilgjengelig i 45 dager etter deling</li>
-					<!--li>&#10006; Bruke egne kart</li>
-					<li>&#10006; Style turer med egne farger</li-->
-				</ul>
-				<p>Ved bruk av gratisversjonen av deltur.no så er turer tilgjengelig i 45 dager etter deling. Perfekt for å dele en tur på Facebook, Twitter eller egen mikroblogg. </p>
-				<hr />
-				<h3 class="ac">Gratis</h3>
-				<hr />
-				<p class="ac">
-					<a class="btn btn-success btn-large" href="{{ url_for('security.register') }}">Registrer deg &raquo;</a>
-				</p>
-			</div>
-		</div>
-		<div class="span3 most-popular">
-			<div class="well">
-				<h2>Standard</h2>
-				<p><span>POPULÆR</span></p>
-				<ul>
-					<li>&#10004; 250 kall til <a href="/info/api">API</a></li>
-					<li>&#10004; 3000 kartvisninger</li>
-					<li>&#10004; 100 bilder</li>
-					<li>&#10004; Del og miks turer</li>
-                    <li>&#10004; Embedde tur på eget nettsted</li>
-                    <li>&#10004; Tur tilgjengelig i all evighet</li>
-				</ul>          
-				<p>Med deltur.no Standard kan du har flere kartvisninger og turen din har ingen begrenset levetid på 45 dager. Det er også garantert at det aldri vil ligge reklame på turen din.  </p>
-				<hr />
-				<h3 class="ac">6kr per måned</h3>
-				<hr />
-				<p class="ac">
-					<a class="btn btn-success btn-large" href="{{ url_for('security.register') }}">Registrer deg &raquo;</a>
-				</p>
-			</div>
-		</div>
-		<div class="span3">
-			<div class="well">
-				<h2>Pro</h2>
-				<ul>
-					<li>&#10004; 1000 kall til <a href="/info/api">API</a></li>
-					<li>&#10004; 20 000 kartvisninger</li>
-					<li>&#10004; 250 bilder</li>	
-					<li>&#10004; Style turer med egne farger</li>
-					<li>&#10004; Embedde tur på eget nettsted</li>
-					<li>&#10004; Ingen reklame</li>
-                    <li>&#10004; Ingen logo i kartet</li>
-                    
-				</ul>          
-				<p>Med deltur.no Pro kan du style alle dine turer slik at de er tilpasset ditt visuelle uttrykk.<br><br> </p>
-				<hr />
-				<h3 class="ac">35kr per måned</h3>
-				<hr />
-				<p class="ac">
-					<a class="btn btn-success btn-large" href="{{ url_for('security.register') }}">Registrer deg &raquo;</a>
-				</p>
-			</div>
-		</div>
-		<div class="span3">
-			<div class="well">
-				<h2>Ekspert</h2>
-				<ul>
-					<li>&#10004; 10 000 kall til <a href="/info/api">API</a></li>
-					<li>&#10004; 100 000 kartvisninger</li>
-					<li>&#10004; 2000 bilder</li>
-					<li>&#10004; Velg ulike <a href="">visningsvarianter</a></li>
-					<li>&#10004; Bruke egne bakgrunnskart</li>
-                    <li>&#10004; Egne opplastingsverktøy</li>
-				</ul>          
-				<p>Med deltur.no Ekspert får du et ekstremt antall kartvisninger. Du kan også bruke egne bakgrunnskart samt velge de ulike standard <a href="">visningsvariantene</a>. </p>
-				<hr />
-				<h3 class="ac">299kr per måned</h3>
-				<hr />
-				<p class="ac">
-					<a class="btn btn-success btn-large" href="{{ url_for('security.register') }}">Registrer deg &raquo;</a>
-				</p>
-			</div>
-		</div>
-
-	</div>
-	<p>
-		 
-	</p>
+		<h3>
+			Prøv med en gang!
+			<a href="{{ url_for('infopriser') }}" title="Prøv med en gang">
+				Registrer deg
+			</a>&rarr;
+		</h3>
 	</div>
 
 	<footer>
@@ -199,9 +253,9 @@
 				<div class="span4 social-networks">
 					<h3>Oppdatert informasjon</h3>
 					<p>Følg deltur.no på sosiale nettverk</p>
-					<a href="https://www.facebook.com/delturno" title="Follow us on Facebook" class="icon-facebook"></a>
-					<a href="https://twitter.com/delturno" title="Follow us on Twitter" class="icon-twitter"></a>
-					<a href="#" title="Follow us on Google Plus" class="icon-google-plus"></a>
+					<a href="https://www.facebook.com/delturno" title="Follow us on Facebook" class="fa fa-facebook"></a>
+					<a href="https://twitter.com/delturno" title="Follow us on Twitter" class="fa fa-twitter"></a>
+					<a href="#" title="Follow us on Google Plus" class="fa fa-google-plus"></a>
 				</div>
 				<div class="span4">
                     <br><br><br><br><br><br><br><br><br>
@@ -228,6 +282,7 @@
 		</div>
 
 	</footer>
+	
 	
 
 	<!-- Javascript
