@@ -50,10 +50,10 @@
         }
 
         #elevationProfile {
-            height: 25%;
+            height: 35%;
         }
         #map {
-            height: 75%;
+            height: 65%;
         }
 
 
@@ -65,6 +65,8 @@
         #chart {
             position: relative;
             left: 0px;
+            margin-top: 20px;
+            margin-left: 30px;
             /*width: 680px;*/
         }
         #y_axis {
@@ -365,8 +367,8 @@
         // instantiate our graph!
         var graph = new Rickshaw.Graph( {
             element: document.getElementById("chart"),
-            width: $( window ).width()-50,
-            height: $('#elevationProfile').height()-20,
+            width: $( window ).width()-60,
+            height: $('#elevationProfile').height()-40,
             renderer: 'area',
             min: 'auto',
             series: [
