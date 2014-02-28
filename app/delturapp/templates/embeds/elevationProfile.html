@@ -365,8 +365,8 @@
         // instantiate our graph!
         var graph = new Rickshaw.Graph( {
             element: document.getElementById("chart"),
-            width: $( window ).width(),
-            height: $('#elevationProfile').height(),
+            width: $( window ).width()-50,
+            height: $('#elevationProfile').height()-20,
             renderer: 'area',
             min: 'auto',
             series: [
