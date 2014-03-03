@@ -888,8 +888,8 @@ def setStyle(request, id):
 
 ### TEMPLATES ###
 
-@app.route('/<regex("[0-9+]+"):ids>')
-@app.route('/<regex("[0-9+]+"):ids>/<string:mapType>')
+@app.route('/<regex("[0-9+]+"):ids>/')
+@app.route('/<regex("[0-9+]+"):ids>/<string:mapType>/')
 def getTripHTML(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
 
@@ -983,8 +983,8 @@ def getRetinaTilejson(hash):
     resp = Response(tilejson, status=200, mimetype='application/json')
     return resp
     
-@app.route('/<regex("[0-9+]+"):ids>/embed')
-@app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>')
+@app.route('/<regex("[0-9+]+"):ids>/embed/')
+@app.route('/<regex("[0-9+]+"):ids>/embed/<string:mapType>/')
 def getTripEmbed(ids, mapType='topokart'):
     map = mapTypesList.index(mapType)
 
@@ -1009,8 +1009,8 @@ def getTripEmbed(ids, mapType='topokart'):
     
 
 # Hash input
-@app.route('/<regex("[a-z0-9]+"):hash>')
-@app.route('/<regex("[a-z0-9]+"):hash>/<string:mapType>')
+@app.route('/<regex("[a-z0-9]+"):hash>/')
+@app.route('/<regex("[a-z0-9]+"):hash>/<string:mapType>/')
 def getTripHTMLByHash(hash, mapType='topokart'):
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
@@ -1032,8 +1032,8 @@ def getTripHTMLByHash(hash, mapType='topokart'):
         map = mapTypesList.index(mapType)
     return render_template('tur.html', mapType=map, idList=idString, hash=hash, showLogo=showLogo)
 
-@app.route('/<regex("[a-z0-9]+"):hash>/embed')
-@app.route('/<regex("[a-z0-9]+"):hash>/embed/<string:mapType>')
+@app.route('/<regex("[a-z0-9]+"):hash>/embed/')
+@app.route('/<regex("[a-z0-9]+"):hash>/embed/<string:mapType>/')
 def getTripEmbedByHash(hash, mapType='topokart'):
 
     #Check if there is a tilejson set
