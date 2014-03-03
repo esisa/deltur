@@ -9,10 +9,11 @@
     <meta name="author" content="">
     <link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
     
-
     <script type=text/javascript>
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        L_PREFER_CANVAS = true;
     </script>
+  
 
     <link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
@@ -83,7 +84,7 @@
         });
 
     </script>
-    <script src="//tomodo-tools.s3.amazonaws.com/tomodo.korz-0.5.js"></script>
+    
   
   </head>
   
@@ -270,7 +271,7 @@
             {% endif %}
             
             <!--span class="hint--top" data-hint="Last ned kartet som et bilde">
-                <a onClick="createImg()" id="embedButton" style="text-decoration: none;" data-toggle="modal" href="javacript:void(0)"><i class="fa fa-picture-o"></a></i>&nbsp;
+                <a onClick="createImg()" id="createImgButton" style="text-decoration: none;" data-toggle="modal" href="javacript:void(0)"><i class="fa fa-picture-o"></a></i>&nbsp;
             </span-->
         </div>
 
@@ -804,5 +805,6 @@
     $("#mail_share").attr("href", encodedLink);
     $("#mail_share_mobile").attr("href", encodedLink);
     </script>
+    <script src="//tomodo-tools.s3.amazonaws.com/tomodo.korz-0.5.js"></script>
 
 </html>
