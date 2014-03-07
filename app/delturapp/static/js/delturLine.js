@@ -37,6 +37,7 @@ var delturLine = function () {
     var startMarker, endMarker;
     var custom_popup_footer = "";
     var geoObject;
+    var editable = false;
 
     this.initWithId = function (_id) {
     	setId(_id);
@@ -156,6 +157,10 @@ var delturLine = function () {
         uploadStyle();
     };
 
+    this.saveStyle = function () {  //public
+        uploadStyle();
+    };
+
     this.getGeom = function () {  //public
         /*$.getJSON('/'+id+'/geojson', function (data) {
     		geoObject = [data];
@@ -195,6 +200,13 @@ var delturLine = function () {
         custom_popup_footer = _custom_popup_footer;
     }
 
+    var editFunction, currentPlaceInArray;
+    this.makeEditable = function (_editFunction, _currentPlaceInArray) {  //public
+        editable = true;
+        editFunction = _editFunction;
+        currentPlaceInArray = _currentPlaceInArray;
+    }
+
     var addToMap = function (_map) {  // private
 
     	var lineStyle = {
@@ -206,10 +218,17 @@ var delturLine = function () {
 		// Create geojson object, add to map and add line to it
         trip = L.geoJson(geoObject[0], {
             onEachFeature: function (feature, layer) {
+
+                if(editable) {
+                    layer.on("click", function (e) {
+                        editFunction(id, currentPlaceInArray);
+                    });
+                }
+
                 if(style.popup.show)
                     layer.bindPopup(getPopup());
-                else if(custom_popup_footer != "") // Only show popup in edit mode
-                    layer.bindPopup('<p>Popup vil ikke vises i ferdig tur.</p>' + custom_popup_footer);
+                //else if(custom_popup_footer != "") // Only show popup in edit mode
+                //    layer.bindPopup('<p>Popup vil ikke vises i ferdig tur.</p>' + custom_popup_footer);
             }
         });
 

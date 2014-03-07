@@ -1,0 +1,833 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>deltur.no</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-label/v0.2.1/leaflet.label.css' rel='stylesheet' />
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.0.0/leaflet-omnivore.min.js'></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/L.Control.Sidebar.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/L.Control.Sidebar.js') }}"></script>
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
+
+    <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
+
+    <script>
+   
+       //filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
+       
+       var auth_token = "{{config['TOKEN']}}";
+       var delGPXURL;
+       var delGeoJSONURL;
+       var delPointURL, delPointToken;
+       var setStyleUrl;
+      {% if current_user.is_authenticated() %}
+          delGPXURL = "/delturno/gpx";
+          delGeoJSONURL = "/delturno/geojson";
+          delPointURL = "/delturno/sted/";
+          delPointToken = ""
+          setStyleUrl = "/delturno/setStyle";
+      {% else %}    
+          delGPXURL = "/del/gpx?auth_token=" + auth_token;
+          delGeoJSONURL = "/del/geojson?auth_token=" + auth_token;
+          delPointURL = "/del/sted/";
+          delPointToken = "?auth_token=" + auth_token;
+          setStyleUrl = "/setStyle?auth_token="  + auth_token;
+      {% endif %}
+
+
+       var uploadFile; // Store the URL to the file uploaded
+  
+  
+         var _gaq = _gaq || [];
+         _gaq.push(['_setAccount', 'UA-40003995-1']);
+         _gaq.push(['_trackPageview']);
+
+         (function() {
+           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+         
+    </script>
+
+    <script type="text/javascript">
+
+        // Set up dynamic variables used in delturMap.js
+        var tileJsonSkikart = '{{ url_for('static', filename='mapconfig/skikart.json') }}';
+        var tileJsonSkikartHighdef = '{{ url_for('static', filename='mapconfig/skikart_highdef.json') }}';
+        var tileJsonTurkart = '{{ url_for('static', filename='mapconfig/turkart.json') }}';
+        var tileJsonTurkartHighdef = '{{ url_for('static', filename='mapconfig/turkart_highdef.json') }}';
+        var tileJsonTopokart = '{{ url_for('static', filename='mapconfig/topokart.json') }}';
+        var tileJsonTopokartHighdef = '{{ url_for('static', filename='mapconfig/topokart_highdef.json') }}';
+
+    </script>
+
+    
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body, #map {
+            height: 100%;
+        }
+
+        #logo {
+            float: left;
+        }
+        #header {
+            text-align: center;
+            font-size:4em;
+            margin-top: 40px;
+        }
+        #sub-header {
+            text-align: center; 
+            font-size:15px;
+        }
+        #text {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: 15px;
+        }
+        #share-button-text {
+            margin-left: 52%;
+            font-size: 13px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        #section-share-buttons {
+            position: relative; 
+            bottom: 0;
+            margin-bottom: 30px;
+        }
+        .share-button {
+            position: relative;
+            margin-left: 13%;
+            display: block;
+            width: 300px;
+        }
+        #section-share-header {
+            margin-left: 2.5%;
+            color: #256ca8;
+        }
+        #section-share-hr {
+            height: 1px;
+            color: #70a3d7;
+            background: #70a3d7;
+            font-size: 0;
+            border: 0;
+            margin-top: 0px;
+            margin-bottom: 5px;
+            width: 95%;
+        }
+        .section-share-button {
+            margin-left: 2.5%;
+            margin-right: 10px;
+            padding-right: 10px;
+            display: block;
+            width: 45%;
+            float: left;
+        }
+
+        #section-share-line {
+            margin-top: 70px;
+        }
+        #section-maptype {
+            margin-top: 70px;
+        }
+
+        #dropdown {
+            margin-left: 2.5%;
+            margin-top: 5px;
+        }
+        
+        /* Style upload button */
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 999px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+        #sidebar-edit-line {
+            display: none;
+            margin-top: 30px;
+        }
+        #sidebar-edit-point {
+            display: none;
+            margin-top: 30px;
+        }
+        #sidebar-main {
+            display: visible;
+        }
+
+
+        /*
+        ** Sidebar edit
+        */
+        .edit-buttons {
+            margin-left: 2.5%;
+            margin-right: 10px;
+            padding-right: 10px;
+            display: block;
+            width: 45%;
+            float: left;
+        }
+        #current-line {
+            display: none;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <div id="sidebar-main">
+            <div id="logo"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></div>
+            <h1 id="header">deltur.no</h1>
+            <div id="sub-header">Del din tur p&aring; 1-2-3!</div>
+            <hr>
+            <p id="text">
+               Turen kan du vise p&aring; Facebook, Twitter, e-post eller din egen blogg. Ved deling godkjenner du at dataene er i <a data-toggle="modal" href="#mobileModal">public domain</a>. <br /><br />     
+            </p>
+            <!--div style="text-align: center; font-size:12px;"><a href="/">Tilbake til enkel deling</a></div-->
+
+            <div id="section-share-point">
+                <div id="section-share-header">Del markør:</div>
+                <hr id="section-share-hr">
+                <button id="draw-point-button" class="btn btn-large btn-default section-share-button">Tegne</button>
+                <span class="btn btn-default btn-file section-share-button">
+                    Fra fil <input type="file" id="fileInputPoint">
+                </span>
+            </div>
+            <div id="section-share-line">
+                <div id="section-share-header">Del spor:</div>
+                <hr id="section-share-hr">
+                <button id="draw-line-button" class="btn btn-large btn-default section-share-button">Tegne</button>
+                <span class="btn btn-default btn-file section-share-button">
+                    Fra fil <input type="file" id="fileInputLine">
+                </span>
+            </div>
+            <div id="section-maptype">
+                <div id="section-share-header">Velg bakgrunnskart:</div>
+                <hr id="section-share-hr">
+                <select autocomplete="off" id="dropdown" style="width: 300px">
+                    <option value="topokart" selected="selected">Enkelt kart fra Turkompisen </option>
+                    <option value="turkart">Turkart fra Turkompisen</option>
+                    <option value="skikart">Skikart fra Turkompisen</option>
+                    <option value="veikart">Veikart</option>
+                    <option value="satellitt">Satellitt</option>
+                    <option value="kartverket">Kartverket</option>
+                </select>
+            </div>
+
+
+            <br><br><br><br>
+
+            
+
+            <div id="section-share-buttons">
+                <button id="deltur-button" class="btn btn-large btn-primary btn-block share-button" disabled>Del turen</button>
+                <div id="share-button-text">eller</div>
+                <button id="embed-button" type="button" class="btn btn-primary btn-block share-button" disabled>Embed turen</button>
+            </div>
+        </div>
+        <div id="sidebar-edit-line">
+            <!-- Placeholder for the current line being edited -->
+            <div id="current-line"></div>
+
+            <form id="line-form" class="form-horizontal" autocomplete="off">
+              <fieldset>
+                <legend>Legg til detaljer om sporet</legend>
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label">Tittel</label>
+                  <div class="col-lg-10">
+                    <input type="text" id="line-title" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="textArea" class="col-lg-2 control-label">Beskrivelse</label>
+                  <div class="col-lg-10">
+                    <textarea id="line-description" class="form-control" rows="3" id="textArea"></textarea>
+                    <span class="help-block">Tittel og beskrivelse vises i en valgfri popup på sporet. Det vil også hjelpe deg å finne fram til riktig spor seinere. </span>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+
+            <button id="save-line-button" class="btn btn-large btn-primary edit-buttons">Lagre</button>
+            <button id="cancel-line-button" class="btn btn-large btn-default edit-buttons">Avbryt</button>
+        </div>
+
+        <div id="sidebar-edit-point">
+            <!-- Placeholder for the current line being edited -->
+            <div id="current-point"></div>
+
+            <form id="point-form" class="form-horizontal" autocomplete="off">
+              <fieldset>
+                <legend>Legg til detaljer om markøren</legend>
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label">Tittel</label>
+                  <div class="col-lg-10">
+                    <input type="text" id="point-title" class="form-control">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="textArea" class="col-lg-2 control-label">Beskrivelse</label>
+                  <div class="col-lg-10">
+                    <textarea id="point-description" class="form-control" rows="3" id="textArea"></textarea>
+                    <span class="help-block">Tittel og beskrivelse vises standard i en popup på markøren. Det vil også hjelpe deg å finne fram til riktig markør seinere. </span>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+
+            <button id="save-point-button" class="btn btn-large btn-primary edit-buttons">Lagre</button>
+            <button id="cancel-point-button" class="btn btn-large btn-default edit-buttons">Avbryt</button>
+        </div>
+
+    </div>
+
+    <div id="map"></div>
+
+    <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
+    <script>
+
+        /*
+        **  Global variables
+        */
+        var lines = new Array();
+        var points = new Array();
+
+        // Add layer for temporary markers
+        var drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+        drawControl = new L.Control.Draw({
+            draw: {
+                position: 'topleft',
+                polygon: false,
+                polyline: true, 
+                circle: false,
+                marker: true,
+                rectangle: false
+            },
+            edit: {
+                featureGroup: drawnItems,
+                edit: false,
+                remove: false
+            }
+        });
+        
+
+        /*
+        **  Add map
+        */
+        map.addLayer(topokart);
+
+
+        /*
+        **  Add sidebar
+        */
+        var sidebar = L.control.sidebar('sidebar', {
+            closeButton: false,
+            position: 'left'
+        });
+        map.addControl(sidebar);
+
+        setTimeout(function () {
+            sidebar.show();
+        }, 500);
+
+        // Add zoomcontrols in top right corner
+        new L.Control.Zoom({ position: 'topright' }).addTo(map);
+
+        /*
+        **  Translate draw texts
+        */
+        L.drawLocal.draw.toolbar.actions.cancel = "Avbryt";
+        L.drawLocal.edit.toolbar.actions.cancel = "Avbryt";
+        L.drawLocal.draw.toolbar.buttons.marker = "Legg til en markør";
+        L.drawLocal.draw.handlers.marker.tooltip.start = "Klikk i kartet for å plassere markøren";
+        L.drawLocal.draw.handlers.polyline.tooltip.start = "Klikk i kartet for å tegne en linje";
+        L.drawLocal.draw.handlers.polyline.tooltip.cont = "Klikk for å fortsette linjen";
+        L.drawLocal.draw.handlers.polyline.tooltip.end = "Dobbeltklikk for å avslutte linjen";
+        L.drawLocal.draw.toolbar.undo.text = "Slett siste punkt";
+
+
+        /*
+        **  Handle upload of lines
+        */
+        window.onload = function() {
+            var fileInput = document.getElementById('fileInputLine');
+
+            fileInputLine.addEventListener('change', function(e) {
+                var file = fileInputLine.files[0];
+
+                if (file.name.match(/(\.|\/)(gpx)$/i)) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        var gpxdom = (new DOMParser()).parseFromString(reader.result, 'text/xml');
+                        var geojson = toGeoJSON.gpx(gpxdom);
+
+                        showLineEditSidebar();
+
+                        // Create new line object
+                        var line = new delturLine();
+
+                        // Init line
+                        var description = "";
+                        var title =  "";
+                        line.initWithGeo([geojson.features[0].geometry], title, description);
+
+                        // Save a reference to this line
+                        lines.push(line);
+
+                        // Make editable
+                        var currentPlaceInArray = lines.length-1;
+                        line.makeEditable(editLine, currentPlaceInArray);
+
+                        // Check when the file is uploaded and render to map
+                        // and stop spinner
+                        var lineInterval = setInterval(function(){
+                            if(line.getStatus() === 1) {
+                                line.renderToMap(map);
+                                map.fitBounds(line.getBounds());
+
+
+                                $('#current-line').val(currentPlaceInArray);
+
+                                $('#deltur-button').attr('disabled', false); // Enable button
+                                $('#embed-button').attr('disabled', false); // Enable button
+                                
+                                // Stop interval
+                                clearInterval(lineInterval);
+                            }
+                        },100);
+
+                    }
+
+                    reader.readAsText(file);    
+                } else {
+                    humane.log("<p>Filen du valgte er ikke en GPS-fil!</p>", { waitForMove: true});
+                }
+            });
+        }
+
+        /*
+        **  Utility functions
+        */
+
+        // Utility function to preload images
+        $.fn.preload = function() {
+            this.each(function(){
+                $('<img/>')[0].src = this;
+            });
+        }
+
+        function showLineEditSidebar() {
+            $('#sidebar-main').hide();
+            $('#sidebar-edit-line').show();
+        }
+
+        function showPointEditSidebar() {
+            $('#sidebar-main').hide();
+            $('#sidebar-edit-point').show();
+        }
+
+        function showMainSidebar() {
+            $('#sidebar-main').show();
+            $('#sidebar-edit-line').hide();
+            $('#sidebar-edit-point').hide();
+        }
+
+        function editLine(id, currentPlaceInArray) {
+
+            // Get current line
+            var line = lines[currentPlaceInArray];
+
+            // Set metadata
+            $('#line-title').val(line.getTitle());
+            $('#line-description').val(line.getDescription());
+            $('#current-line').val(currentPlaceInArray);
+
+            // Open editing sidebar
+            showLineEditSidebar();
+        }
+
+        function editPoint(id, currentPlaceInArray) {
+
+            // Get current point
+            var point = points[currentPlaceInArray];
+
+            // Set metadata
+            $('#point-title').val(point.getTitle());
+            $('#point-description').val(point.getDescription());
+            $('#current-point').val(currentPlaceInArray);
+
+            // Open editing sidebar 
+            showPointEditSidebar();
+        }
+
+        function switchBgMap(maptype) {
+            switch(maptype) {
+                case "turkart":
+                    map.addLayer(turkart);
+                    map.removeLayer(skikart);
+                    map.removeLayer(topokart);
+                    map.removeLayer(veikart);
+                    map.removeLayer(kartverket);
+                    map.removeLayer(satellite);
+                    break;
+                case "skikart":
+                    map.removeLayer(turkart);
+                    map.addLayer(skikart);
+                    map.removeLayer(topokart);
+                    map.removeLayer(veikart);
+                    map.removeLayer(kartverket);
+                    map.removeLayer(satellite);
+                    break;
+                case "topokart":
+                    map.removeLayer(turkart);
+                    map.removeLayer(skikart);
+                    map.addLayer(topokart);
+                    map.removeLayer(veikart);
+                    map.removeLayer(kartverket);
+                    map.removeLayer(satellite);
+                    break;
+                case "veikart":
+                    map.removeLayer(turkart);
+                    map.removeLayer(skikart);
+                    map.removeLayer(topokart);
+                    map.addLayer(veikart);
+                    map.removeLayer(kartverket);
+                    map.removeLayer(satellite);
+                    break;
+                case "kartverket":
+                    map.removeLayer(turkart);
+                    map.removeLayer(skikart);
+                    map.removeLayer(topokart);
+                    map.removeLayer(veikart);
+                    map.addLayer(kartverket);
+                    map.removeLayer(satellite);
+                    break;
+                case "satellitt":
+                    map.removeLayer(turkart);
+                    map.removeLayer(skikart);
+                    map.removeLayer(topokart);
+                    map.removeLayer(veikart);
+                    map.removeLayer(kartverket);
+                    map.addLayer(satellite);
+                    break;
+            }
+        }
+
+
+
+
+
+
+
+
+        /*
+        **  Handlers
+        */
+
+        // Disable enter on forms
+        $('#point-form').bind("keyup keypress", function(e) {
+          var code = e.keyCode || e.which; 
+          if (code  == 13) {               
+            e.preventDefault();
+            return false;
+          }
+        });
+        $('#line-form').bind("keyup keypress", function(e) {
+          var code = e.keyCode || e.which; 
+          if (code  == 13) {               
+            e.preventDefault();
+            return false;
+          }
+        });
+
+        // Handle choosing map type
+        $('#dropdown').change(function() {
+            if($(this).find('option:selected').val() == "turkart") {
+                switchBgMap("turkart")
+            }
+            else if($(this).find('option:selected').val() == "skikart") {
+                switchBgMap("skikart")
+            }
+            else if($(this).find('option:selected').val() == "topokart") {
+                switchBgMap("topokart")
+            }
+            else if($(this).find('option:selected').val() == "veikart") {
+                switchBgMap("veikart")
+            }
+            else if($(this).find('option:selected').val() == "kartverket") {
+                switchBgMap("kartverket")
+            }
+            else {
+                switchBgMap("satellitt")         
+            }
+        });
+
+
+        $('#save-point-button').click(function () {
+            var point = points[$('#current-point').val()];
+
+            // Save metadata
+            point.setTitle($('#point-title').val());
+            point.setDescription($('#point-description').val());
+            point.saveStyle();
+
+            // Delete all old text
+            $('#current-point').val(""); // Delete current line
+            $('#point-title').val();
+            $('#point-description').val();
+
+            // Update map
+            point.updateRendering(map);
+
+            showMainSidebar();
+            
+        });
+
+        $('#cancel-point-button').click(function () {
+            showMainSidebar();
+            $('#current-point').val(""); // Delete current point
+
+            // Close popups
+            map.closePopup();
+        });
+
+        $('#save-line-button').click(function () {
+            var line = lines[$('#current-line').val()];
+
+            // Save metadata
+            line.setTitle($('#line-title').val());
+            line.setDescription($('#line-description').val());
+            line.saveStyle();
+
+            // Delete all old text
+            $('#current-line').val(""); // Delete current line
+            $('#line-title').val();
+            $('#line-description').val();
+
+            // Update map
+            line.updateRendering(map);
+
+            showMainSidebar();
+            
+        });
+        $('#cancel-line-button').click(function () {
+            showMainSidebar();
+            $('#current-line').val(""); // Delete current line
+
+            // Close popups
+            map.closePopup();
+        });
+
+        // Draw
+        var marker;
+        $('#draw-point-button').click(function() {
+
+            var emptyIcon = L.AwesomeMarkers.icon({
+                  prefix: 'fa',
+                  icon: 'map-marker', 
+                  markerColor: 'blue'
+            });
+
+            marker = new L.Draw.Marker(map, {
+                title: 'Add a marker',
+                icon: emptyIcon
+            });
+
+            marker.addHooks();
+
+            map.on('mousedown', function(e) {
+                setTimeout('marker.removeHooks()', 200);
+            });
+        });
+
+        // Draw
+        var polyline;
+        $('#draw-line-button').click(function() {
+
+            polyline = new L.Draw.Polyline(map, drawControl.options.polyline);
+            polyline.enable();
+
+        });
+
+
+
+
+        /*
+        **  Handler for draw point/line
+        */
+
+        map.on('draw:created', function (e) {
+            var type = e.layerType,
+                layer = e.layer;
+
+            if (type === 'marker') {
+                // Do marker specific actions
+            }
+
+            // Do whatever else you need to. (save to db, add to map etc)
+            map.addLayer(layer);
+        });
+
+        map.on('draw:created', function (e) {
+            doneWithPopup = false;
+            var type = e.layerType;
+            var newlayer = e.layer;
+            //debugger;
+            if (type === 'polyline') {
+
+
+                // Disable drawing                
+                polyline.disable();
+            
+
+                // Erase fields and Open modal
+                $('#line-title').val("");
+                $('#line-description').val("");
+                $('#current-line').val("");
+
+                showLineEditSidebar();
+
+                // Create new line object
+                var line = new delturLine();
+
+                // Convert line to geojson
+                var coordinates = new Array();
+                $.each(e.layer._latlngs, function(index, node) {
+                    coordinates.push([node.lng, node.lat])
+                });
+
+                var geojson = [
+                       {
+                          "type": "LineString",
+                          "coordinates": coordinates
+                        }
+                    ];
+
+
+                // Init line
+                var description = "";
+                var title =  "";
+                line.initWithGeo(geojson, title, description);
+
+                // Save a reference to this line
+                lines.push(line);
+
+                // Make editable
+                var currentPlaceInArray = lines.length-1;
+                line.makeEditable(editLine, currentPlaceInArray);
+                $('#current-line').val(currentPlaceInArray);
+
+                // Check when the file is uploaded and render to map
+                // and stop spinner
+                var lineInterval = setInterval(function(){
+                    if(line.getStatus() === 1) {
+                        line.renderToMap(map);
+                        map.fitBounds(line.getBounds());
+
+                        $('#deltur-button').attr('disabled', false); // Enable button
+                        $('#embed-button').attr('disabled', false); // Enable button
+                        
+                        // Stop interval
+                        clearInterval(lineInterval);
+                    }
+                },100);
+
+            }
+            else if (type === 'marker') {
+                        
+                // Erase fields 
+                $('#point-title').val("");
+                $('#point-description').val("");
+                $('#current-point').val("");
+
+                showPointEditSidebar();
+
+                 // Create new line object
+                var point = new delturPoint();
+
+                // Init point
+                var url = "";
+                var description = "";
+                var title = "";
+
+                point.init(e.layer._latlng.lat, e.layer._latlng.lng, title, description, url);
+
+                // Save a reference to this line
+                points.push(point);
+
+                // Add a custom footer to popup
+                var currentPlaceInArray = points.length-1;
+                point.makeEditable(editPoint, currentPlaceInArray);
+
+                // Remember for later use
+                $('#current-point').val(currentPlaceInArray);
+                
+
+                var interval = setInterval(function(){
+                    if(point.getStatus() === 1) {
+                        point.renderToMap(map);
+
+                        $('#current-line').val(currentPlaceInArray);
+
+                        $('#deltur-button').attr('disabled', false); // Enable button
+                        $('#embed-button').attr('disabled', false); // Enable button
+                        
+                        // Stop interval
+                        clearInterval(interval);
+                    }
+                },100);
+                
+            }
+                
+        });
+
+
+
+
+        
+    </script>
+</body>
+</html>

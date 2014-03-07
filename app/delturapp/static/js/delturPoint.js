@@ -178,6 +178,13 @@ var delturPoint = function () {
         custom_popup_footer = _custom_popup_footer;
     }
 
+    var editFunction, currentPlaceInArray;
+    this.makeEditable = function (_editFunction, _currentPlaceInArray) {  //public
+        editable = true;
+        editFunction = _editFunction;
+        currentPlaceInArray = _currentPlaceInArray;
+    }
+
     var addToMap = function (_map) {  // private
 
         
@@ -199,6 +206,13 @@ var delturPoint = function () {
 
 
         imgMarker = L.marker([lat, lon], {icon: icon});
+
+        // Editable from advanced view
+        if(editable) {
+            imgMarker.on("click", function (e) {
+                editFunction(id, currentPlaceInArray);
+            });
+        }
 
         if(style.popup.image.width==-1 && style.popup.image.width==-1) {
             var imgWidth = $('body').width()*0.4; // Use body width to calculate image width

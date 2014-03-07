@@ -481,6 +481,7 @@
 
 			// Add default map
 			map.addLayer(topokart);
+      new L.Control.Zoom({ position: 'topleft' }).addTo(map);
 
 		    // Utility function to preload images
 	        $.fn.preload = function() {
