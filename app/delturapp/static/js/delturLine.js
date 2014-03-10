@@ -146,6 +146,55 @@ var delturLine = function () {
         style.popup.description = _description;
     };
 
+    this.getColor = function () {  //public
+         return style.color;
+    };
+    this.setColor = function (_color) {  //public
+        style.color = _color;
+    };
+
+    this.getWidth = function () {  //public
+         return style.width;
+    };
+    this.setWidth = function (_width) {  //public
+        style.width = _width;
+    };
+
+    this.getOpacity = function () {  //public
+         return style.opacity;
+    };
+    this.setOpacity = function (_opacity) {  //public
+        style.opacity = _opacity;
+    };
+
+    this.getLabelText = function () {  //public
+         return style.label.text;
+    };
+    this.setLabelText = function (_text) {  //public
+        style.label.text = _text;
+    };
+
+    this.getPopup = function () {  //public
+         return style.popup.show;
+    };
+    this.setPopup = function (_show) {  //public
+        style.popup.show = _show;
+    };
+
+    this.getStartIcon = function () {  //public
+         return style.start_icon;
+    };
+    this.setStartIcon = function (_show) {  //public
+        style.start_icon = _show;
+    };
+
+    this.getEndIcon = function () {  //public
+         return style.end_icon;
+    };
+    this.setEndIcon = function (_show) {  //public
+        style.end_icon = _show;
+    };
+
     this.getStyle = function () {  //public
         return style;
     };

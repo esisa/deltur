@@ -24,10 +24,12 @@
     <link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-colorpicker.min.css') }}">
 
     <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-colorpicker.min.js') }}"></script>
 
     <script>
    
@@ -97,7 +99,7 @@
         #header {
             text-align: center;
             font-size:4em;
-            margin-top: 40px;
+            padding-top: 40px;
         }
         #sub-header {
             text-align: center; 
@@ -152,8 +154,15 @@
         #section-share-line {
             margin-top: 70px;
         }
+        #section-share-point {
+            margin-top: 20px;
+        }
         #section-maptype {
             margin-top: 70px;
+        }
+        #search-field {
+            width: 95%;
+            margin-left: 2.5%;
         }
 
         #dropdown {
@@ -200,9 +209,10 @@
         .edit-buttons {
             margin-left: 2.5%;
             margin-right: 10px;
+            margin-top: 20px;
             padding-right: 10px;
             display: block;
-            width: 45%;
+            width: 95%;
             float: left;
         }
         #current-line {
@@ -220,9 +230,15 @@
             <div id="sub-header">Del din tur p&aring; 1-2-3!</div>
             <hr>
             <p id="text">
-               Turen kan du vise p&aring; Facebook, Twitter, e-post eller din egen blogg. Ved deling godkjenner du at dataene er i <a data-toggle="modal" href="#mobileModal">public domain</a>. <br /><br />     
+                Ved deling godkjenner du at dataene er i <a data-toggle="modal" href="#mobileModal">public domain</a>. <br /><br />     
             </p>
             <!--div style="text-align: center; font-size:12px;"><a href="/">Tilbake til enkel deling</a></div-->
+
+            <div id="section-search">
+                <div id="section-share-header">Søk etter område:</div>
+                <hr id="section-share-hr">
+                <input type="text" id="search-field" class="form-control">
+            </div>
 
             <div id="section-share-point">
                 <div id="section-share-header">Del markør:</div>
@@ -232,6 +248,7 @@
                     Fra fil <input type="file" id="fileInputPoint">
                 </span>
             </div>
+
             <div id="section-share-line">
                 <div id="section-share-header">Del spor:</div>
                 <hr id="section-share-hr">
@@ -272,23 +289,104 @@
               <fieldset>
                 <legend>Legg til detaljer om sporet</legend>
                 <div class="form-group">
-                  <label for="inputEmail" class="col-lg-2 control-label">Tittel</label>
-                  <div class="col-lg-10">
+
+                  <label for="line-title" class="col-lg-3 control-label">Tittel</label>
+                  <div class="col-lg-9">
                     <input type="text" id="line-title" class="form-control">
+                  </div>
+
+                </div>
+                <div class="form-group">
+
+                  <label for="line-description" class="col-lg-3 control-label">Beskrivelse</label>
+                  <div class="col-lg-9">
+                    <textarea id="line-description" class="form-control" rows="4"></textarea>
+                    <span class="help-block">Tittel og beskrivelse vises i en valgfri popup på sporet. Det vil også hjelpe deg å finne fram til riktig spor seinere. </span>
+                    
+                  </div>
+
+                </div>
+                <div class="form-group">
+
+                  <label for="line-color" class="col-lg-3 control-label">Farge</label>
+                  <div class="col-lg-9">
+                    <input type="text" id="line-color" class="form-control" value="#5367ce" />
+                  </div>
+
+                </div>
+
+                <div class="form-group">
+
+                  <label for="line-width" class="col-lg-3 control-label">Tykkelse</label>
+                  <div class="col-lg-9">
+                    <input type="text" id="line-width" class="form-control"  />
+                  </div>
+
+                </div>
+
+                <div class="form-group">
+                  <label for="line-opacity" class="col-lg-3 control-label">Gjennomsiktighet</label>
+                  <div class="col-lg-9">
+                    <select class="form-control" id="line-opacity">
+                      <option>0.1</option>
+                      <option>0.2</option>
+                      <option>0.3</option>
+                      <option>0.4</option>
+                      <option>0.5</option>
+                      <option>0.6</option>
+                      <option>0.7</option>
+                      <option selected="selected">0.8</option>
+                      <option>0.9</option>
+                      <option>1.0</option>
+                    </select>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="textArea" class="col-lg-2 control-label">Beskrivelse</label>
-                  <div class="col-lg-10">
-                    <textarea id="line-description" class="form-control" rows="3" id="textArea"></textarea>
-                    <span class="help-block">Tittel og beskrivelse vises i en valgfri popup på sporet. Det vil også hjelpe deg å finne fram til riktig spor seinere. </span>
+
+                  <label for="line-check-popup" class="col-lg-3 control-label">Vise popup</label>
+                  <div class="col-lg-9">
+                    <div class="checkbox">
+                      <label>
+                        <input id="line-check-popup" type="checkbox">
+                      </label>
+                    </div>
                   </div>
+
+
+
+                  <label for="line-check-start" class="col-lg-3 control-label">Vis start</label>
+                  <div class="col-lg-9">
+                    <div class="checkbox">
+                      <label>
+                        <input id="line-check-start" type="checkbox">
+                      </label>
+                    </div>
+                  </div>
+
+                  <label for="line-check-end" class="col-lg-3 control-label">Vis slutt</label>
+                  <div class="col-lg-9">
+                    <div class="checkbox">
+                      <label>
+                        <input id="line-check-end" type="checkbox">
+                      </label>
+                    </div>
+                  </div>
+
                 </div>
+
+                <div class="form-group">
+
+                  <label for="line-label-text" class="col-lg-3 control-label">Label tekst</label>
+                  <div class="col-lg-9">
+                    <input type="text" id="line-label-text" class="form-control">
+                  </div>
+
+                </div>
+
               </fieldset>
             </form>
 
-            <button id="save-line-button" class="btn btn-large btn-primary edit-buttons">Lagre</button>
-            <button id="cancel-line-button" class="btn btn-large btn-default edit-buttons">Avbryt</button>
+            <button id="cancel-line-button" class="btn btn-large btn-default edit-buttons">Ok, jeg er ferdig her</button>
         </div>
 
         <div id="sidebar-edit-point">
@@ -314,8 +412,7 @@
               </fieldset>
             </form>
 
-            <button id="save-point-button" class="btn btn-large btn-primary edit-buttons">Lagre</button>
-            <button id="cancel-point-button" class="btn btn-large btn-default edit-buttons">Avbryt</button>
+            <button id="cancel-point-button" class="btn btn-large btn-default edit-buttons">Ok, jeg er ferdig her</button>
         </div>
 
     </div>
@@ -325,7 +422,12 @@
     <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
     <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
     <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/saveLine.js') }}"></script>
     <script>
+
+        $(function(){
+            $('#line-color').colorpicker();
+        });
 
         /*
         **  Global variables
@@ -409,6 +511,9 @@
                         // Create new line object
                         var line = new delturLine();
 
+                        // Get line metadata
+                        fillInLineMetadata(line);
+
                         // Init line
                         var description = "";
                         var title =  "";
@@ -480,10 +585,11 @@
             // Get current line
             var line = lines[currentPlaceInArray];
 
-            // Set metadata
-            $('#line-title').val(line.getTitle());
-            $('#line-description').val(line.getDescription());
+            // Get line metadata
+            fillInLineMetadata(line);
+
             $('#current-line').val(currentPlaceInArray);
+
 
             // Open editing sidebar
             showLineEditSidebar();
@@ -554,6 +660,35 @@
                     map.addLayer(satellite);
                     break;
             }
+        }
+
+        function fillInLineMetadata(line) {
+            // Set metadata
+            $('#line-title').val(line.getTitle());
+            $('#line-description').val(line.getDescription());
+            $('#line-color').val(line.getColor());
+            $('#line-width').val(line.getWidth());
+            $('#line-label-text').val(line.getLabelText());
+            if(line.getPopup()) {
+                $('#line-check-popup').prop("checked", true);
+            }
+            else {
+                $('#line-check-popup').prop("checked", false);
+            }
+            if(line.getStartIcon()) {
+                $('#line-check-start').prop("checked", true);
+            }
+            else {
+                $('#line-check-start').prop("checked", false);
+            }
+            if(line.getEndIcon()) {
+                $('#line-check-end').prop("checked", true);
+            }
+            else {
+                $('#line-check-end').prop("checked", false);
+            }
+            var opacity = Math.round(line.getOpacity()*10)/10;
+            $('#line-opacity').val(opacity);
         }
 
 
@@ -634,25 +769,7 @@
             map.closePopup();
         });
 
-        $('#save-line-button').click(function () {
-            var line = lines[$('#current-line').val()];
-
-            // Save metadata
-            line.setTitle($('#line-title').val());
-            line.setDescription($('#line-description').val());
-            line.saveStyle();
-
-            // Delete all old text
-            $('#current-line').val(""); // Delete current line
-            $('#line-title').val();
-            $('#line-description').val();
-
-            // Update map
-            line.updateRendering(map);
-
-            showMainSidebar();
-            
-        });
+        
         $('#cancel-line-button').click(function () {
             showMainSidebar();
             $('#current-line').val(""); // Delete current line
@@ -732,6 +849,9 @@
 
                 // Create new line object
                 var line = new delturLine();
+
+                // Get line metadata
+                fillInLineMetadata(line);
 
                 // Convert line to geojson
                 var coordinates = new Array();
