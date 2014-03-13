@@ -7,26 +7,27 @@ var delturPoint = function () {
     var lat, lon;
     var custom_popup_footer = "";
     var imgMarker;
+    var editable = false;
 
     var style =  {
-                    "popup": {
-                        "show": true,
-                        "description": "",
-                        "title": "",
-                        "image": {
-                            "url": "",
-                            "width": -1//,
-                            /*"height": -1*/
-                        },
-                    },
-                    "label": {
-                        "text": "",
-                        "static": false
-                    },
-                    "markersymbol": "map-marker",
-                    "markerType": "fa",
-                    "markercolor": "blue"
-                };
+            "popup": {
+                "show": true,
+                "description": "",
+                "title": "",
+                "image": {
+                    "url": "",
+                    "width": -1//,
+                    /*"height": -1*/
+                },
+            },
+            "label": {
+                "text": "",
+                "static": false
+            },
+            "markersymbol": "map-marker",
+            "markerType": "fa",
+            "markercolor": "blue"
+        };
 
     var picture = L.AwesomeMarkers.icon({
       prefix: 'fa',

@@ -31,6 +31,7 @@
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-colorpicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/filepicker.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
 
     <script>
    
@@ -225,11 +226,67 @@
             display: none;
         }
 
+        @media screen and (max-width: 1199px){
+            #logo {
+              margin-left: 25%;
+              margin-right: auto;
+              margin-bottom: 10px;
+              display: block;
+            }
+            .section-share-button {
+                width: 44%;
+            }
+            .share-button {
+                margin-left: 4%;
+            }
+        }
+        @media screen and (max-width: 991px){
+            #logo {
+              margin-left: 25%;
+              margin-right: auto;
+              margin-bottom: 10px;
+              display: block;
+            }
+            .section-share-button {
+                width: 43%;
+            }
+            .share-button {
+                margin-left: 2%;
+                width: 235px;
+            }
+        }
+        @media screen and (max-width: 767px){
+            .section-share-button {
+                width: 43%;
+            }
+            .share-button {
+                margin-left: 2%;
+                width: 235px;
+            }
+        }
 
         
     </style>
 </head>
 <body>
+    <div id="embedModal"  class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close closeEmbedModal" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h3>Vis turen på eget nettsted</h3>
+                </div>
+                <div id="embedBody" class="modal-body">
+                  
+                </div>
+                <div class="modal-footer">
+                  <a href="javascript:void(0)" class="btn closeEmbedModal" data-dismiss="modal" >Lukk</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div id="sidebar">
         <div id="sidebar-main">
             <div id="logo"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></div>
@@ -242,13 +299,13 @@
             <!--div style="text-align: center; font-size:12px;"><a href="/">Tilbake til enkel deling</a></div-->
 
             <div id="section-search">
-                <div id="section-share-header">Søk etter område:</div>
+                <div id="section-share-header">1. Søk etter område</div>
                 <hr id="section-share-hr">
                 <input type="text" id="search-field" class="form-control">
             </div>
 
             <div id="section-share-point">
-                <div id="section-share-header">Del markør:</div>
+                <div id="section-share-header">2. Del markør</div>
                 <hr id="section-share-hr">
                 <button id="draw-point-button" class="btn btn-large btn-default section-share-button">Tegne</button>
                 <span class="btn btn-default btn-file section-share-button">
@@ -257,7 +314,7 @@
             </div>
 
             <div id="section-share-line">
-                <div id="section-share-header">Del spor:</div>
+                <div id="section-share-header">3. Del spor</div>
                 <hr id="section-share-hr">
                 <button id="draw-line-button" class="btn btn-large btn-default section-share-button">Tegne</button>
                 <span class="btn btn-default btn-file section-share-button">
@@ -265,7 +322,7 @@
                 </span>
             </div>
             <div id="section-maptype">
-                <div id="section-share-header">Velg bakgrunnskart:</div>
+                <div id="section-share-header">4. Velg bakgrunnskart</div>
                 <hr id="section-share-hr">
                 <select autocomplete="off" id="dropdown">
                     <option value="topokart" selected="selected">Enkelt kart fra Turkompisen </option>
@@ -284,7 +341,7 @@
             <div id="section-share-buttons">
                 <button autocomplete="off" id="deltur-button" class="btn btn-large btn-primary btn-block share-button" disabled>Del turen</button>
                 <div id="share-button-text">eller</div>
-                <button autocomplete="off" id="embed-button" type="button" class="btn btn-primary btn-block share-button" disabled>Embed turen</button>
+                <button autocomplete="off" id="embed-button" type="button" class="btn btn-primary btn-block share-button" disabled>Vis turen på eget nettsted</button>
             </div>
         </div>
         <div id="sidebar-edit-line">
@@ -810,6 +867,29 @@
             $('#line-opacity').val(opacity);
         }
 
+        /*
+        * Send user to the complete trip
+        */
+        function sendToTrip(ids) {
+            maptype = getActiveMaptype();
+            window.open(
+              "/"+ids+"/" + maptype,
+              '_blank' // <- This is what makes it open in a new window.
+            );
+            //document.location.href = "/"+ids+"/" + maptype;
+        }
+
+        /*
+        * Return the currently set map type
+        */    
+        function getActiveMaptype() {
+            var maptype = "topokart"; // Default maptype
+
+           
+
+            return maptype;
+        }
+
        
 
 
@@ -931,6 +1011,59 @@
             polyline = new L.Draw.Polyline(map, drawControl.options.polyline);
             polyline.enable();
 
+        });
+
+        $('#deltur-button').click(function () { 
+            // Create ids string
+            var ids = "";
+            $.each(lines, function(index, value) {
+                var currentId = value.getId();
+                if(ids=="")
+                    ids = currentId;
+                else
+                    ids = ids + "+" + currentId;
+            });
+
+            $.each(points, function(index, value) {
+                var currentId = value.getId();
+                if(ids=="")
+                    ids = currentId;
+                else
+                    ids = ids + "+" + currentId;
+            });
+
+            sendToTrip(ids) 
+
+        });
+
+        $('#embed-button').click(function () { 
+            var ids = "";
+            $.each(lines, function(index, value) {
+                var currentId = value.getId();
+                if(ids=="")
+                    ids = currentId;
+                else
+                    ids = ids + "+" + currentId;
+            });
+
+            $.each(points, function(index, value) {
+                var currentId = value.getId();
+                if(ids=="")
+                    ids = currentId;
+                else
+                    ids = ids + "+" + currentId;
+            });
+
+            $('#embedBody').html('<p>Kopier følgende kode for å legge til denne turen på din nettside:</p><pre>&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed">&lt;/iframe&gt;</pre>');
+
+            // Open modal
+            $('#embedModal').modal("show");
+            sidebar.hide();
+
+        });
+
+        $('.closeEmbedModal').click(function() {
+            sidebar.show();
         });
 
 
