@@ -30,10 +30,11 @@
     <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-colorpicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/filepicker.js') }}"></script>
 
     <script>
    
-       //filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
+       filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
        
        var auth_token = "{{config['TOKEN']}}";
        var delGPXURL;
@@ -112,7 +113,7 @@
             font-size: 15px;
         }
         #share-button-text {
-            margin-left: 52%;
+            margin-left: 47%;
             font-size: 13px;
             margin-top: 10px;
             margin-bottom: 10px;
@@ -168,6 +169,7 @@
         #dropdown {
             margin-left: 2.5%;
             margin-top: 5px;
+            width: 95%;
         }
         
         /* Style upload button */
@@ -202,6 +204,10 @@
             display: visible;
         }
 
+        #point-marker-number-div {
+            display: none;
+        }
+
 
         /*
         ** Sidebar edit
@@ -218,6 +224,7 @@
         #current-line {
             display: none;
         }
+
 
         
     </style>
@@ -260,7 +267,7 @@
             <div id="section-maptype">
                 <div id="section-share-header">Velg bakgrunnskart:</div>
                 <hr id="section-share-hr">
-                <select autocomplete="off" id="dropdown" style="width: 300px">
+                <select autocomplete="off" id="dropdown">
                     <option value="topokart" selected="selected">Enkelt kart fra Turkompisen </option>
                     <option value="turkart">Turkart fra Turkompisen</option>
                     <option value="skikart">Skikart fra Turkompisen</option>
@@ -271,14 +278,13 @@
             </div>
 
 
-            <br><br><br><br>
+            <br><br>
 
-            
 
             <div id="section-share-buttons">
-                <button id="deltur-button" class="btn btn-large btn-primary btn-block share-button" disabled>Del turen</button>
+                <button autocomplete="off" id="deltur-button" class="btn btn-large btn-primary btn-block share-button" disabled>Del turen</button>
                 <div id="share-button-text">eller</div>
-                <button id="embed-button" type="button" class="btn btn-primary btn-block share-button" disabled>Embed turen</button>
+                <button autocomplete="off" id="embed-button" type="button" class="btn btn-primary btn-block share-button" disabled>Embed turen</button>
             </div>
         </div>
         <div id="sidebar-edit-line">
@@ -310,7 +316,7 @@
 
                   <label for="line-color" class="col-lg-3 control-label">Farge</label>
                   <div class="col-lg-9">
-                    <input type="text" id="line-color" class="form-control" value="#5367ce" />
+                    <input type="text" id="line-color" class="form-control" value="#ff7800" />
                   </div>
 
                 </div>
@@ -397,18 +403,83 @@
               <fieldset>
                 <legend>Legg til detaljer om markøren</legend>
                 <div class="form-group">
-                  <label for="inputEmail" class="col-lg-2 control-label">Tittel</label>
-                  <div class="col-lg-10">
+                  <label for="point-title" class="col-lg-3 control-label">Tittel</label>
+                  <div class="col-lg-9">
                     <input type="text" id="point-title" class="form-control">
                   </div>
                 </div>
+
                 <div class="form-group">
-                  <label for="textArea" class="col-lg-2 control-label">Beskrivelse</label>
-                  <div class="col-lg-10">
-                    <textarea id="point-description" class="form-control" rows="3" id="textArea"></textarea>
+                  <label for="point-description" class="col-lg-3 control-label">Beskrivelse</label>
+                  <div class="col-lg-9">
+                    <textarea id="point-description" class="form-control" rows="3"></textarea>
                     <span class="help-block">Tittel og beskrivelse vises standard i en popup på markøren. Det vil også hjelpe deg å finne fram til riktig markør seinere. </span>
                   </div>
+
+                  <label for="point-description" class="col-lg-3 control-label">Bilde</label>
+                  <div class="col-lg-9">
+                    <button id="point-image-button" type=button class="btn btn-large btn-default">Legg til bilde</button>
+                  </div>
+
+
+                    <label for="point-check-popup" class="col-lg-3 control-label">Vise popup</label>
+                  <div class="col-lg-9">
+                    <div class="checkbox">
+                      <label>
+                        <input id="point-check-popup" type="checkbox" checked>
+                      </label>
+                    </div>
+                  </div>
                 </div>
+
+                <div class="form-group">
+                  <label for="point-color" class="col-lg-3 control-label">Markør farge</label>
+                  <div class="col-lg-9">
+                    <input type="text" id="point-color" class="form-control" value="#ff7800" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="point-marker-type" class="col-lg-3 control-label">Markør type</label>
+                  <div class="col-lg-9">
+                    <select class="form-control" id="point-marker-type">
+                      <option selected="selected">Fontawesome</option>
+                      <option>Nummer</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div id="point-marker-text-div" class="form-group">
+                  <label for="point-marker-text" class="col-lg-3 control-label">Markør tekst</label>
+                  <div class="col-lg-9">
+                    <input type="text" id="point-marker-text" value="map-marker" class="form-control">
+                  </div>
+                </div>
+
+                <div id="point-marker-number-div" class="form-group">
+                  <label for="point-marker-number" class="col-lg-3 control-label">Markør nummer</label>
+                  <div class="col-lg-9">
+                    <input type="text" id="point-marker-number" value="0" class="form-control">
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="point-label-text" class="col-lg-3 control-label">Label tekst</label>
+                  <div class="col-lg-9">
+                    <input type="text" id="point-label-text" class="form-control">
+                  </div>
+
+                  <label for="point-label-static" class="col-lg-3 control-label">Statisk label</label>
+                  <div class="col-lg-9">
+                    <div class="checkbox">
+                      <label>
+                        <input id="point-label-static" type="checkbox">
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
               </fieldset>
             </form>
 
@@ -423,6 +494,7 @@
     <script src="{{ url_for('static', filename='js/delturPoint.js') }}"></script>
     <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
     <script src="{{ url_for('static', filename='js/saveLine.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/savePoint.js') }}"></script>
     <script>
 
         $(function(){
@@ -436,8 +508,8 @@
         var points = new Array();
 
         // Add layer for temporary markers
-        var drawnItems = new L.FeatureGroup();
-        map.addLayer(drawnItems);
+        //var drawnItems = new L.FeatureGroup();
+        //map.addLayer(drawnItems);
         drawControl = new L.Control.Draw({
             draw: {
                 position: 'topleft',
@@ -448,7 +520,7 @@
                 rectangle: false
             },
             edit: {
-                featureGroup: drawnItems,
+                //featureGroup: drawnItems,
                 edit: false,
                 remove: false
             }
@@ -494,8 +566,6 @@
         **  Handle upload of lines
         */
         window.onload = function() {
-            var fileInput = document.getElementById('fileInputLine');
-
             fileInputLine.addEventListener('change', function(e) {
                 var file = fileInputLine.files[0];
 
@@ -505,6 +575,9 @@
                     reader.onload = function(e) {
                         var gpxdom = (new DOMParser()).parseFromString(reader.result, 'text/xml');
                         var geojson = toGeoJSON.gpx(gpxdom);
+
+                        // Hide sidebar
+                        sidebar.hide();
 
                         showLineEditSidebar();
 
@@ -531,8 +604,10 @@
                         var lineInterval = setInterval(function(){
                             if(line.getStatus() === 1) {
                                 line.renderToMap(map);
-                                map.fitBounds(line.getBounds());
+                                map.fitBounds(line.getBounds().pad(0.1));
 
+                                // Show sidebar
+                                sidebar.show();
 
                                 $('#current-line').val(currentPlaceInArray);
 
@@ -575,6 +650,7 @@
         }
 
         function showMainSidebar() {
+            $('#point-image-button').html("Legg til bilde");
             $('#sidebar-main').show();
             $('#sidebar-edit-line').hide();
             $('#sidebar-edit-point').hide();
@@ -601,8 +677,8 @@
             var point = points[currentPlaceInArray];
 
             // Set metadata
-            $('#point-title').val(point.getTitle());
-            $('#point-description').val(point.getDescription());
+            fillInPointMetadata(point);
+
             $('#current-point').val(currentPlaceInArray);
 
             // Open editing sidebar 
@@ -662,6 +738,49 @@
             }
         }
 
+        function fillInPointMetadata(point) {
+
+            $('#point-title').val(point.getTitle());
+            $('#point-description').val(point.getDescription());
+
+            if(point.getImgUrl() !=  "") {
+                $('#point-image-button').html("Endre bilde");
+            }
+            else {
+                $('#point-image-button').html("Legg til bilde");
+            }
+
+            if(point.getPopup()) {
+                $('#point-check-popup').prop("checked", true);
+            }
+            else {
+                $('#point-check-popup').prop("checked", false);
+            }
+
+            if(point.getMarkerType() == "fa") {
+                $('#point-marker-type').val("Fontawesome");
+                $('#point-marker-text').val(point.getMarkerSymbol());
+                $('#point-marker-text-div').show();
+                $('#point-marker-number-div').hide();
+            }
+            else {
+                $('#point-marker-type').val("Nummer");
+                $('#point-marker-number').val(point.getMarkerSymbol());
+                $('#point-marker-text-div').hide();
+                $('#point-marker-number-div').show();
+            }
+            
+            $('#point-label-text').val(point.getLabelText());
+            if(point.getLabelStatic()) {
+                $('#point-label-static').prop("checked", true);
+            } 
+            else {
+                $('#point-label-static').prop("checked", false);
+            }
+
+
+        }
+
         function fillInLineMetadata(line) {
             // Set metadata
             $('#line-title').val(line.getTitle());
@@ -691,8 +810,7 @@
             $('#line-opacity').val(opacity);
         }
 
-
-
+       
 
 
 
@@ -782,6 +900,9 @@
         var marker;
         $('#draw-point-button').click(function() {
 
+            // Hide sidebar
+            sidebar.hide()
+
             var emptyIcon = L.AwesomeMarkers.icon({
                   prefix: 'fa',
                   icon: 'map-marker', 
@@ -804,6 +925,9 @@
         var polyline;
         $('#draw-line-button').click(function() {
 
+            // Hide sidebar
+            sidebar.hide()
+
             polyline = new L.Draw.Polyline(map, drawControl.options.polyline);
             polyline.enable();
 
@@ -817,22 +941,12 @@
         */
 
         map.on('draw:created', function (e) {
-            var type = e.layerType,
-                layer = e.layer;
-
-            if (type === 'marker') {
-                // Do marker specific actions
-            }
-
-            // Do whatever else you need to. (save to db, add to map etc)
-            map.addLayer(layer);
-        });
-
-        map.on('draw:created', function (e) {
             doneWithPopup = false;
             var type = e.layerType;
             var newlayer = e.layer;
             //debugger;
+
+
             if (type === 'polyline') {
 
 
@@ -885,7 +999,11 @@
                 var lineInterval = setInterval(function(){
                     if(line.getStatus() === 1) {
                         line.renderToMap(map);
-                        map.fitBounds(line.getBounds());
+                        map.fitBounds(line.getBounds().pad(0.1));
+
+                        // Show sidebar
+                        sidebar.show()
+
 
                         $('#deltur-button').attr('disabled', false); // Enable button
                         $('#embed-button').attr('disabled', false); // Enable button
@@ -931,6 +1049,10 @@
                         point.renderToMap(map);
 
                         $('#current-line').val(currentPlaceInArray);
+
+                        // Show sidebar
+                        sidebar.show()
+
 
                         $('#deltur-button').attr('disabled', false); // Enable button
                         $('#embed-button').attr('disabled', false); // Enable button

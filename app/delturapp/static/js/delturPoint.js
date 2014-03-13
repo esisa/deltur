@@ -98,6 +98,20 @@ var delturPoint = function () {
         return lon;
     };
 
+    this.getColor = function () {  //public
+         return style.color;
+    };
+    this.setColor = function (_color) {  //public
+        style.color = _color;
+    };
+
+    this.getPopup = function () {  //public
+         return style.popup.show;
+    };
+    this.setPopup = function (_show) {  //public
+        style.popup.show = _show;
+    };
+
     this.getTitle = function () {  //public
         return style.popup.title;
     };
@@ -106,10 +120,10 @@ var delturPoint = function () {
     };
 
     this.getImgUrl = function () {  //public
-        return style.image.url;
+        return style.popup.image.url;
     };
     this.setImgUrl = function (_imgUrl) {  //public
-        style.image.url = _imgUrl;
+        style.popup.image.url = _imgUrl;
     };
 
     this.getDescription = function () {  //public
@@ -119,12 +133,34 @@ var delturPoint = function () {
         style.popup.description = _description;
     };
 
+    this.setMarkerSymbol = function (_markerSymbol) {  //public
+        style.markersymbol = _markerSymbol;
+    };
+
     this.getMarkerSymbol = function () {  //public
         return style.markersymbol;
     };
 
+    this.setMarkerType = function (_markerType) {  //public
+        style.markerType = _markerType;
+    };
+
     this.getMarkerType = function () {  //public
         return style.markerType;
+    };
+
+    this.getLabelText = function () {  //public
+         return style.label.text;
+    };
+    this.setLabelText = function (_text) {  //public
+        style.label.text = _text;
+    };
+
+    this.getLabelStatic = function () {  //public
+         return style.label.static;
+    };
+    this.setLabelStatic = function (_static) {  //public
+        style.label.static = _static;
     };
 
     this.setStyle = function (_style) {  //public
@@ -155,7 +191,7 @@ var delturPoint = function () {
     };
 
     this.updateRendering = function (_map) {  //public
-    	//_map.removeLayer(point);
+    	_map.removeLayer(imgMarker);
 
     	addToMap(_map);
     }
