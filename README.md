@@ -16,6 +16,7 @@ deltur.no
 - apt-get install python-bcrypt
 - pip install flask-security
 - pip install flask-sqlalchemy
+- pip install xmltodict
 - a2enmod proxy
 - a2enmod proxy_http
 
