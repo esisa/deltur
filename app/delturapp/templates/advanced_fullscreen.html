@@ -1140,7 +1140,7 @@
                     ids = ids + "+" + currentId;
             });
 
-            $('#embedBody').html('<p>Kopier følgende kode for å legge til denne turen på din nettside:</p><pre>&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed">&lt;/iframe&gt;</pre>');
+            $('#embedBody').html('<p>Kopier følgende kode for å legge til denne turen på din nettside:</p><pre>&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/'+$("#dropdown").find('option:selected').val()+'/embed">&lt;/iframe&gt;</pre>');
 
             // Open modal
             $('#embedModal').modal("show");
