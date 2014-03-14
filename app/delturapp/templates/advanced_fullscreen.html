@@ -395,9 +395,9 @@
                 <div id="section-share-header">2. Del markør</div>
                 <hr id="section-share-hr">
                 <button id="draw-point-button" class="btn btn-large btn-default section-share-button">Tegne markør</button>
-                <span class="btn btn-default btn-file section-share-button">
+                <!--span class="btn btn-default btn-file section-share-button">
                     Markør fra fil <input type="file" id="fileInputPoint">
-                </span>
+                </span-->
             </div>
 
             <div id="section-share-line">
@@ -968,23 +968,12 @@
         * Send user to the complete trip
         */
         function sendToTrip(ids) {
-            maptype = getActiveMaptype();
+            maptype = $("#dropdown").find('option:selected').val(); 
             window.open(
               "/"+ids+"/" + maptype,
               '_blank' // <- This is what makes it open in a new window.
             );
             //document.location.href = "/"+ids+"/" + maptype;
-        }
-
-        /*
-        * Return the currently set map type
-        */    
-        function getActiveMaptype() {
-            var maptype = "topokart"; // Default maptype
-
-           
-
-            return maptype;
         }
 
        
