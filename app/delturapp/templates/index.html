@@ -77,6 +77,10 @@
       
       #enkelTur {
           margin: auto;
+          text-align:center;       
+      }
+      #avansertTur {
+          margin: auto;
         text-align:center;       
       }
       
@@ -295,8 +299,13 @@
             </span>
         </div>
 
-        <p style="text-align: center; font-size:12px;"><br><a href="advanced">Eller bruk avansert opplasting</a><p>
+        <p style="text-align: center; font-size:12px;"><br>eller<p>
         
+        <div id="avansertTur">
+          <a href="advanced">
+            <button autocomplete="off" onClick="document.location.href='/advanced'" id="advanced-button" class="btn btn-large btn-primary">Bruk avansert deling</button>
+          </a>
+        </div>
         <!--div class="tabbable"> 
           <ul class="nav nav-tabs">
               <li class="active"><a href="#tab1" data-toggle="tab">Enkel deling</a></li>
