@@ -11,7 +11,7 @@ $('.typeahead').typeahead({
   templates: {
     empty: [
       '<div class="empty-message">',
-      'Ingen tilgjengelige svar på dette stedsnavnet',
+      'Ingen tilgjengelige stedsnavn på dette søket',
       '</div>'
     ].join('\n'),
     suggestion: Handlebars.compile('<p><strong>{{stedsnavn}}</strong>, {{kommunenavn}}, {{fylkesnavn}} - {{navnetype}}</p>')
@@ -26,5 +26,5 @@ $('.typeahead').typeahead({
 $('#search-field').bind('typeahead:selected', function(obj, datum, name) {      
         map.panTo([datum.nord,datum.aust]);
         map.setZoom(15);
-        map.panBy([-300, 0]);
+        map.panBy([-$('#sidebar').width()/2, 0]);
 });

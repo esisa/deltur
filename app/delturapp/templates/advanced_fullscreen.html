@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-colorpicker.min.css') }}">
+    <link href="//raw.github.com/jharding/typeahead.js-bootstrap.css/master/typeahead.js-bootstrap.css" rel="stylesheet" media="screen">
 
     <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
@@ -32,6 +33,8 @@
     <script src="{{ url_for('static', filename='js/bootstrap-colorpicker.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/filepicker.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-modal.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/typeahead.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/handlebars-v1.3.0.js') }}"></script>
 
     <script>
    
@@ -172,6 +175,16 @@
             margin-top: 5px;
             width: 95%;
         }
+
+        #point-delete {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        #line-delete {
+            text-align: center;
+            font-size: 12px;
+        }
         
         /* Style upload button */
         .btn-file {
@@ -265,6 +278,59 @@
             }
         }
 
+
+
+
+
+.tt-dropdown-menu {
+  width: 422px;
+  margin-top: 12px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.gist {
+  font-size: 14px;
+}
+
+.twitter-typeahead {
+     width: 100%;
+}
+.tt-dropdown-menu {
+     width: 100%;
+}
+.tt-hint {
+     width: 100%;
+}
+
+.empty-message {
+    padding: 5px 10px;
+    text-align: center;
+}
         
     </style>
 </head>
@@ -301,7 +367,10 @@
             <div id="section-search">
                 <div id="section-share-header">1. Søk etter område</div>
                 <hr id="section-share-hr">
-                <input type="text" id="search-field" class="form-control">
+                <!--input type="text" id="search-field" class="form-control"-->
+                
+                <input id="search-field" class="typeahead form-control"  type="text" placeholder="Søk stedsnavn">
+                
             </div>
 
             <div id="section-share-point">
@@ -450,6 +519,9 @@
             </form>
 
             <button id="cancel-line-button" class="btn btn-large btn-default edit-buttons">Ok, jeg er ferdig her</button>
+            <div id="line-delete">
+                <a href="javascript:void(0)">Slett linjen</a>
+            </div>
         </div>
 
         <div id="sidebar-edit-point">
@@ -541,6 +613,10 @@
             </form>
 
             <button id="cancel-point-button" class="btn btn-large btn-default edit-buttons">Ok, jeg er ferdig her</button>
+            <div id="point-delete">
+                <a href="javascript:void(0)">Slett markøren</a>
+            </div>
+
         </div>
 
     </div>
@@ -552,6 +628,8 @@
     <script src="{{ url_for('static', filename='js/delturMap.js') }}"></script>
     <script src="{{ url_for('static', filename='js/saveLine.js') }}"></script>
     <script src="{{ url_for('static', filename='js/savePoint.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ssrTypeAheadSearch.js') }}"></script>
+
     <script>
 
         $(function(){
