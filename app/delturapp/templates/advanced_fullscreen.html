@@ -382,7 +382,15 @@
                   <h3>Vis turen på eget nettsted</h3>
                 </div>
                 <div id="embedBody" class="modal-body">
-                  
+                    <p>Velg visningstype:</p>
+                    <select autocomplete="off" id="embedType">
+                        <option value="standard" selected="selected">Standard</option>
+                        <option value="elevationprofile">Høydeprofil</option>
+                        <option value="imagemap">Bildekart</option>
+                    </select>
+                    <br><br>
+                    <p>Kopier følgende kode for å legge til denne turen på din nettside:</p>
+                    <pre><div id="embedBodyTextArea"><div></pre>
                 </div>
                 <div class="modal-footer">
                   <a href="javascript:void(0)" class="btn closeEmbedModal" data-dismiss="modal" >Lukk</a>
@@ -1089,6 +1097,31 @@
             //document.location.href = "/"+ids+"/" + maptype;
         }
 
+        /*
+        * Get ids of all points and lines
+        */
+        function getIds() {
+            // Create ids string
+            var ids = "";
+            $.each(lines, function(index, value) {
+                var currentId = value.getId();
+                if(ids=="")
+                    ids = currentId;
+                else
+                    ids = ids + "+" + currentId;
+            });
+
+            $.each(points, function(index, value) {
+                var currentId = value.getId();
+                if(ids=="")
+                    ids = currentId;
+                else
+                    ids = ids + "+" + currentId;
+            });
+
+            return ids;
+        }
+
        
 
 
@@ -1098,6 +1131,21 @@
         /*
         **  Handlers
         */
+
+        $('#embedType').change(function() {
+            var embedType = $(this).find('option:selected').val(); 
+            var ids = getIds();
+            if(embedType=="elevationprofile") {
+                $('#embedBodyTextArea').html('&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'?embedType=elevationProfile">&lt;/iframe&gt;');
+            }
+            else if(embedType == "imagemap") {
+                $('#embedBodyTextArea').html('&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'?embedType=imagemap">&lt;/iframe&gt;');
+            }
+            else {
+                $('#embedBodyTextArea').html('&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'">&lt;/iframe&gt;');
+            }
+            
+        });
 
         // Disable enter on forms
         $('#point-form').bind("keyup keypress", function(e) {
@@ -1213,47 +1261,15 @@
         });
 
         $('#deltur-button').click(function () { 
-            // Create ids string
-            var ids = "";
-            $.each(lines, function(index, value) {
-                var currentId = value.getId();
-                if(ids=="")
-                    ids = currentId;
-                else
-                    ids = ids + "+" + currentId;
-            });
-
-            $.each(points, function(index, value) {
-                var currentId = value.getId();
-                if(ids=="")
-                    ids = currentId;
-                else
-                    ids = ids + "+" + currentId;
-            });
-
+            var ids = getIds();
             sendToTrip(ids) 
-
         });
 
+
         $('#embed-button').click(function () { 
-            var ids = "";
-            $.each(lines, function(index, value) {
-                var currentId = value.getId();
-                if(ids=="")
-                    ids = currentId;
-                else
-                    ids = ids + "+" + currentId;
-            });
+            var ids = getIds();
 
-            $.each(points, function(index, value) {
-                var currentId = value.getId();
-                if(ids=="")
-                    ids = currentId;
-                else
-                    ids = ids + "+" + currentId;
-            });
-
-            $('#embedBody').html('<p>Kopier følgende kode for å legge til denne turen på din nettside:</p><pre>&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'">&lt;/iframe&gt;</pre>');
+            $('#embedBodyTextArea').html('&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'">&lt;/iframe&gt;');
 
             // Open modal
             $('#embedModal').modal("show");
