@@ -1082,11 +1082,7 @@ def createKMLTrip():
 
 @app.route('/advanced/')
 def advanced():
-    return render_template('advanced.html')    
-
-@app.route('/advanced_fullscreen/')
-def advanced_fullscreen():
-    return render_template('advanced_fullscreen.html')
+    return render_template('advanced_fullscreen.html')    
 
     
 @app.route('/elev/elevationprofile.json', methods = ['POST'])

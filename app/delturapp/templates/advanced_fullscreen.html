@@ -28,6 +28,7 @@
     <link href="//raw.github.com/jharding/typeahead.js-bootstrap.css/master/typeahead.js-bootstrap.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-dialog.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/spectrum.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
 
     <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
@@ -353,10 +354,26 @@
             padding: 5px 10px;
             text-align: center;
         }
+
+
+        /*
+        * Overwrite menu settings
+        */
+        .menu a {
+            color:#256ca8 !important;
+        }
+
+        .menu a:hover{
+            text-decoration:underline
+        }   
         
     </style>
 </head>
 <body>
+
+    
+
+
     <div id="embedModal"  class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -376,6 +393,23 @@
 
 
     <div id="sidebar">
+        <div class="menu">
+        <ul>
+            {% if current_user.is_authenticated() %}
+            
+            <li><a href="{{ url_for('security.logout') }}?next=%2Fadvanced">Logg ut</a></li>
+            <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
+          {% else %}
+          <li><a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
+            </li>
+           <li><a href="{{ url_for('security.login') }}?next=%2Fadvanced"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
+            </li>
+            <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
+          {% endif %}
+            
+        </ul>
+    </div>
+
         <div id="sidebar-main">
             <div id="logo"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></div>
             <h1 id="header">deltur.no</h1>
