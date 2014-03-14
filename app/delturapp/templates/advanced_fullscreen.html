@@ -42,7 +42,7 @@
     <script src="{{ url_for('static', filename='js/spectrum.js') }}"></script>
 
     <script>
-   
+
        filepicker.setKey('AK2S92lIJQxSOTwf0nI6Uz');
        
        var auth_token = "{{config['TOKEN']}}";
@@ -227,6 +227,9 @@
             display: none;
         }
 
+        #point-marker-link {
+            font-size: 12px;
+        }
 
         /*
         ** Sidebar edit
@@ -646,6 +649,7 @@
                   <label for="point-marker-text" class="col-lg-3 control-label">Markør tekst</label>
                   <div class="col-lg-9">
                     <input type="text" id="point-marker-text" value="map-marker" class="form-control">
+                    <a id="point-marker-link" href="http://fontawesome.io/icons/" target="_blank">Se mulige varianter du kan bruke</a>
                   </div>
                 </div>
 
@@ -713,6 +717,7 @@
                     [ "rgb(251, 251, 251)", "rgb(163, 163, 163)", "rgb(87, 87, 87)", "rgb(48, 48, 48)"]
                 ]
             });
+
         });
 
         /*
