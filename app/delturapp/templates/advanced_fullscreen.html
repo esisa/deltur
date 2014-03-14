@@ -929,6 +929,67 @@
                 $('#point-check-popup').prop("checked", false);
             }
 
+
+            switch(point.getColor()) { 
+                case "lightred":
+                    $("#point-color").spectrum("set", "rgb(233, 126, 121)");
+                    break;
+                case "red":
+                    $("#point-color").spectrum("set", "rgb(212, 63, 49)");
+                    break;
+                case "darkred":
+                    $("#point-color").spectrum("set", "rgb(160, 52, 57)");
+                    break;
+                case "lightblue":
+                    $("#point-color").spectrum("set", "rgb(141, 218, 253)");
+                    break;
+                case "blue":
+                    $("#point-color").spectrum("set", "rgb(63, 171, 219)");
+                    break;
+                case "darkblue":
+                    $("#point-color").spectrum("set", "rgb(13, 104, 161)");
+                    break;
+                case "lightgreen":
+                    $("#point-color").spectrum("set", "rgb(188, 247, 120)");
+                    break;
+                case "green":
+                    $("#point-color").spectrum("set", "rgb(116, 174, 50)");
+                    break;
+                case "darkgreen":
+                    $("#point-color").spectrum("set", "rgb(114, 129, 44)");
+                    break;
+                case "pink":
+                    $("#point-color").spectrum("set", "rgb(253, 148, 232)");
+                    break;
+                case "purple":
+                    $("#point-color").spectrum("set", "rgb(208, 86, 183)");
+                    break;
+                case "darkpurple":
+                    $("#point-color").spectrum("set", "rgb(90, 58, 106)");
+                    break;
+                case "cadetblue":
+                    $("#point-color").spectrum("set", "rgb(68, 105, 119)");
+                    break
+                case "beige":
+                    $("#point-color").spectrum("set", "rgb(254, 202, 150)");
+                    break;
+                case "orange":
+                    $("#point-color").spectrum("set", "rgb(244, 150, 61)");
+                    break;
+                case "white":
+                    $("#point-color").spectrum("set", "rgb(251, 251, 251)");
+                    break;
+                case "lightgray":
+                    $("#point-color").spectrum("set", "rgb(163, 163, 163)");
+                    break;
+                case "gray":
+                    $("#point-color").spectrum("set", "rgb(87, 87, 87)");
+                    break;
+                case "black":
+                    $("#point-color").spectrum("set", "rgb(48, 48, 48)");
+                    break;
+            }
+
             if(point.getMarkerType() == "fa") {
                 $('#point-marker-type').val("Fontawesome");
                 $('#point-marker-text').val(point.getMarkerSymbol());
@@ -1262,6 +1323,9 @@
 
                  // Create new line object
                 var point = new delturPoint();
+
+                // Get point metadata
+                fillInPointMetadata(point);
 
                 // Init point
                 var url = "";
