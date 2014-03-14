@@ -100,10 +100,10 @@ var delturPoint = function () {
     };
 
     this.getColor = function () {  //public
-         return style.color;
+         return style.markercolor;
     };
     this.setColor = function (_color) {  //public
-        style.color = _color;
+        style.markercolor = _color;
     };
 
     this.getPopup = function () {  //public
@@ -228,7 +228,8 @@ var delturPoint = function () {
         if(style.markerType == "number") {
             var icon = L.AwesomeMarkers.icon({
                 text: style.markersymbol,
-                color: style.markercolor
+                color: style.markercolor,
+                markerColor: style.markercolor
             });
     
         }

@@ -54,7 +54,6 @@
                 div.style.backgroundPosition =
                     (-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
             }
-
             this._setIconStyles(div, 'icon-' + options.markerColor);
             return div;
         },

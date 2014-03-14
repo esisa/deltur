@@ -3,6 +3,75 @@ function setPointMarkerSymbol(point, value) {
     point.saveStyle();
     point.updateRendering(map);
 }
+
+function savePointColor(color) {
+    var point = points[$('#current-point').val()];
+    var textColor;
+    switch(color.toHex()) {
+        case "e97e79":
+            textColor = "lightred";
+            break;
+        case "d43f31":
+            textColor = "red";
+            break;
+        case "a03439":
+            textColor = "darkred";
+            break;
+        case "8ddafd":
+            textColor = "lightblue";
+            break;
+        case "3fabdb":
+            textColor = "blue";
+            break;
+        case "0d68a1":
+            textColor = "darkblue";
+            break;
+        case "bcf778":
+            textColor = "lightgreen";
+            break;
+        case "74ae32":
+            textColor = "green";
+            break;
+        case "72812c":
+            textColor = "darkgreen";
+            break;
+        case "fd94e8":
+            textColor = "pink";
+            break;
+        case "d056b7":
+            textColor = "purple";
+            break;
+        case "5a3a6a":
+            textColor = "darkpurple";
+            break;
+        case "446977":
+            textColor = "cadetblue";
+            break;
+        case "feca96":
+            textColor = "beige";
+            break;
+        case "f4963d":
+            textColor = "orange";
+            break;
+        case "fbfbfb":
+            textColor = "white";
+            break;
+        case "a3a3a3":
+            textColor = "lightgray";
+            break;
+        case "575757":
+            textColor = "gray";
+            break;
+        case "303030":
+            textColor = "black";
+            break;
+    }
+    
+
+    point.setColor(textColor);
+    point.saveStyle();
+    point.updateRendering(map);
+}
     
 
 
@@ -36,12 +105,6 @@ $(function(){
         point.updateRendering(map);
     });
 
-    $("#point-color" ).blur(function() {
-        var point = lines[$('#current-point').val()];
-        point.setColor($('#point-color').val());
-        point.saveStyle();
-        point.updateRendering(map);
-    });
 
 
     $('#point-marker-type').change(function() {

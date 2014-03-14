@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-colorpicker.min.css') }}">
     <link href="//raw.github.com/jharding/typeahead.js-bootstrap.css/master/typeahead.js-bootstrap.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-dialog.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spectrum.css') }}">
 
     <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
@@ -37,6 +38,7 @@
     <script src="{{ url_for('static', filename='js/typeahead.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/handlebars-v1.3.0.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-dialog.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/spectrum.js') }}"></script>
 
     <script>
    
@@ -241,7 +243,9 @@
             display: none;
         }
 
-
+        .sp-palette {
+            max-width: 200px;
+        }
 
         /*
         * Dialogs
@@ -582,7 +586,7 @@
                 <div class="form-group">
                   <label for="point-color" class="col-lg-3 control-label">Markør farge</label>
                   <div class="col-lg-9">
-                    <input type="text" id="point-color" class="form-control" value="#ff7800" />
+                    <input type='text' id="point-color"/>
                   </div>
                 </div>
 
@@ -653,6 +657,20 @@
 
         $(function(){
             $('#line-color').colorpicker();
+
+            $("#point-color").spectrum({
+                color: "rgb(63, 171, 219)",    
+                showPaletteOnly: true,
+                change: function(color) {
+                    savePointColor(color);
+                },
+                palette: [
+                    ["rgb(233, 126, 121)", "rgb(212, 63, 49)", "rgb(160, 52, 57)", "rgb(141, 218, 253)", "rgb(63, 171, 219)"],
+                    ["rgb(13, 104, 161)","rgb(188, 247, 120)", "rgb(116, 174, 50)", "rgb(114, 129, 44)", "rgb(253, 148, 232)"], 
+                    [ "rgb(208, 86, 183)",  "rgb(90, 58, 106)", "rgb(68, 105, 119)", "rgb(254, 202, 150)", "rgb(244, 150, 61)"],
+                    [ "rgb(251, 251, 251)", "rgb(163, 163, 163)", "rgb(87, 87, 87)", "rgb(48, 48, 48)"]
+                ]
+            });
         });
 
         /*
