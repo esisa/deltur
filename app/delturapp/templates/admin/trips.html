@@ -73,7 +73,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h3>Slette linje</h3>
+                  <h3>Slette spor</h3>
                 </div>
                 <div id="deleteLineBody" class="modal-body">
 
@@ -290,7 +290,7 @@
 
         	    <ul id="tabMenu" class="nav nav-tabs">
 				    <li><a class="active" href="#kart" data-toggle="tab">Kart</a></li>
-				    <li><a href="#linjer" data-toggle="tab">Linjer</a></li>
+				    <li><a href="#linjer" data-toggle="tab">Spor</a></li>
 				    <li><a href="#punkter" data-toggle="tab">Markører</a></li>
 				</ul>
 
@@ -298,7 +298,7 @@
 
 				<div class="tab-content">
 					<div class="tab-pane active" id="kart">
-						<p>Et kart består av en rekke linjer og markører. Hvis du deler en tur med flere markører/linjer så blir det automatisk laget et kart for disse elementene.</p>
+						<p>Et kart består av en rekke spor og markører. Hvis du deler en tur med flere markører/spor så blir det automatisk laget et kart for disse elementene.</p>
 						<div class="widget">
 						<div class="widget-header">
 							<i class="fa fa-picture-o icon-style"></i>
@@ -327,7 +327,7 @@
 						<div class="widget">
 						<div class="widget-header">
 							<i class="fa fa-minus icon-style"></i>
-							<h3>Linjer</h3>
+							<h3>Spor</h3>
 						</div>
 						<div class="widget-content nopadding">
 							<table id="lines" class="table table-bordered table-striped" >
@@ -825,14 +825,14 @@
 		}
 
 		function opendeleteLineModal(id) {
-			$('#deleteLineBody').html('<p>Ønsker du virkelig å slette denne linjen?</p><button type="button" onClick="deleteFeature('+id+');" class="btn btn-danger">Ja, slett linjen</button>');
+			$('#deleteLineBody').html('<p>Ønsker du virkelig å slette denne sporet?</p><button type="button" onClick="deleteFeature('+id+');" class="btn btn-danger">Ja, slett sporet</button>');
 
 			// Open modal
 			$('#deleteLineModal').modal("show");
 		}
 
 		function opendeleteHashModal(hash) {
-			$('#deleteHashBody').html('<p>Ønsker du virkelig å slette dette kartet? <p>Merk at alle linjer og markører som kartet består av vil ikke bli slettet.</p>  <!--Du kan velge å kun slette det sammensatte kartet. Eller slette både det sammensatte kartet og linjer/markører som dette kartet består av. --></p><button type="button" onClick="deleteHash(&quot;'+hash+'&quot;, false);" class="btn btn-danger">Slett kartet</button>&nbsp;<!--button type="button" onClick="deleteHash(&quot;'+hash+'&quot;, true);" class="btn btn-danger">Slett kartet og linjer/markører</button-->');
+			$('#deleteHashBody').html('<p>Ønsker du virkelig å slette dette kartet? <p>Merk at alle spor og markører som kartet består av vil ikke bli slettet.</p>  <!--Du kan velge å kun slette det sammensatte kartet. Eller slette både det sammensatte kartet og spor/markører som dette kartet består av. --></p><button type="button" onClick="deleteHash(&quot;'+hash+'&quot;, false);" class="btn btn-danger">Slett kartet</button>&nbsp;<!--button type="button" onClick="deleteHash(&quot;'+hash+'&quot;, true);" class="btn btn-danger">Slett kartet og spor/markører</button-->');
 
 			// Open modal
 			$('#deleteHashModal').modal("show");
@@ -909,7 +909,7 @@
 	        	},500);
 	        {% else %} 
 
-            	humane.log("<p>Du må ha et betalt abbonement for å endre på linjen!</p>", { waitForMove: true});
+            	humane.log("<p>Du må ha et betalt abbonement for å endre på sporet!</p>", { waitForMove: true});
 
         	{% endif %}
 
@@ -918,7 +918,7 @@
 	        line.setStyle(JSON.parse($('#line-style').val()));
 	        renderTables(); // In case user changes title/description
 	        reRenderMap();
-	        humane.log("<p>Linjen "+line.getId()+" har blitt lagret!</p>", { timeout: 2000});
+	        humane.log("<p>Sporet "+line.getId()+" har blitt lagret!</p>", { timeout: 2000});
 	    }
 
 	    /*
