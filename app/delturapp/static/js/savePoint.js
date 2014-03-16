@@ -181,7 +181,7 @@ $(function(){
             services:['COMPUTER', 'FACEBOOK', 'DROPBOX', 'GOOGLE_DRIVE',  'FLICKR', 'PICASA', 'INSTAGRAM', 'URL'],
             multiple: false,
             maxFiles: 1,
-            maxSize: 3145728
+            maxSize: 6145728
         },
         {location:"S3", access: 'public'}, 
         function(fpfiles){
