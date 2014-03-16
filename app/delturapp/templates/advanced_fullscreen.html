@@ -266,6 +266,9 @@
         .delete-dialog .modal-dialog {
             width: 300px;
         }
+        .embed-dialog .modal-dialog {
+            width: 640px;
+        }
 
 
 
@@ -399,10 +402,14 @@
                         <option value="standard" selected="selected">Standard</option>
                         <option value="elevationprofile">Høydeprofil</option>
                         <option value="imagemap">Bildekart</option>
-                    </select>
+                    </select> 
+                    <span id="embed-explanation">&nbsp;Din tur på valgt bakgrunnskart</span>
                     <br><br>
                     <p>Kopier følgende kode for å legge til denne turen på din nettside:</p>
                     <pre><div id="embedBodyTextArea"><div></pre>
+                    <div id="div-embed-example-link">
+                        <a href="javascript:void(0)" id="embed-example-link">Se eksempel på hvordan det vil se ut...</a>
+                    </div>
                 </div>
                 <div class="modal-footer">
                   <a href="javascript:void(0)" class="btn closeEmbedModal" data-dismiss="modal" >Lukk</a>
@@ -902,6 +909,21 @@
             });
         }
 
+        function openEmbedExample(url) {
+
+            BootstrapDialog.show({
+                title: 'Slik vil dette se ut på din nettside',
+                cssClass: 'embed-dialog',
+                message: '<iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="'+url+'"></iframe>',
+                buttons: [{
+                    label: 'Ok',
+                    action: function(dialogref){
+                        dialogref.close();
+                    }
+                }]
+            });  
+        }
+
         function showLineEditSidebar() {
             $('#sidebar-main').hide();
             $('#sidebar-edit-line').show();
@@ -1184,14 +1206,21 @@
         $('#embedType').change(function() {
             var embedType = $(this).find('option:selected').val(); 
             var ids = getIds();
+
             if(embedType=="elevationprofile") {
                 $('#embedBodyTextArea').html('&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'?embedType=elevationProfile">&lt;/iframe&gt;');
+                $('#embed-example-link').attr("onclick", 'openEmbedExample(\"' +'/'+ids+'/embed/'+$("#dropdown").find('option:selected').val() + '?embedType=elevationProfile\")');
+                $('#embed-explanation').html(" Din tur på valgt bakgrunnskart med høydeprofil under kartet.");
             }
             else if(embedType == "imagemap") {
                 $('#embedBodyTextArea').html('&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'?embedType=imagemap">&lt;/iframe&gt;');
+                $('#embed-example-link').attr("onclick", 'openEmbedExample(\"' +'/'+ids+'/embed/'+$("#dropdown").find('option:selected').val() + '?embedType=imagemap\")');
+                $('#embed-explanation').html(" Markører med bilder vises som bilde istedenfor markør. ");
             }
             else {
                 $('#embedBodyTextArea').html('&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'">&lt;/iframe&gt;');
+                $('#embed-example-link').attr("onclick", 'openEmbedExample(\"' +'/'+ids+'/embed/'+$("#dropdown").find('option:selected').val() + '\")');
+                $('#embed-explanation').html(" Din tur på valgt bakgrunnskart  ");
             }
             
         });
@@ -1319,6 +1348,11 @@
             var ids = getIds();
 
             $('#embedBodyTextArea').html('&lt;iframe width="600" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/'+ids+'/embed/'+$("#dropdown").find('option:selected').val()+'">&lt;/iframe&gt;');
+
+            $('#embed-example-link').attr("onclick", 'openEmbedExample(\"' +'/'+ids+'/embed/'+$("#dropdown").find('option:selected').val() + '\")');
+
+            // Make sure standard map is selected
+            $('#embedType').val("Standard");
 
             // Open modal
             $('#embedModal').modal("show");

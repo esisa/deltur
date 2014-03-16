@@ -1,4 +1,5 @@
 
+
 function openDeletePointDialog() {
     var point = points[$('#current-point').val()];
 
