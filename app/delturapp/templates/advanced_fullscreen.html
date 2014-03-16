@@ -500,7 +500,12 @@
                   <label for="line-description" class="col-lg-3 control-label">Beskrivelse</label>
                   <div class="col-lg-9">
                     <textarea id="line-description" class="form-control" rows="4"></textarea>
-                    <span class="help-block">Tittel og beskrivelse vises i en valgfri popup på sporet. Det vil også hjelpe deg å finne fram til riktig spor seinere. </span>
+                    <span class="help-block">
+                        Tittel og beskrivelse vises i en valgfri popup på sporet.
+                        {% if current_user.is_authenticated() %}  
+                        Det vil også hjelpe deg å finne fram til riktig spor seinere. 
+                        {% endif %}
+                    </span>
                     
                   </div>
 
@@ -609,7 +614,12 @@
                   <label for="point-description" class="col-lg-3 control-label">Beskrivelse</label>
                   <div class="col-lg-9">
                     <textarea id="point-description" class="form-control" rows="3"></textarea>
-                    <span class="help-block">Tittel og beskrivelse vises standard i en popup på markøren. Det vil også hjelpe deg å finne fram til riktig markør seinere. </span>
+                    <span class="help-block">
+                        Tittel og beskrivelse vises standard i en popup på markøren.
+                        {% if current_user.is_authenticated() %}  
+                        Det vil også hjelpe deg å finne fram til riktig markør seinere. 
+                        {% endif %}
+                    </span>
                   </div>
 
                   <label for="point-description" class="col-lg-3 control-label">Bilde</label>
