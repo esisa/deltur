@@ -1,4 +1,9 @@
-
+function saveLineColor(color) {
+    var line = lines[$('#current-line').val()];
+    line.setColor(color.toHexString());
+    line.saveStyle();
+    line.updateRendering(map);
+}
 
 $(function(){
 
@@ -24,9 +29,9 @@ $(function(){
         line.updateRendering(map);
     });
 
-    $( "#line-color" ).blur(function() {
+    $( "#line-color-advanced" ).blur(function() {
         var line = lines[$('#current-line').val()];
-        line.setColor($('#line-color').val());
+        line.setColor($('#line-color-advanced').val());
         line.saveStyle();
         line.updateRendering(map);
     });

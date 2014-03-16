@@ -251,6 +251,15 @@
             max-width: 200px;
         }
 
+        .color-links {
+            font-size: 12px;
+        }
+
+        #div-line-color-advanced {
+            display: none;
+        }
+
+
         /*
         * Dialogs
         */
@@ -424,7 +433,7 @@
                     
                 </ul>
             </div>
-        
+
             <div id="logo"><a href="/"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></a></div>
             <h1 id="header">deltur.no</h1>
             <div id="sub-header">Del din tur p&aring; 1-2-3!</div>
@@ -513,13 +522,21 @@
                   </div>
 
                 </div>
-                <div class="form-group">
 
+                <div id="div-line-color-advanced" class="form-group">
+                  <label for="line-color-advanced" class="col-lg-3 control-label">Farge</label>
+                  <div class="col-lg-9">
+                    <input type="text" id="line-color-advanced" class="form-control" value="#ff7800" />
+                    <a class="color-links" href="javascript:void(0)" onClick="$('#div-line-color').show();$('#div-line-color-advanced').hide();">Vis enkelt fargevalg</a>
+                  </div>
+                </div>
+
+                <div id="div-line-color" class="form-group">
                   <label for="line-color" class="col-lg-3 control-label">Farge</label>
                   <div class="col-lg-9">
-                    <input type="text" id="line-color" class="form-control" value="#ff7800" />
+                    <input type='text' id="line-color"/>
+                    <br><a class="color-links" href="javascript:void(0)" onClick="$('#div-line-color-advanced').show();$('#div-line-color').hide()">Vis avansert fargevalg</a>
                   </div>
-
                 </div>
 
                 <div class="form-group">
@@ -715,7 +732,21 @@
     <script>
 
         $(function(){
-            $('#line-color').colorpicker();
+            $('#line-color-advanced').colorpicker();
+
+            $("#line-color").spectrum({
+                color: "rgb(250, 120, 0)",    
+                showPaletteOnly: true,
+                change: function(color) {
+                    saveLineColor(color);
+                },
+                palette: [
+                    ["rgb(233, 126, 121)", "rgb(212, 63, 49)", "rgb(160, 52, 57)", "rgb(141, 218, 253)", "rgb(63, 171, 219)"],
+                    ["rgb(13, 104, 161)","rgb(188, 247, 120)", "rgb(116, 174, 50)", "rgb(114, 129, 44)", "rgb(253, 148, 232)"], 
+                    [ "rgb(208, 86, 183)",  "rgb(90, 58, 106)", "rgb(68, 105, 119)", "rgb(254, 202, 150)", "rgb(244, 150, 61)"],
+                    [ "rgb(250, 120, 0)", "rgb(251, 251, 251)", "rgb(163, 163, 163)", "rgb(87, 87, 87)", "rgb(48, 48, 48)"]
+                ]
+            });
 
             $("#point-color").spectrum({
                 color: "rgb(63, 171, 219)",    
@@ -1078,7 +1109,7 @@
             // Set metadata
             $('#line-title').val(line.getTitle());
             $('#line-description').val(line.getDescription());
-            $('#line-color').val(line.getColor());
+            $('#line-color-advanced').val(line.getColor());
             $('#line-width').val(line.getWidth());
             $('#line-label-text').val(line.getLabelText());
             if(line.getPopup()) {
