@@ -3,7 +3,8 @@
 $('.typeahead').typeahead({
   hint: true,
   highlight: true,
-  minLength: 1
+  minLength: 1,
+  autoselect: true
 },
 {
  // name: 'states',
@@ -28,3 +29,4 @@ $('#search-field').bind('typeahead:selected', function(obj, datum, name) {
         map.setZoom(15);
         map.panBy([-$('#sidebar').width()/2, 0]);
 });
+
