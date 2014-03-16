@@ -404,24 +404,27 @@
 
 
     <div id="sidebar">
-        <div class="menu">
-        <ul>
-            {% if current_user.is_authenticated() %}
-            
-            <li><a href="{{ url_for('security.logout') }}?next=%2Fadvanced">Logg ut</a></li>
-            <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
-          {% else %}
-          <li><a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
-            </li>
-           <li><a href="{{ url_for('security.login') }}?next=%2Fadvanced"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
-            </li>
-            <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
-          {% endif %}
-            
-        </ul>
-    </div>
+        
 
         <div id="sidebar-main">
+
+            <div class="menu">
+                <ul>
+                    {% if current_user.is_authenticated() %}
+                    
+                    <li><a href="{{ url_for('security.logout') }}?next=%2Fadvanced">Logg ut</a></li>
+                    <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
+                  {% else %}
+                  <li><a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
+                    </li>
+                   <li><a href="{{ url_for('security.login') }}?next=%2Fadvanced"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
+                    </li>
+                    <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
+                  {% endif %}
+                    
+                </ul>
+            </div>
+        
             <div id="logo"><a href="/"><img id="logo" width="100" src="{{ url_for('static', filename='img/logo.png') }}"></a></div>
             <h1 id="header">deltur.no</h1>
             <div id="sub-header">Del din tur p&aring; 1-2-3!</div>
