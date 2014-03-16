@@ -110,7 +110,7 @@ $(function(){
     $('#point-marker-type').change(function() {
         var markerType = $(this).find('option:selected').val(); 
         var point = points[$('#current-point').val()];
-        if(markerType=="Fontawesome") {
+        if(markerType=="Ikon") {
             point.setMarkerType("fa");
 
             // Change to different input

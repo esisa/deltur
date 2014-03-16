@@ -669,7 +669,7 @@
                   <label for="point-marker-type" class="col-lg-3 control-label">Markør type</label>
                   <div class="col-lg-9">
                     <select class="form-control" id="point-marker-type">
-                      <option selected="selected">Fontawesome</option>
+                      <option selected="selected">Ikon</option>
                       <option>Nummer</option>
                     </select>
                   </div>
@@ -679,7 +679,7 @@
                   <label for="point-marker-text" class="col-lg-3 control-label">Markør tekst</label>
                   <div class="col-lg-9">
                     <input type="text" id="point-marker-text" value="map-marker" class="form-control">
-                    <a id="point-marker-link" href="http://fontawesome.io/icons/" target="_blank">Se mulige varianter du kan bruke</a>
+                    <a id="point-marker-link" href="http://fontawesome.io/icons/" target="_blank">Se mulige ikoner du kan bruke</a>
                   </div>
                 </div>
 
@@ -1082,7 +1082,7 @@
             }
 
             if(point.getMarkerType() == "fa") {
-                $('#point-marker-type').val("Fontawesome");
+                $('#point-marker-type').val("Ikon");
                 $('#point-marker-text').val(point.getMarkerSymbol());
                 $('#point-marker-text-div').show();
                 $('#point-marker-number-div').hide();
