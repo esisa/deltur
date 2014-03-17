@@ -499,8 +499,15 @@
             // Check when the file is uploaded and render to map
             // and stop spinner
             var interval = setInterval(function(){
+
                 if(line.getStatus() === 1) {
-                    document.location.href = "/"+line.getId()+"/" + maptype;
+
+                    {% if current_user.is_authenticated() %}
+                        document.location.href = "/"+line.getId()+"/" + maptype;
+                    {% else %}
+                        humane.timeout = 2000;
+                        humane.log("<p>Uten registering så slettes turen etter 14 dager</p>", function(){document.location.href = "/"+line.getId()+"/" + maptype;});  
+                    {% endif %}
                     
                     // Stop interval
                     clearInterval(interval);

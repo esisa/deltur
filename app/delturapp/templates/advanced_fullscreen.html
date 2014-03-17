@@ -1177,10 +1177,16 @@
         */
         function sendToTrip(ids) {
             maptype = $("#dropdown").find('option:selected').val(); 
-            window.open(
-              "/"+ids+"/" + maptype,
-              '_blank' // <- This is what makes it open in a new window.
-            );
+            {% if current_user.is_authenticated() %}
+                window.open(
+                      "/"+ids+"/" + maptype,
+                      '_blank' // <- This is what makes it open in a new window.
+                    );
+            {% else %}
+                humane.timeout = 2000;
+                humane.log("<p>Uten registering så slettes turen etter 14 dager</p>", function(){window.open("/"+ids+"/" + maptype,'_blank');;});  
+            {% endif %}
+            
             //document.location.href = "/"+ids+"/" + maptype;
         }
 
@@ -1370,9 +1376,15 @@
             // Make sure standard map is selected
             $('#embedType').val("Standard");
 
-            // Open modal
-            $('#embedModal').modal("show");
-            sidebar.hide();
+            {% if current_user.is_authenticated() %}
+                // Open modal
+                $('#embedModal').modal("show");
+                sidebar.hide();
+            {% else %}
+                humane.timeout = 2000;
+                humane.log("<p>Uten registering så slettes turen etter 14 dager</p>", function(){$('#embedModal').modal("show");sidebar.hide();});  
+            {% endif %}
+            
 
         });
 
