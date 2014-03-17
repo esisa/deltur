@@ -20,6 +20,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/L.Control.Sidebar.js') }}"></script>
 
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hint.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
@@ -29,6 +30,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-dialog.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/spectrum.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+
 
     <script src="{{ url_for('static', filename='js/jquery-1.9.1.js') }}"></script>
     <script src="{{ url_for('static', filename='js/humane.min.js') }}"></script>
@@ -40,6 +42,7 @@
     <script src="{{ url_for('static', filename='js/handlebars-v1.3.0.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-dialog.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/spectrum.js') }}"></script>
+    
 
     <script>
 
@@ -428,12 +431,25 @@
                 <ul>
                     {% if current_user.is_authenticated() %}
                     
-                    <li><a href="{{ url_for('security.logout') }}?next=%2Fadvanced">Logg ut</a></li>
-                    <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
-                  {% else %}
-                  <li><a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
+                    <li id="logout-link">
+                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Logg ut">
+                        <a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+                      </span>
+                    <li>
+                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Vis ditt administrasjonspanel">
+                        <a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a>
+                      </span>
                     </li>
-                   <li><a href="{{ url_for('security.login') }}?next=%2Fadvanced"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
+                  {% else %}
+                  <li>
+                    <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Så blir ikke turene dine slettet etter 14 dager">
+                      <a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
+                    </span>
+                    </li> 
+                   <li>
+                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Logg inn">
+                        <a href="{{ url_for('security.login') }}"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
+                      </span>
                     </li>
                     <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
                   {% endif %}

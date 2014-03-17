@@ -67,10 +67,3 @@ body{
     border:0;
     width: 100%;
 }
-.arrow {
-    border-color: #3366CC transparent transparent;
-    border-style: solid dashed dashed;
-    margin-left: 5px;
-    position: relative;
-    top: 10px;
-}

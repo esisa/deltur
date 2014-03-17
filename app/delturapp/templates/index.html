@@ -9,6 +9,9 @@
     <meta name="author" content="">
     <link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
 
+   
+    
+
     <!-- Le styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome/css/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
@@ -195,6 +198,15 @@
          })();
 
        </script>
+
+      {% if current_user.is_authenticated() %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/shepherd-theme-arrows.css') }}" />
+        <script src="{{ url_for('static', filename='js/shepherd.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/lib/modernizr.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/registerInfoBox.js') }}"></script>
+      {% endif %}
+
+
    
   </head>
   
@@ -205,21 +217,34 @@
      
 
     <div class="menu">
-        <ul>
-            {% if current_user.is_authenticated() %}
-            
-            <li><a href="{{ url_for('security.logout') }}">Logg ut</a></li>
-            <li><a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a></li>
-          {% else %}
-          <li><a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
-            </li> 
-           <li><a href="{{ url_for('security.login') }}"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
-            </li>
-            <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
-          {% endif %}
-            
-        </ul>
-    </div>
+                <ul>
+                    {% if current_user.is_authenticated() %}
+                    
+                    <li id="logout-link">
+                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Logg ut">
+                        <a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+                      </span>
+                    <li>
+                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Vis ditt administrasjonspanel">
+                        <a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a>
+                      </span>
+                    </li>
+                  {% else %}
+                  <li>
+                    <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Så blir ikke turene dine slettet etter 14 dager og du kan administrere de etterpå">
+                      <a href="{{ url_for('security.register') }}?next={{request.path | urlencode}}"> Registrer deg  <i class="fa fa-chevron-circle-right"></i></a>
+                    </span>
+                    </li> 
+                   <li>
+                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Logg inn">
+                        <a href="{{ url_for('security.login') }}"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
+                      </span>
+                    </li>
+                    <!--li><a href="{{ url_for('security.register') }}">Register</a></li-->
+                  {% endif %}
+                    
+                </ul>
+            </div>
       
    
       
@@ -406,10 +431,15 @@
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
 
+    {% if current_user.is_authenticated() %}
+      <script src="{{ url_for('static', filename='js/registerInfoBox.js') }}"></script>
+    {% endif %}
+
 
     <script>
     var geojson;
     $(function () {
+
         var fileInput = document.getElementById('fileInput');
         var geojson;
 
