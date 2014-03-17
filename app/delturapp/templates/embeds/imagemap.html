@@ -216,7 +216,8 @@
                     var intervalPoint = setInterval(function(){
                         if(point.getStatus() === 1) {
 
-                            var json = {
+                            if(point.getUrl() != "") {
+                                var json = {
                                         type: 'Feature',
                                         "geometry": { "type": "Point", "coordinates": [point.getLon(), point.getLat()]},
                                         "properties": {
@@ -234,8 +235,13 @@
                                             ]
                                         }
                                     };
-                            geoJson.push(json);
-                            markerLayer.setGeoJSON(geoJson);
+                                geoJson.push(json);
+                                markerLayer.setGeoJSON(geoJson);
+                            }
+                            else {
+                                point.renderToMap(map);
+                            }
+                            
                             
                             //point.renderToMap(map);
                             featureBounds.extend(point.getPoint());
