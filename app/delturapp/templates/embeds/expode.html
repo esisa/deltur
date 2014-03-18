@@ -183,7 +183,7 @@
             });
             map.addLayer(customMap);
         }
-            
+        new L.Control.Zoom({ position: 'topleft' }).addTo(map);    
 
         var idLists = {{idList}};
         var ids = "{{idList}}".split("+");
