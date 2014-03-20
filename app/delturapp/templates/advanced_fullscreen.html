@@ -429,14 +429,19 @@
 
             <div class="menu">
                 <ul>
+                    <li>
+                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Mer informasjon og hjelp til deltur.no">
+                        <a href="{{ url_for('infohome') }}"  target="_blank">Hjelp <i class="fa fa-chevron-circle-right"></i></a>
+                      </span>
+                    </li>
                     {% if current_user.is_authenticated() %}
                     
                     <li id="logout-link">
-                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Logg ut">
+                      <span class="hint--bottom hint-bounce hint--rounded hint--info" data-hint="Logg ut">
                         <a href="{{ url_for('security.logout') }}">Logg ut</a></li>
                       </span>
                     <li>
-                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Vis ditt administrasjonspanel">
+                      <span class="hint--bottom hint-bounce hint--rounded hint--info" data-hint="Vis ditt administrasjonspanel">
                         <a href="{{ url_for('adminIndex') }}">{{ current_user.email }}</a>
                       </span>
                     </li>
@@ -447,7 +452,7 @@
                     </span>
                     </li> 
                    <li>
-                      <span class="hint--left hint-bounce hint--rounded hint--info" data-hint="Logg inn">
+                      <span class="hint--bottom hint-bounce hint--rounded hint--info" data-hint="Logg inn">
                         <a href="{{ url_for('security.login') }}"> Logg inn  <i class="fa fa-chevron-circle-right"></i></a>
                       </span>
                     </li>
