@@ -235,6 +235,30 @@
         }
 
         /*
+        ** Sidebar cancel
+        */
+
+        #sidebar_cancel_point {
+            height: 60px;
+            width: 220px;
+        }
+
+        #cancel-draw-point-button {
+            margin-top: 5px;
+            margin-left: -5px;
+        }
+
+        #sidebar_cancel_line {
+            height: 60px;
+            width: 220px;
+        }
+
+        #cancel-draw-line-button {
+            margin-top: 5px;
+        }
+
+
+        /*
         ** Sidebar edit
         */
         .edit-buttons {
@@ -419,6 +443,14 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="sidebar_cancel_point">
+        <button id="cancel-draw-point-button" onClick="cancelPointDrawing();" class="btn btn-large btn-danger">Stopp tegning av markør</button>
+    </div>
+
+     <div id="sidebar_cancel_line">
+        <button id="cancel-draw-line-button" onClick="cancelLineDrawing();" class="btn btn-large btn-danger">Stopp tegning av spor</button>
     </div>
 
 
@@ -829,13 +861,31 @@
         */
         var sidebar = L.control.sidebar('sidebar', {
             closeButton: false,
-            position: 'left'
+            position: 'left',
+            autoPan: false
         });
         map.addControl(sidebar);
 
         setTimeout(function () {
             sidebar.show();
         }, 500);
+
+        var sidebar_cancel_point = L.control.sidebar('sidebar_cancel_point', {
+            position: 'left',
+            closeButton: false,
+            autoPan: false
+        });
+        map.addControl(sidebar_cancel_point);
+        
+
+        var sidebar_cancel_line = L.control.sidebar('sidebar_cancel_line', {
+            position: 'left',
+            closeButton: false,
+            autoPan: false
+        });
+        map.addControl(sidebar_cancel_line);
+        
+        
 
         // Add zoomcontrols in top right corner
         new L.Control.Zoom({ position: 'topright' }).addTo(map);
@@ -930,6 +980,17 @@
             });
         }
 
+        function cancelLineDrawing() {
+            sidebar_cancel_line.hide();
+            polyline.disable();
+            showMainSidebar();
+        }
+        function cancelPointDrawing() {
+            sidebar_cancel_point.hide();
+            marker.disable();
+            showMainSidebar();
+        }
+
         function openEmbedExample(url) {
 
             BootstrapDialog.show({
@@ -958,6 +1019,7 @@
         }
 
         function showMainSidebar() {
+            sidebar.show();
             $('#point-image-button').html("Legg til bilde");
             $('#sidebar-main').show();
             $('#sidebar-edit-line').hide();
@@ -1349,6 +1411,7 @@
             });
 
             marker.enable();
+            sidebar_cancel_point.show();
 
         });
 
@@ -1361,6 +1424,7 @@
 
             polyline = new L.Draw.Polyline(map, drawControl.options.polyline);
             polyline.enable();
+            sidebar_cancel_line.show();
 
         });
 
@@ -1415,6 +1479,7 @@
 
                 // Disable drawing                
                 polyline.disable();
+                sidebar_cancel_line.hide();
             
 
                 // Erase fields and Open modal
@@ -1481,6 +1546,7 @@
 
                 // Disable drawing
                 marker.enable();
+                sidebar_cancel_point.hide();
                         
                 // Erase fields 
                 $('#point-title').val("");
