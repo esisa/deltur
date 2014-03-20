@@ -6,7 +6,7 @@ $(function(){
 
     var elem = document.createElement('input');
     elem.type = 'file';
-    if(!elem.disabled) {
+    if(elem.disabled) {
 
         BootstrapDialog.show({
             title: 'Beklager!',
@@ -20,6 +20,6 @@ $(function(){
             }]
         }); 
 
-        
+
     } 
 });
