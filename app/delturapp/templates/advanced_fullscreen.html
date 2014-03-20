@@ -452,11 +452,11 @@
     </div>
 
     <div id="sidebar_cancel_point">
-        <button id="cancel-draw-point-button" onClick="cancelPointDrawing();" class="btn btn-large btn-danger">Stopp tegning av markør</button>
+        <button id="cancel-draw-point-button" onClick="cancelPointDrawing();" class="btn btn-large btn-danger">Avbryt tegning av markør</button>
     </div>
 
      <div id="sidebar_cancel_line">
-        <button id="cancel-draw-line-button" onClick="cancelLineDrawing();" class="btn btn-large btn-danger">Stopp tegning av spor</button>
+        <button id="cancel-draw-line-button" onClick="cancelLineDrawing();" class="btn btn-large btn-danger">Avbryt tegning av spor</button>
     </div>
 
 
@@ -1301,6 +1301,19 @@
         /*
         **  Handlers
         */
+
+        // Check if user hits escape while drawing. If so, cancel. 
+        $(document).keyup(function(e) {
+            if (e.keyCode == 27) {  // Escape
+                console.log("escape");
+                if(typeof marker != 'undefined') {
+                    cancelPointDrawing();
+                }
+                else if (typeof polyline != 'undefined') {
+                    cancelLineDrawing();
+                }
+            }   
+        });
 
         $('#embedType').change(function() {
             var embedType = $(this).find('option:selected').val(); 
