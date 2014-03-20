@@ -1348,11 +1348,8 @@
                 icon: emptyIcon
             });
 
-            marker.addHooks();
+            marker.enable();
 
-            map.on('mousedown', function(e) {
-                setTimeout('marker.removeHooks()', 200);
-            });
         });
 
         // Draw
@@ -1481,6 +1478,9 @@
 
             }
             else if (type === 'marker') {
+
+                // Disable drawing
+                marker.enable();
                         
                 // Erase fields 
                 $('#point-title').val("");
