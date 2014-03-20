@@ -34,6 +34,13 @@ from datetime import timedelta
 
 from werkzeug.routing import NumberConverter, ValidationError
 
+# Geoalchemy
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Boolean, Float
+from geoalchemy2 import Geometry
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+
 
 app = Flask(__name__)
 
@@ -184,6 +191,42 @@ security = Security(app, user_datastore)
 #    db.create_all()
 #    user_datastore.create_user(email='matts@nobien.net', password='password')
 #    db.session.commit()
+
+Base = declarative_base()
+
+class Point(Base):
+    __tablename__ = 'points'
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    url = Column(String)
+    description = Column(String)
+    markertype = Column(String)
+    markercolor = Column(String)
+    markerpopup = Column(Boolean)
+    markerlabel_static = Column(Boolean)
+    markerlabel_text = Column(String)
+    markersymbol = Column(String)
+    image_width = Column(Integer)
+    image_height = Column(Integer)
+    geo = Column(Geometry('POINT'))
+
+class Line(Base):
+    __tablename__ = 'trips'
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    #url = Column(String)
+    description = Column(String)
+    style_color = Column(String)
+    style_width = Column(Float)
+    style_opacity = Column(Boolean)
+    style_start_icon = Column(Boolean)
+    style_end_icon = Column(Boolean)
+    style_popup = Column(Boolean)
+    style_label_text = Column(String)
+    geo = Column(Geometry('POINT'))
+
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
+Session = sessionmaker(bind=engine)
 
 
 
@@ -864,17 +907,67 @@ def setStyle(request, id):
 
 
         if isPoint(id):
-            sql_string = """update points set markercolor=%s, markerpopup=%s, markersymbol=%s, markerType=%s, 
-                        markerlabel_static=%s, markerlabel_text=%s, url=%s, image_height=%s, image_width=%s,
-                        title=%s, description=%s
-                        where id=%s"""
-            cursor.execute(sql_string, (data["markercolor"], data["popup"]["show"], data["markersymbol"], data["markerType"], data["label"]["static"], data["label"]["text"], data["popup"]["image"]["url"], -1, data["popup"]["image"]["width"], data["popup"]["title"], data["popup"]["description"],id,))
+            session = Session()
+            session._model_changes = {} # Fix for blending flask-sqlalchemy and pure sqlalchemy/geoalchemy
+            point = session.query(Point).filter_by(id=id).first()
+            if data.get("markercolor"):
+                point.markercolor = data["markercolor"]
+            if data.get("markersymbol"):
+                point.markersymbol = data["markersymbol"]
+            if data.get("markerType"):
+                point.markertype = data["markerType"]
+
+            if data.get("label"):
+                if data["label"].get("static"):
+                    point.markerlabel_static = data["label"]["static"]
+                if data["label"].get("text"):
+                    point.markerlabel_text = data["label"]["text"]
+            
+            if data.get("popup"):
+                if data["popup"].get("image"):
+                    if data["popup"]["image"].get("url"):
+                        point.url = data["popup"]["image"]["url"]
+                    point.image_height = -1
+                    if data["popup"]["image"].get("width"):
+                        point.image_width = data["popup"]["image"]["width"]
+                if data["popup"].get("show"):
+                    point.markerpopup = data["popup"]["show"]
+                if data["popup"].get("title"):
+                    point.title = data["popup"]["title"]
+                if data["popup"].get("description"):
+                    point.description = data["popup"]["description"]
+            session.commit();
 
         else:
+            session = Session()
+            session._model_changes = {} # Fix for blending flask-sqlalchemy and pure sqlalchemy/geoalchemy
+            line = session.query(Line).filter_by(id=id).first()
+            if data.get("color"):
+                line.style_color = data["color"]
+            if data.get("width"):
+                line.style_width = data["width"]
+            if data.get("opacity"):
+                line.style_opacity = data["opacity"]
+            if data.get("start_icon"):
+                line.style_start_icon = data["start_icon"]
+            if data.get("end_icon"):
+                line.style_end_icon = data["end_icon"]
+            if data.get("popup"):
+                if data["popup"].get("show"):
+                    line.style_popup = data["popup"]["show"]
+                if data["popup"].get("title"):
+                    line.title = data["popup"]["title"]
+                if data["popup"].get("description"):
+                    line.description = data["popup"]["description"]
+            if data.get("label"):
+                if data["label"].get("text"):
+                    line.style_label_text = data["label"]["text"]
+            session.commit();
+
             sql_string = """update trips set style_color=%s, style_width=%s, style_opacity=%s, style_start_icon=%s, 
-                        style_end_icon=%s, style_popup=%s, title=%s, description=%s, style_label_text=%s
+                       style_end_icon=%s, style_popup=%s, title=%s, description=%s, style_label_text=%s
                         where id=%s"""
-            cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"]["show"], data["popup"]["title"], data["popup"]["description"], data["label"]["text"], id,))
+            #cursor.execute(sql_string, (data["color"], data["width"], data["opacity"], data["start_icon"], data["end_icon"], data["popup"]["show"], data["popup"]["title"], data["popup"]["description"], data["label"]["text"], id,))
 
         
         try:
