@@ -32,8 +32,11 @@ import hashlib
 
 from datetime import timedelta
 
+from werkzeug.routing import NumberConverter, ValidationError
+
 
 app = Flask(__name__)
+
 
 # Config file
 app.config.from_pyfile('deltur.cfg')
@@ -130,6 +133,17 @@ def urlencode_filter(s):
     s = s.encode('utf8')
     s = urllib.quote_plus(s)
     return Markup(s)
+
+
+# Accept negative floats as input
+# Used in /del/sted/
+class NegativeFloatConverter(NumberConverter):
+    regex = r'\-?\d+\.\d+'
+    num_convert = float
+ 
+    def __init__(self, map, min=None, max=None):
+        NumberConverter.__init__(self, map, 0, min, max)
+app.url_map.converters['float'] = NegativeFloatConverter
 
 
 # Create database connection object
