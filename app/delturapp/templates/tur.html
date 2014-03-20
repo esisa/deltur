@@ -63,10 +63,10 @@
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>  
 
 
+    <script src="{{ url_for('static', filename='js/lib/modernizr.min.js') }}"></script>
     {% if current_user.is_authenticated() %}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/shepherd-theme-arrows.css') }}" />
         <script src="{{ url_for('static', filename='js/shepherd.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/lib/modernizr.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/registerInfoBox.js') }}"></script>
       {% endif %}                            
   

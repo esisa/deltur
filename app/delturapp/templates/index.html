@@ -19,6 +19,8 @@
     <!--link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet"-->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link href="{{ url_for('static', filename='css/humane-original.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-dialog.min.css') }}">
+    
     <style type="text/css">
       body {
         padding-bottom: 40px;
@@ -37,7 +39,9 @@
          
       }
 
-      
+      .ie9-dialog .modal-dialog {
+            width: 300px;
+        }
 
       .form-signin {
         max-width: 500px;
@@ -199,10 +203,10 @@
 
        </script>
 
+        <script src="{{ url_for('static', filename='js/lib/modernizr.min.js') }}"></script>
       {% if current_user.is_authenticated() %}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/shepherd-theme-arrows.css') }}" />
         <script src="{{ url_for('static', filename='js/shepherd.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/lib/modernizr.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/registerInfoBox.js') }}"></script>
       {% endif %}
 
@@ -436,6 +440,8 @@
     <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.0.0/leaflet-omnivore.min.js'></script>
     <script src="{{ url_for('static', filename='js/lib/leaflet.awesome-markers.js') }}"></script>
     <script src="{{ url_for('static', filename='js/delturLine.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-dialog.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileInputCheck.js') }}"></script>
 
     {% if current_user.is_authenticated() %}
       <script src="{{ url_for('static', filename='js/registerInfoBox.js') }}"></script>
@@ -445,6 +451,10 @@
     <script>
     var geojson;
     $(function () {
+
+        if(!Modernizr.fileinput) {
+            //file input available!
+        } 
 
         var fileInput = document.getElementById('fileInput');
         var geojson;

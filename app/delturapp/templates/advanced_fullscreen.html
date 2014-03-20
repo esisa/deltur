@@ -42,6 +42,7 @@
     <script src="{{ url_for('static', filename='js/handlebars-v1.3.0.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap-dialog.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/spectrum.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lib/modernizr.min.js') }}"></script>
     
 
     <script>
@@ -293,6 +294,11 @@
         .delete-dialog .modal-dialog {
             width: 300px;
         }
+
+        .ie9-dialog .modal-dialog {
+            width: 300px;
+        }
+
         .embed-dialog .modal-dialog {
             width: 640px;
         }
@@ -788,10 +794,12 @@
     <script src="{{ url_for('static', filename='js/savePoint.js') }}"></script>
     <script src="{{ url_for('static', filename='js/deletePointLine.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ssrTypeAheadSearch.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fileInputCheck.js') }}"></script>
 
     <script>
 
         $(function(){
+
             $('#line-color-advanced').colorpicker();
 
             $("#line-color").spectrum({
