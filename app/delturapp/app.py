@@ -394,14 +394,14 @@ def getTripOSM(id):
     if isPoint(id):
         try:
             increaseLineAccess(id)
-            r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=osm')
+            r = requests.get('http://beta.deltur.no/feature/deltur_point/'+str(id)+'?service=osm')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
     else:
         try:
             increasePointAccess(id)
-            r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=osm')
+            r = requests.get('http://beta.deltur.no/feature/deltur_line/'+str(id)+'?service=osm')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
@@ -411,14 +411,14 @@ def getTripKML(id):
     if isPoint(id):
         try:
             increaseLineAccess(id)
-            r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=kml')
+            r = requests.get('http://beta.deltur.no/feature/deltur_point/'+str(id)+'?service=kml')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
     else:
         try:
             increasePointAccess(id)
-            r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=kml')
+            r = requests.get('http://beta.deltur.no/feature/deltur_line/'+str(id)+'?service=kml')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
@@ -428,14 +428,14 @@ def getTripCSV(id):
     if isPoint(id):
         try:
             increaseLineAccess(id)
-            r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=csv')
+            r = requests.get('http://beta.deltur.no/feature/deltur_point/'+str(id)+'?service=csv')
             return Response(r.text, mimetype='text/plain')
         except:
             return "Error"
     else:
         try:
             increasePointAccess(id)
-            r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=csv')
+            r = requests.get('http://beta.deltur.no/feature/deltur_line/'+str(id)+'?service=csv')
             return Response(r.text, mimetype='text/plain')
         except:
             return "Error"
@@ -445,14 +445,14 @@ def getTripGPX(id):
     if isPoint(id):
         try:
             increaseLineAccess(id)
-            r = requests.get('http://deltur.no/feature/deltur_point/'+str(id)+'?service=gpx')
+            r = requests.get('http://beta.deltur.no/feature/deltur_point/'+str(id)+'?service=gpx')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
     else:
         try:
             increasePointAccess(id)
-            r = requests.get('http://deltur.no/feature/deltur_line/'+str(id)+'?service=gpx')
+            r = requests.get('http://beta.deltur.no/feature/deltur_line/'+str(id)+'?service=gpx')
             return Response(r.text, mimetype='text/xml')
         except:
             return "Error"
