@@ -17,6 +17,7 @@ deltur.no
 - pip install flask-security
 - pip install flask-sqlalchemy
 - pip install xmltodict
+- pip install geoalchemy2
 - a2enmod proxy
 - a2enmod proxy_http
 
