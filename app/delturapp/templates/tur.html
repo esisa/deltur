@@ -743,7 +743,7 @@
     
     function downloadTrip() {
         //console.log("Download trip");
-        var id = $("#tripSelect option:selected").text();
+        var id = $("#tripSelect option:selected").val();
         var type = $("#tripDownloadType option:selected").text().toLowerCase();
         window.open("/" + id + "/" + type);
     }
