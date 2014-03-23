@@ -52,6 +52,12 @@
         -------------------------------------------------- */
         /* Not required for template or sticky footer method. */
 
+        /* Overskriver CSS fra Boostrap */
+
+        select {
+            color: black !important;
+        }
+
         .container {
             width: auto;
             max-width: 680px;
