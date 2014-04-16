@@ -1239,6 +1239,12 @@ def infofaq():
 @app.route('/info/kontakt')
 def infokontakt():
     return render_template('infoside/contact.html')
+@app.route('/info/brukeravtale')
+def infoterms():
+    return render_template('infoside/terms.html')
+@app.route('/info/personvern')
+def infoprivacypolicy():
+    return render_template('infoside/privacy_policy.html')
  
 
 @app.route('/admin')
