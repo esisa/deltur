@@ -416,24 +416,31 @@
         }
 
         
+        var mapType;
         // Add map used in URL
         if({{mapType}}==0) {
             map.addLayer(turkart);
+            mapType = "turkart";
         }
         else if({{mapType}}==1) {
             map.addLayer(skikart);
+            mapType = "skikart";
         }
         else if({{mapType}}==2) {
             map.addLayer(veikart);
+            mapType = "veikart";
         }
         else if({{mapType}}==3) {
             map.addLayer(topokart);
+            mapType = "topokart";
         }
         else if({{mapType}}==4) {
             map.addLayer(satellite);
+            mapType = "satellite";
         }
         else if({{mapType}}==5) {
             map.addLayer(kartverket);
+            mapType = "kartverket";
         }
         else if({{mapType}}==-1) { //custom map
             var customMap = L.mapbox.tileLayer("/" + hash + "/tilejson.json", {
@@ -442,6 +449,7 @@
                 retinaVersion: "/" + hash + "/tilejson.retina.json"
             });
             map.addLayer(customMap);
+            mapType = "custom";
         }
 
         new L.Control.Zoom({ position: 'topleft' }).addTo(map);
@@ -477,7 +485,22 @@
         var imgMarker;
         var numMarkers = 0;
         var currentElevProfile;
-            
+        
+
+        // Change URL to show plus sign
+        if(Modernizr.history) {
+
+          var newURL = "";
+          $.each(ids, function(index, id) {
+              var currentId = id;
+              if(newURL=="")
+                  newURL = currentId;
+              else
+                  newURL = newURL + "+" + currentId;
+          });
+          window.history.replaceState("object or string", "Title", "/"+newURL+"/" + mapType);
+        } 
+
         // Loop through ids and draw on map    
         $.each(ids, function(index, value) {
             var id = value;
@@ -833,7 +856,9 @@
     var encodedLink = link.split('+').join("%2B"); 
     $("#mail_share").attr("href", encodedLink);
     $("#mail_share_mobile").attr("href", encodedLink);
+
+
     </script>
-    <script src="//tomodo-tools.s3.amazonaws.com/tomodo.korz-0.5.js"></script>
+    
 
 </html>
