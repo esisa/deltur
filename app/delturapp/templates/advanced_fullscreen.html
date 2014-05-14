@@ -1548,7 +1548,7 @@
                 var lineInterval = setInterval(function(){
                     if(line.getStatus() === 1) {
                         line.renderToMap(map);
-                        map.fitBounds(line.getBounds().pad(0.1));
+                        map.fitBounds(line.getBounds().pad(0.1), {paddingTopLeft: [$(".leaflet-sidebar").width(), 0]});
 
                         // Show sidebar
                         sidebar.show()
