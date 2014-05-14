@@ -47,6 +47,7 @@ app = Flask(__name__)
 
 # Config file
 app.config.from_pyfile('deltur.cfg')
+app.url_map.strict_slashes = False # Ignore trailing slash or not in URL(needed for reset password)
 
 # Postgres config
 pg_db = app.config['PG_DB']
@@ -62,12 +63,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://'+pg_user+':'+pg_passwd+'@
 app.config['SECURITY_TRACKABLE'] = True
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_RECOVERABLE'] = True #Reset password
+#app.config['SECURITY_RESET_URL'] = "/reset"
+
+
 app.config['SECURITY_CHANGEABLE'] = True #Change password
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = True
 app.config['SECURITY_PASSWORD_HASH'] = "bcrypt"
 app.config['SECURITY_PASSWORD_SALT'] = '$2a$12$byc5TEXXKHqMIP9inxqnQO'
 
-app.config['SECURITY_RESET_PASSWORD_TEMPLATE'] = "security/login_user.html"
+#app.config['SECURITY_RESET_PASSWORD_TEMPLATE'] = "security/login_user.html"
 
 #app.config['REMEMBER_COOKIE_DURATION'] = timedelta(microseconds=-1)
 
@@ -1116,8 +1120,9 @@ def getTripEmbed(ids, mapType='topokart'):
     
 
 # Hash input
-@app.route('/<regex("[a-z0-9]+"):hash>/')
-@app.route('/<regex("[a-z0-9]+"):hash>/<string:mapType>/')
+#[a-z0-9]+
+@app.route('/<regex("^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$"):hash>/')
+@app.route('/<regex("^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$"):hash>/<string:mapType>/')
 def getTripHTMLByHash(hash, mapType='topokart'):
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")

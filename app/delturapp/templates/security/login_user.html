@@ -78,6 +78,11 @@
 					</div>
 
 					<div class="login-extra">								
+						Glemt passordet ditt? 
+						<a href="{{ url_for('security.reset_password', token=reset_password_token) }}"> Be om nytt passord </a>
+					</div>
+
+					<div class="login-extra">								
 						Har du ikke konto? 
 						<a href="{{ url_for('security.register') }}"> Registrer deg </a><!-- eller logg inn med Facebook, Twitter eller Google nedenfor. -->
 					</div>
