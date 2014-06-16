@@ -1192,8 +1192,8 @@ def createKMLTrip():
     return addLineToDB(linestring, "")
     
 
-@app.route('/advanced/')
-def advanced():
+@app.route('/editer/')
+def edit():
     return render_template('advanced_fullscreen.html')    
 
     
@@ -1216,38 +1216,40 @@ def terms():
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    #return render_template('index.html')
+    return render_template('infoside/index.html')
 
 
 @app.route('/closed/')
 def closedTrip():
     return render_template('closedTrip.html')
 
+#@app.route('/info')
+#def infohome():
+#    return render_template('infoside/index.html')
+
 @app.route('/info')
-def infohome():
-    return render_template('infoside/index.html')
-@app.route('/info/features')
 def infoexplore():
     return render_template('infoside/explore.html')
-@app.route('/info/priser')
+@app.route('/priser')
 def infopriser():
     return render_template('infoside/plans.html')
-@app.route('/info/eksempler')
+@app.route('/eksempler')
 def infoeksempler():
     return render_template('infoside/eksempler.html')
-@app.route('/info/api')
+@app.route('/api')
 def infoapi():
     return render_template('infoside/api.html')
-@app.route('/info/faq')
+@app.route('/faq')
 def infofaq():
     return render_template('infoside/faq.html')
-@app.route('/info/kontakt')
+@app.route('/kontakt')
 def infokontakt():
     return render_template('infoside/contact.html')
-@app.route('/info/brukeravtale')
+@app.route('/brukeravtale')
 def infoterms():
     return render_template('infoside/terms.html')
-@app.route('/info/personvern')
+@app.route('/personvern')
 def infoprivacypolicy():
     return render_template('infoside/privacy_policy.html')
  

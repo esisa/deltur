@@ -65,16 +65,16 @@
 					</a>
 					
 					<div class="nav-collapse">
-						<ul class="nav">
-							<li><a href="/">Tilbake til deltur.no</a></li>
-							<li><a href="/info">Info</a></li>
-                            <li><a href="/info/features">Mer</a></li>
-							<li><a href="/info/priser">Priser</a></li>
-							<li><a href="/info/eksempler">Eksempler</a></li>
-							<li class="active"><a href="/info/api">API</a></li>
-							<li><a href="/info/faq">FAQ</a></li>
-							<li><a href="/info/kontakt">Kontakt</a></li>
-						</ul>
+            <ul class="nav">
+              <li><a href="{{ url_for('edit') }}">Del tur</a></li>
+              <li><a href="{{ url_for('home') }}">Info</a></li>
+              <li><a href="{{ url_for('infoexplore') }}">Mer</a></li>
+              <li><a href="{{ url_for('infopriser') }}">Priser</a></li>
+              <li><a href="{{ url_for('infoeksempler') }}">Eksempler</a></li>
+              <li class="active"><a href="{{ url_for('infoapi') }}">API</a></li>
+              <li><a href="{{ url_for('infofaq') }}">FAQ</a></li>
+              <li><a href="{{ url_for('infokontakt') }}">Kontakt</a></li>
+            </ul>
 						
 						
 					</div><!--/.nav-collapse -->

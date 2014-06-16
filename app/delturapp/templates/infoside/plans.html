@@ -66,17 +66,15 @@
 					
 					<div class="nav-collapse">
 						<ul class="nav">
-							<li><a href="/">Tilbake til deltur.no</a></li>
-							<li><a href="/info">Info</a></li>
-                            <li><a href="/info/features">Mer</a></li>
-							<li class="active"><a href="/info/priser">Priser</a></li>
-							<li><a href="/info/eksempler">Eksempler</a></li>
-							<li><a href="/info/api">API</a></li>
-							<li><a href="/info/faq">FAQ</a></li>
-							<li><a href="/info/kontakt">Kontakt</a></li>
-						</ul>
-						
-						
+			              <li><a href="{{ url_for('edit') }}">Del tur</a></li>
+			              <li><a href="{{ url_for('home') }}">Info</a></li>
+			              <li><a href="{{ url_for('infoexplore') }}">Mer</a></li>
+			              <li class="active"><a href="{{ url_for('infopriser') }}">Priser</a></li>
+			              <li><a href="{{ url_for('infoeksempler') }}">Eksempler</a></li>
+			              <li><a href="{{ url_for('infoapi') }}">API</a></li>
+			              <li><a href="{{ url_for('infofaq') }}">FAQ</a></li>
+			              <li><a href="{{ url_for('infokontakt') }}">Kontakt</a></li>
+			            </ul>
 					</div><!--/.nav-collapse -->
 				</div><!-- end .container -->
 			</div><!-- end .navbar-inner -->
@@ -236,11 +234,11 @@
 	<div class="well ac">
 
 		<h3>
-			
-			<a href="{{ url_for('security.register') }}" title="Prøv med en gang">
-				Registrer deg nå!
-			</a>&rarr;
-		</h3>
+				Prøv med en gang!
+				<a href="{{ url_for('security.register') }}" title="Registrer deg!.">
+					Registrer deg
+				</a>&rarr;
+			</h3>
 	</div>
 
 	<footer>

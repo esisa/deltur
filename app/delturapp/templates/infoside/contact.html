@@ -66,15 +66,16 @@
 					
 					<div class="nav-collapse">
 						<ul class="nav">
-							<li><a href="/">Tilbake til deltur.no</a></li>
-							<li><a href="/info">Info</a></li>
-                            <li><a href="/info/features">Mer</a></li>
-							<li><a href="/info/priser">Priser</a></li>
-							<li><a href="/info/eksempler">Eksempler</a></li>
-							<li><a href="/info/api">API</a></li>
-							<li><a href="/info/faq">FAQ</a></li>
-							<li class="active"><a href="/info/kontakt">Kontakt</a></li>
-						</ul>
+			              <li><a href="{{ url_for('edit') }}">Del tur</a></li>
+			              <li><a href="{{ url_for('home') }}">Info</a></li>
+			              <li><a href="{{ url_for('infoexplore') }}">Mer</a></li>
+			              <li><a href="{{ url_for('infopriser') }}">Priser</a></li>
+			              <li><a href="{{ url_for('infoeksempler') }}">Eksempler</a></li>
+			              <li><a href="{{ url_for('infoapi') }}">API</a></li>
+			              <li><a href="{{ url_for('infofaq') }}">FAQ</a></li>
+			              <li  class="active"><a href="{{ url_for('infokontakt') }}">Kontakt</a></li>
+			            </ul>
+						
 						
 						
 					</div><!--/.nav-collapse -->
@@ -99,7 +100,7 @@
 				<b>Kresendo</b><br />Baldersvei 2 <br> 1445 Drøbak <br> 40 22 22 04
 			</p>
 			<p class="span4">
-				Kresendo er et veldig lite kartfirma som blant annet står bak <a href="http;//deltur.no">deltur.no</a> og <a href="http;//www.turkompisen.no">Turkompisen.no</a>
+				Kresendo er et lite kartfirma som blant annet står bak <a href="http;//deltur.no">deltur.no</a> og <a href="http;//www.turkompisen.no">Turkompisen.no</a>
                 
            
                 
