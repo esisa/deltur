@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SHIELD - Free Bootstrap 3 Theme">
+    <meta name="author" content="Carlos Alvarez - Alvarez.is - blacktie.co">
+    <link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
+
+  <title>deltur.no</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='info_new/css/bootstrap.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='info_new/css/main.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='info_new/css/icomoon.css') }}">
+    <link href="{{ url_for('static', filename='info_new/css/animate-custom.css') }}" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+    
+    <script src="{{ url_for('static', filename='info_new/js/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/modernizr.custom.js') }}"></script>
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+      <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+	    .white p {
+		    padding-top: 0px ;
+		}
+		p {
+		    margin-bottom: 5px;
+		}
+		h1, h2, h3, h4, h5, h6 {
+		    color: #333;
+		    font-family: "Raleway";
+		    font-weight: 600;
+		}
+	</style>
+  </head>
+
+  <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
+  
+  
+  	<div id="navbar-main">
+      <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span style="font-size:30px; color:#3498db;">
+              <i class="fa fa-bars"></i>
+            </span>
+          </button>
+          <!--a class="navbar-brand hidden-xs hidden-sm" href="{{ url_for('home') }}">
+            <span  style="font-size:18px; color:#3498db;">
+              <i class="fa fa-bars"></i>
+            </span>
+          </a-->
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('home') }}" class="smoothScroll">Om deltur.no</a></li>
+            <li> <a href="{{ url_for('edit') }}" class="smoothScroll">Del en tur</a></li>
+            <li> <a href="{{ url_for('infoapi') }}" class="smoothScroll">API</a></li>
+            <li> <a href="{{ url_for('infopriser') }}" class="smoothScroll">Priser</a></li>
+            <li> <a href="{{ url_for('infofaq') }}" class="smoothScroll">FAQ</a></li>
+            <li> <a href="#contact" class="smoothScroll">Kontakt</a></li>
+            <li> <a href="http://kresendo.no/blog" target="_blank">Blogg</a></li>
+
+          </ul>  
+          <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated() %}
+            <li><a href="{{ url_for('adminIndex') }}">Admin</a></li>
+              <li class="dropdown">
+                <a href="{{ url_for('adminIndex') }}" class="dropdown-toggle" data-toggle="dropdown">{{ current_user.email }} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+                </ul>
+              </li>
+            {% else %}
+              <li><a href="{{ url_for('security.login') }}">Logg inn</a></li>
+            {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    </div>
+
+  
+  
+		
+		
+		<!-- ==== ABOUT ==== -->
+		<div class="container" id="about" name="about">
+			<div class="row white">
+			   <div class="span12">
+            <br><br><br><br>
+            <h3>Brukeravtale for deltur.no</h3>
+            <p>
+              Dette nettstedet utvikles og driftes av <a href="http://kresendo.no">Kresendo</a>. Ved bruk av deltur.no anses det at følgende vilkår er akseptert.  
+
+              <ol>
+                <li>All geografiske data(spor og markører) og bilder som deles på deltur.no tilhører den brukeren som har lastet de opp. Men all informasjon er åpent tilgjengelig for alle som finner disse dataene. Det finnes ikke noe måte å søke fram data på, men det er ikke gjort tiltak for at andre ikke skal kunne finne informasjonen og laste det ned.</li>
+
+                <li>Brukeren kan når som helst laste ned sine data igjen</li>
+
+                <li>Brukeren kan når som helst slette sin konto og dermed slette all data tilhørende denne kontoen</li>
+
+                <li>Brukeren er ansvarlig for at alle bilder eller videoklipp han legger ut ikke bryter med samtykkekravet i <a href="http://lovdata.no/dokument/NL/lov/1961-05-12-2/KAPITTEL_6#%C2%A745c">åndsverkloven § 45c</a>.</li>
+
+                <li>deltur.no tillater ikke bilder som er etter norsk lov er definert som porno. Opplasting av slike bilder kan føre til sletting av konto. </li>
+
+                <li>Kresendo garanterer at deltur.no har en oppetid på 99.5%. Brukeren kan alltid <a href="http://stats.pingdom.com/4zbfmzhu9afd/1181090">sjekke dette selv</a>.</li>
+
+                <li>Brukeren kan kreve tilbakebetaling av sin betalte måned ved nedetid på mer enn 99.5%</li>
+
+                <li>Ved et eventuelt opphør av denne tjenesten så vil det varsles tre måneder i forveien. Alle betalte abbonement vil da automatisk opphøre etter tre måneder. </li>
+              </ol>  
+            </p>
+        
+      
+      </div>
+
+			</div><!-- row -->
+		
+		</div><!-- container -->
+
+		<div class="container" id="contact" name="contact">
+      <div class="row">
+      <br>
+        
+        <br>
+        <br>
+        <div class="col-lg-4">
+          <h3>Kontaktinformasjon</h3>
+          <p><span class="icon icon-home"></span> Baldersvei 2, 1445 Drøbak<br/>
+            <span class="icon icon-mobile"></span> 40 22 22 04 <br/>
+            <span class="icon icon-envelop"></span> <a href="#"> espen@kresendo.no</a> <br/>
+            <span class="icon icon-twitter"></span> <a href="#"> @deltur_no </a> <br/>
+            <span class="icon icon-facebook"></span> <a href="#"> facebook.com/delturno </a> <br/>
+          </p>
+        </div><!-- col -->
+        
+        <div class="col-lg-4">
+          
+          <h3>&nbsp;</h3>
+          <p>Kresendo er et lite kartfirma som blant annet står bak <a href="http://deltur.no">deltur.no</a> og <a href="http://turkompisen.no">Turkompisen.no</a> Kresendo kan også hjelpe til med dine egne utfordinger med kart. Se mer på <a href="http://kresendo.no">kresendo.no</a></p>
+          
+        </div><!-- col -->
+        
+        <div class="col-lg-4">
+          <h3>&nbsp;</h3>
+          <p>
+            Har du spørsmål om deltur.no kan du kontakte Kresendo på <a href="mailto:espen@kresendo.no">e-post</a> eller besøk deltur.no på <a href="http://twitter.no/deltur_no">Twitter</a> og <a href="http://facebook.com">Facebook</a>. 
+          </p>
+          <p><a href="{{ url_for('infoterms') }}"><i class="fa fa-circle-o"></i>  Brukeravtale</a> <br/>
+            <a href="{{ url_for('infoprivacypolicy') }}"><i class="fa fa-circle-o"></i>  Personværnserklæring</a> <br/></p>
+        </div><!-- col -->
+
+      </div><!-- row -->
+    
+    </div><!-- container -->
+
+    <div id="footerwrap">
+      <div class="container">
+        <h4><a href="http://kresendo.co">Kresendo</a> står bak deltur.no</h4>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+		
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/bootstrap.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/retina.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/jquery.easing.1.3.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/smoothscroll.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/jquery-func.js') }}"></script>
+  
+  </body>
+</html>

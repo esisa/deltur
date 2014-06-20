@@ -1217,7 +1217,22 @@ def terms():
 @app.route('/')
 def home():
     #return render_template('index.html')
-    return render_template('infoside/index.html')
+    return render_template('info_new/index.html')
+@app.route('/api')
+def infoapi():
+    return render_template('info_new/api.html')
+@app.route('/faq')
+def infofaq():
+    return render_template('info_new/faq.html')
+@app.route('/brukeravtale')
+def infoterms():
+    return render_template('info_new/terms.html')
+@app.route('/personvern')
+def infoprivacypolicy():
+    return render_template('info_new/privacy_policy.html')
+@app.route('/priser')
+def infopriser():
+    return render_template('info_new/price.html')
 
 
 @app.route('/closed/')
@@ -1231,28 +1246,16 @@ def closedTrip():
 @app.route('/info')
 def infoexplore():
     return render_template('infoside/explore.html')
-@app.route('/priser')
-def infopriser():
-    return render_template('infoside/plans.html')
+
 @app.route('/eksempler')
 def infoeksempler():
     return render_template('infoside/eksempler.html')
-@app.route('/api')
-def infoapi():
-    return render_template('infoside/api.html')
-@app.route('/faq')
-def infofaq():
-    return render_template('infoside/faq.html')
+
+
 @app.route('/kontakt')
 def infokontakt():
     return render_template('infoside/contact.html')
-@app.route('/brukeravtale')
-def infoterms():
-    return render_template('infoside/terms.html')
-@app.route('/personvern')
-def infoprivacypolicy():
-    return render_template('infoside/privacy_policy.html')
- 
+
 
 @app.route('/admin')
 @login_required

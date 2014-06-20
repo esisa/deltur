@@ -1,0 +1,15 @@
+{
+    "attribution": "",
+    "bounds": [-180, -85, 180, 85],
+    "center": [59, 10, 3],
+    "geocoder": "http://a.tiles.mapbox.com/v3/mapbox.mapbox-streets/geocode/{query}.jsonp",
+    "id": "turkompisen.flyfoto",
+    "maxzoom": 18,
+    "minzoom": 0,
+    "name": "Turkompisen flyfoto",
+    "private": true,
+    "scheme": "xyz",
+    "tilejson": "2.0.0",
+    "tiles": ["http://www.webatlas.no/maptiles/tiles/webatlas-orto-newup/wa_grid/{z}/{x}/{y}.jpeg", "http://www.webatlas.no/maptiles/tiles/webatlas-orto-newup/wa_grid/{z}/{x}/{y}.jpeg", "http://www.webatlas.no/maptiles/tiles/webatlas-orto-newup/wa_grid/{z}/{x}/{y}.jpeg", "http://www.webatlas.no/maptiles/tiles/webatlas-orto-newup/wa_grid/{z}/{x}/{y}.jpeg"],
+    "webpage": "http://www.turkompisen.no"
+}

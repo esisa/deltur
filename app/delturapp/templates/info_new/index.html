@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SHIELD - Free Bootstrap 3 Theme">
+    <meta name="author" content="Carlos Alvarez - Alvarez.is - blacktie.co">
+    <link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
+
+	<title>deltur.no</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='info_new/css/bootstrap.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='info_new/css/main.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='info_new/css/icomoon.css') }}">
+    <link href="{{ url_for('static', filename='info_new/css/animate-custom.css') }}" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+    
+    <script src="{{ url_for('static', filename='info_new/js/jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='info_new/js/modernizr.custom.js') }}"></script>
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+      <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
+  
+  
+  	<div id="navbar-main">
+      <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span style="font-size:30px; color:#3498db;">
+            	<i class="fa fa-bars"></i>
+            </span>
+          </button>
+          <!--a class="navbar-brand hidden-xs hidden-sm" href="{{ url_for('home') }}">
+          	<span  style="font-size:18px; color:#3498db;">
+          		<i class="fa fa-bars"></i>
+          	</span>
+          </a-->
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{{ url_for('home') }}" class="smoothScroll">Om deltur.no</a></li>
+            <li> <a href="{{ url_for('edit') }}" class="smoothScroll">Del en tur</a></li>
+			<li> <a href="{{ url_for('infoapi') }}" class="smoothScroll">API</a></li>
+			<li> <a href="{{ url_for('infopriser') }}" class="smoothScroll">Priser</a></li>
+			<li> <a href="{{ url_for('infofaq') }}" class="smoothScroll">FAQ</a></li>
+			<li> <a href="#contact" class="smoothScroll">Kontakt</a></li>
+			<li> <a href="http://kresendo.no/blog" target="_blank">Blogg</a></li>
+		  </ul>  
+          <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated() %}
+            <li><a href="{{ url_for('adminIndex') }}">Admin</a></li>
+              <li class="dropdown">
+                <a href="{{ url_for('adminIndex') }}" class="dropdown-toggle" data-toggle="dropdown">{{ current_user.email }} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+                </ul>
+              </li>
+            {% else %}
+              <li><a href="{{ url_for('security.login') }}">Logg inn</a></li>
+            {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    </div>
+
+  
+  
+		<!-- ==== HEADERWRAP ==== -->
+	    <div id="headerwrap" id="home" name="home">
+			<header class="clearfix">
+	  		 		<h1><img src="{{ url_for('static', filename='img/map_logo.png') }}"><!--span class="icon icon-shield"></span--></h1>
+	  		 		<p>deltur.no</p>
+	  		 		<p>Del din tur på 1-2-3</p>
+	  		 		<a href="{{ url_for('edit') }}">
+	  		 			<button type="button" class="btn btn-default">Del en tur</button>
+	  		 		</a>
+	  		 		{% if not current_user.is_authenticated() %}
+		  		 		<a href="{{ url_for('security.register') }}">
+		  		 			<button type="button" class="btn btn-default">Registrer deg</button>
+		  		 		</a>
+		  		 	{% endif %}
+	  		</header>	    
+	    </div><!-- /headerwrap -->
+
+		<!-- ==== GREYWRAP ==== -->
+		<div id="greywrap">
+			<div class="row">
+				<div class="col-lg-4 callout">
+					<i class="fa fa-share-alt fa-4x"></i>
+					<h2>Del og miks turer</h2>
+					<p>Med deltur.no kan du mikse linjer og steder som du selv vil. Du kan bygge opp turen med linjer og steder slik du selv ønsker det.  </p>
+				</div><!-- col-lg-4 -->
+					
+				<div class="col-lg-4 callout">
+					<i class="fa fa-heart fa-4x"></i>
+					<h2>Lag ditt eget design</h2>
+					<p>Med deltur.no kan du vise dine turer med ditt eget design. Linjer, punkter og bakgrunnskartet kan ha farger tilpasset ditt bruk.  </p>
+				</div><!-- col-lg-4 -->	
+				
+				<div class="col-lg-4 callout">
+					<i class="fa fa-code fa-4x"></i>
+					<h2>Mer glad i API enn i GUI</h2>
+					<p>Med deltur.no kan du laste opp turer gjennom grensesnittet på deltur.no. Men du kan også integrere deltur.no i dine egne systemer ved å bruke deltur.no API.   </p>
+				</div><!-- col-lg-4 -->	
+			</div><!-- row -->
+		</div><!-- greywrap -->
+		
+		<!-- ==== ABOUT ==== -->
+		<div class="container" id="about" name="about">
+			<div class="row white">
+			<br>
+				<h1 class="centered">Hva er deltur.no?</h1>
+				<hr>
+				
+				<div class="col-lg-12">
+					<p>
+						deltur.no gir deg en enkel måte å dele dine turer på. Du trenger ikke lengre å forklarer hvor du har vært på tur.
+						Nå kan du legge inn turen direkte på deltur.no og dele med dine venner. 
+					</p>
+					<p>
+						Har du en hjemmeside eller blogg der du vil vise fram din favorittur så legg turen inn på deltur.no og velg
+						å enkelt dele denne turen på din egen side. Du kan styre utseendet på kart og tur slik at det passer perfekt
+						inn på din egen side.
+					</p>
+					<p>
+						Er du mer teknisk anlagt kan du bruke deltur.no API for å integrere deltur.no inn i dine egne produkter. 
+					</p>
+				</div><!-- col-lg-6 -->
+				
+				
+			</div><!-- row -->
+		</div><!-- container -->
+
+		<!-- ==== SECTION DIVIDER2 -->
+		<section class="section-divider textdivider divider1">
+			<div class="container">
+				<h1>Hva kan du gjøre med deltur.no?</h1>
+				<!--hr>
+				<p>To develop a deeper and more meaningful connection with consumers, we believe design must invite them to take part in the conversation.</p-->
+			</div><!-- container -->
+		</section><!-- section -->
+
+		<!-- ==== GREYWRAP ==== -->
+		<div id="greywrap">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6 centered">
+						<img class="img-responsive" src="{{ url_for('static', filename='info_new/img/show/map.png') }}" align="">
+					</div>
+					<div class="col-lg-6">
+						<h2>Del turen din enkelt på deltur.no</h2>
+						<p>Last opp din GPS-fil og del den raskt og enkelt på deltur.no. Du kan også velge avansert deling og dele punkter og bilder i tillegg til din GPS-fil. </p>
+						<p>Du kan også "legge sammen" ulike turer med enkelt å bruke plusstegnet i URL'en slik som denne turen <a href="http://beta.deltur.no/101+102+103">beta.deltur.no/101+102+103</a></p>
+					</div>					
+				</div><!-- row -->
+			</div>
+			<br>
+			<br>
+		</div><!-- greywrap -->
+
+		<!-- ==== GREYWRAP ==== -->
+		<div id="greywrap">
+			<div class="container">
+				<div class="row">
+					
+					<div class="col-lg-6">
+						<h2>Del turen på sosiale medier</h2>
+						<p>Med deltur.no kan du vise alle dine venner hvor du har vært i dag!  </p>
+						<p>Nå trenger du ikke lenger forklare hvor du har vært på tur, hvor mange bakker du har løpt eller hvor du startet turen. All informasjon ligger i kartet og du kan dele det med dine venner på Facebook, Twitter, Google+ eller på e-post.</p>
+						<p>Alt kun et klikk unna.</p>
+					</div>	
+					<div class="col-lg-6 centered">
+						<img class="img-responsive" src="{{ url_for('static', filename='info_new/img/show/share.png') }}" align="">
+					</div>				
+				</div><!-- row -->
+			</div>
+			<br>
+			<br>
+		</div><!-- greywrap -->
+		
+		
+  		
+
+		<!-- ==== SECTION DIVIDER2 -->
+		<section class="section-divider textdivider divider2">
+			<div class="container">
+				<h1>Bruk deltur.no til å vise fram turen på dine sider</h1>
+				<!--hr>
+				<p>deltur.no har en masse funksjonalitet for å gjøre det lett for deg å implementere turkart på din hjemmeside eller blogg.</p-->
+			</div><!-- container -->
+		</section><!-- section -->
+
+		<!-- ==== TEAM MEMBERS ==== -->
+		<!div class="container" id="team" name="team">
+		<br>
+			<div class="row white centered">
+				<!--h1 class="centered">MEET OUR AWESOME TEAM</h1>
+				<hr-->
+				<br>
+				<br>
+				<div class="col-lg-4 centered">
+					<img class="img img-circle" src="{{ url_for('static', filename='info_new/img/show/tur.png') }}" height="220px" width="220px" alt="">
+					<br>
+					<h4><b>Vis turen på egne nettsider</b></h4>
+					<!--a href="#" class="icon icon-twitter"></a>
+					<a href="#" class="icon icon-facebook"></a>
+					<a href="#" class="icon icon-flickr"></a-->
+					<p>
+					Alle registrerte turer på deltur.no kan deles på din egen nettside ved å kopiere en enkel kode som du limer inn på ditt eget nettsted. Det betyr at du svært enkelt kan tilby kart på alle dine turforslag eller vise turen du har gått på bloggen din. 
+					Velg selv størrelsen på kartet, resten skjer automatisk! </p>
+				</div><!-- col-lg-3 -->
+				
+				<div class="col-lg-4 centered">
+					<img class="img img-circle" src="{{ url_for('static', filename='info_new/img/show/api.png') }}" height="220px" width="220px" alt="">
+					<br>
+					<h4><b>Bruk deltur.no API som lagringsplass for dine turer</b></h4>
+					<!--a href="#" class="icon icon-twitter"></a>
+					<a href="#" class="icon icon-facebook"></a>
+					<a href="#" class="icon icon-flickr"></a-->
+					<p> deltur.no tilbyr et API der du kan lagre dine turer og vise de fram slik du ønsker det. Gjennom API'et kan du også laste ned turen i mange ulike formater.
+					Bruk deltur.no API gjennom ditt eget nettsystem og få et fullverdig lagringssystem for dine turer nesten gratis. Enkelt er det også! </p>
+				</div><!-- col-lg-3 -->
+				
+				<div class="col-lg-4 centered">
+					<img class="img img-circle" src="{{ url_for('static', filename='info_new/img/show/style.png') }}" height="220px" width="220px" alt="">
+					<br>
+					<h4><b>Style om dine turer for å passe din profil</b></h4>
+					<!--a href="#" class="icon icon-twitter"></a>
+					<a href="#" class="icon icon-facebook"></a>
+					<a href="#" class="icon icon-flickr"></a-->
+					<p>Velg en kartløsning som ikke bryter med ditt eksisterende design.
+					Hvorfor skal du legge til et kart på ditt eget nettsted som bryter fullstendig med din visuelle profil? Med deltur.no kan du style alt til å se ut akkurat slik du ønsker deg. Du velger selv hva slags type markører du vil bruke og farge på linjene i kartet. Ikke bare det, du kan også legge inn et eget bakgrunnskart som er spesialtilpasset ditt design. 
+					Resultatet er et kart som passer 100% med din visuelle profil!  </p>
+				</div><!-- col-lg-3 -->
+				
+				<!--div class="col-lg-3 centered">
+					<img class="img img-circle" src="assets/img/team/team04.jpg" height="120px" width="120px" alt="">
+					<br>
+					<h4><b>Jaye Smith</b></h4>
+					<a href="#" class="icon icon-twitter"></a>
+					<a href="#" class="icon icon-facebook"></a>
+					<a href="#" class="icon icon-flickr"></a>
+					<p>Jaye began making websites when animated logos and scrolling text were cool, but has since found a love for simplicity, creating websites that are a pleasure to browse. Monkey Island Fan.</p>
+				</div--><!-- col-lg-3 -->
+				
+			</div><!-- row -->
+		</div><!-- container -->
+
+		
+		
+		<!-- ==== SECTION DIVIDER3 -->
+		<section class="section-divider textdivider divider3">
+			<div class="container">
+				<h1>Eksempler på bruk av deltur.no</h1>
+				<!--hr>
+				<p>From the purely practical to the richly philosophical, design is the solution to a host of challenges.</p-->
+			</div><!-- container -->
+		</section><!-- section -->
+		
+		<!-- ==== PORTFOLIO ==== -->
+		<div class="container" id="portfolio" name="portfolio">
+		<br>
+			<div class="row">
+				<!--br>
+				<h1 class="centered">WE CREATE COOL STUFF</h1>
+				<hr-->
+				<br>
+				<br>
+			</div><!-- /row -->
+			<div class="container">
+			<div class="row">	
+			
+				<!-- PORTFOLIO IMAGE 1 -->
+				<div class="col-md-4 ">
+			    	<div class="grid mask">
+						<figure>
+							<img class="img-responsive" src="{{ url_for('static', filename='info_new/img/examples/example6.png') }}" alt="">
+							<figcaption>
+								<h5>Kart med høydeprofil</h5>
+								<a data-toggle="modal" href="#exampleModalOne" class="btn btn-primary btn-lg">Ta en titt</a>
+							</figcaption><!-- /figcaption -->
+						</figure><!-- /figure -->
+			    	</div><!-- /grid-mask -->
+				</div><!-- /col -->
+				
+				
+						  <div class="modal fade" id="exampleModalOne" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						          <h4 class="modal-title">Kart med høydeprofil</h4>
+						        </div>
+						        <div class="modal-body">
+						        <iframe width="550" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/177/embed?embedType=elevationProfile"></iframe>
+						          
+						          <p>Kartet viser en skitur ved Sjusjøen og i tillegg ser du høydeprofilen på turen.</p>
+						          <p><b><a href="http://beta.deltur.no/177/embed?embedType=elevationProfile">Se mer</a></b></p>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+						        </div>
+						      </div><!-- /.modal-content -->
+						    </div><!-- /.modal-dialog -->
+						  </div><!-- /.modal -->
+				
+				
+				<!-- PORTFOLIO IMAGE 2 -->
+				<div class="col-md-4">
+			    	<div class="grid mask">
+						<figure>
+							<img class="img-responsive" src="{{ url_for('static', filename='info_new/img/examples/example1.png') }}" alt="">
+							<figcaption>
+								<h5>Velg selv farger på turen</h5>
+								<a data-toggle="modal" href="#exampleModalTwo" class="btn btn-primary btn-lg">Ta en titt</a>
+							</figcaption><!-- /figcaption -->
+						</figure><!-- /figure -->
+			    	</div><!-- /grid-mask -->
+				</div><!-- /col -->
+						      
+						  <div class="modal fade" id="exampleModalTwo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						          <h4 class="modal-title">Velg selv farger på turen</h4>
+						        </div>
+						        <div class="modal-body">
+						        <iframe width="550" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/104+105/embed"></iframe>
+						          
+						          <p>Kartet viser hvordan du kan legge inn flere turer med ulike farger.</p>
+						          <p><b><a href="http://beta.deltur.no/104+105">Se mer</a></b></p>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+						        </div>
+						      </div><!-- /.modal-content -->
+						    </div><!-- /.modal-dialog -->
+						  </div><!-- /.modal -->
+				
+				<!-- PORTFOLIO IMAGE 3 -->
+				<div class="col-md-4">
+			    	<div class="grid mask">
+						<figure>
+							<img class="img-responsive" src="{{ url_for('static', filename='info_new/img/examples/example2.png') }}" alt="">
+							<figcaption>
+								<h5>Enkel markør</h5>
+								<a data-toggle="modal" href="#exampleModalThree" class="btn btn-primary btn-lg">Ta en titt</a>
+							</figcaption><!-- /figcaption -->
+						</figure><!-- /figure -->
+			    	</div><!-- /grid-mask -->
+				</div><!-- /col -->
+			</div><!-- /row -->
+
+						      
+						  <div class="modal fade" id="exampleModalThree" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						          <h4 class="modal-title">Enkel markør</h4>
+						        </div>
+						        <div class="modal-body">
+						        <iframe width="550" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/178/embed"></iframe>
+						          
+						          <p>Kartet viser hvordan du kan vise en enkel markør med et bilde. Du kan selv velge farge og ikon på markøren.</p>
+						          <p><b><a href="http://beta.deltur.no/178">Se mer</a></b></p>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+						        </div>
+						      </div><!-- /.modal-content -->
+						    </div><!-- /.modal-dialog -->
+						  </div><!-- /.modal -->
+
+				<!-- PORTFOLIO IMAGE 4 -->
+			<div class="row">	
+				<div class="col-md-4 ">
+			    	<div class="grid mask">
+						<figure>
+							<img class="img-responsive" src="{{ url_for('static', filename='info_new/img/examples/example3.png') }}" alt="">
+							<figcaption>
+								<h5>Nummererte markører</h5>
+								<a data-toggle="modal" href="#exampleModalFour" class="btn btn-primary btn-lg">Ta en titt</a>
+							</figcaption><!-- /figcaption -->
+						</figure><!-- /figure -->
+			    	</div><!-- /grid-mask -->
+				</div><!-- /col -->
+
+						      
+						  <div class="modal fade" id="exampleModalFour" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						          <h4 class="modal-title">Nummererte markører</h4>
+						        </div>
+						        <div class="modal-body">
+						        <iframe width="550" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/179+180+181+182/embed"></iframe>
+						          
+						          <p>Du kan også legge til nummererte markører.</p>
+						          <p><b><a href="http://beta.deltur.no/179+180+181+182">Se mer</a></b></p>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+						        </div>
+						      </div><!-- /.modal-content -->
+						    </div><!-- /.modal-dialog -->
+						  </div><!-- /.modal -->
+				
+				<!-- PORTFOLIO IMAGE 5 -->
+				<div class="col-md-4">
+			    	<div class="grid mask">
+						<figure>
+							<img class="img-responsive" src="{{ url_for('static', filename='info_new/img/examples/example4.png') }}" alt="">
+							<figcaption>
+								<h5>Bytt bakgrunnskart</h5>
+								<a data-toggle="modal" href="#exampleModalFive" class="btn btn-primary btn-lg">Ta en titt</a>
+							</figcaption><!-- /figcaption -->
+						</figure><!-- /figure -->
+			    	</div><!-- /grid-mask -->
+				</div><!-- /col -->
+
+						      
+						  <div class="modal fade" id="exampleModalFive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						          <h4 class="modal-title">Bytt bakgrunnskartl</h4>
+						        </div>
+						        <div class="modal-body">
+						        <iframe width="550" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/176/embed/satellitt/"></iframe>
+						          
+						          <p>På deltur.no kan du selv velge mellom standard bakgrunnskart eller ditt eget bakgrunnskart.</p>
+						          <p><b><a href="http://beta.deltur.no/176/satellitt">Se mer</a></b></p>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+						        </div>
+						      </div><!-- /.modal-content -->
+						    </div><!-- /.modal-dialog -->
+						  </div><!-- /.modal -->
+				
+				<!-- PORTFOLIO IMAGE 6 -->
+				<div class="col-md-4">
+			    	<div class="grid mask">
+						<figure>
+							<img class="img-responsive" src="{{ url_for('static', filename='info_new/img/examples/example5.png') }}" alt="">
+							<figcaption>
+								<h5>Bilder rett i kartet</h5>
+								<a data-toggle="modal" href="#exampleModalSix" class="btn btn-primary btn-lg">Ta en titt</a>
+							</figcaption><!-- /figcaption -->
+						</figure><!-- /figure -->
+			    	</div><!-- /grid-mask -->
+				</div><!-- /col -->
+			</div><!-- /row -->
+
+
+						  <div class="modal fade" id="exampleModalSix" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						    <div class="modal-dialog">
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						          <h4 class="modal-title">Bilder rett i kartet</h4>
+						        </div>
+						        <div class="modal-body">
+						        <iframe width="550" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://beta.deltur.no/179+180+181+182/embed?embedType=imagemap"></iframe>
+						          
+						          <p>Du kan også velge å vise bildene dine direkte i kartet. </p>
+						          <p><b><a href="http://beta.deltur.no/179+180+181+182/embed?embedType=imagemap">Se mer</a></b></p>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" data-dismiss="modal">Lukk</button>
+						        </div>
+						      </div><!-- /.modal-content -->
+						    </div><!-- /.modal-dialog -->
+						  </div><!-- /.modal -->
+			<br>
+			<br>
+		</div><!-- /row -->
+	</div><!-- /container -->
+
+		
+
+		
+		<!-- ==== SECTION DIVIDER6 ==== -->
+		<section class="section-divider textdivider divider6">
+			<div class="container">
+				<h1>&nbsp;</h1>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+			</div><!-- container -->
+		</section><!-- section -->
+		
+		<div class="container" id="contact" name="contact">
+			<div class="row">
+			<br>
+				
+				<br>
+				<br>
+				<div class="col-lg-4">
+					<h3>Kontaktinformasjon</h3>
+					<p><span class="icon icon-home"></span> Baldersvei 2, 1445 Drøbak<br/>
+						<span class="icon icon-mobile"></span> 40 22 22 04 <br/>
+						<span class="icon icon-envelop"></span> <a href="#"> espen@kresendo.no</a> <br/>
+						<span class="icon icon-twitter"></span> <a href="#"> @deltur_no </a> <br/>
+						<span class="icon icon-facebook"></span> <a href="#"> facebook.com/delturno </a> <br/>
+					</p>
+				</div><!-- col -->
+				
+				<div class="col-lg-4">
+					
+					<h3>&nbsp;</h3>
+					<p>Kresendo er et lite kartfirma som blant annet står bak <a href="http://deltur.no">deltur.no</a> og <a href="http://turkompisen.no">Turkompisen.no</a> Kresendo kan også hjelpe til med dine egne utfordinger med kart. Se mer på <a href="http://kresendo.no">kresendo.no</a></p>
+					
+				</div><!-- col -->
+				
+				<div class="col-lg-4">
+					<h3>&nbsp;</h3>
+					<p>
+						Har du spørsmål om deltur.no kan du kontakte Kresendo på <a href="mailto:espen@kresendo.no">e-post</a> eller besøk deltur.no på <a href="http://twitter.no/deltur_no">Twitter</a> og <a href="http://facebook.com">Facebook</a>. 
+					</p>
+					<p> 
+						<a href="{{ url_for('infoterms') }}"><i class="fa fa-circle-o"></i>  Brukeravtale</a> <br/>
+						<a href="{{ url_for('infoprivacypolicy') }}"><i class="fa fa-circle-o"></i>  Personværnserklæring</a> <br/>
+					</p>
+				
+				</div><!-- col -->
+
+			</div><!-- row -->
+		
+		</div><!-- container -->
+
+		<div id="footerwrap">
+			<div class="container">
+				<h4><a href="http://kresendo.no">Kresendo</a> står bak deltur.no</h4>
+			</div>
+		</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+		
+
+	<script type="text/javascript" src="{{ url_for('static', filename='info_new/js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='info_new/js/retina.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='info_new/js/jquery.easing.1.3.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/smoothscroll.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='info_new/js/jquery-func.js') }}"></script>
+  </body>
+</html>

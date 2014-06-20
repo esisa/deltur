@@ -26,7 +26,10 @@ var topokart = L.mapbox.tileLayer(tileJsonTopokart, {
     retinaVersion: tileJsonTopokartHighdef
 });
 
-var satellite = L.mapbox.tileLayer('esisa.map-0s7gv7xn');
+var satellite = L.mapbox.tileLayer(aerialMap, {
+    detectRetina: false,
+});
+//L.mapbox.tileLayer('esisa.map-0s7gv7xn');
 
 
 var kartverket = new L.TileLayer("http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}", {

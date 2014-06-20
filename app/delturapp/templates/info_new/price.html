@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SHIELD - Free Bootstrap 3 Theme">
+    <meta name="author" content="Carlos Alvarez - Alvarez.is - blacktie.co">
+    <link rel='shortcut icon' type='image/x-icon' href='{{ url_for('static', filename='img/favicon.png') }}' />
+
+  <title>deltur.no</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('static', filename='info_new/css/bootstrap.css') }}" rel="stylesheet">
+
+    <!-- Custom css -->
+    <link href="{{ url_for('static', filename='info_new/css/price-table.css') }}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='info_new/css/main.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='info_new/css/icomoon.css') }}">
+    <link href="{{ url_for('static', filename='info_new/css/animate-custom.css') }}" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+    
+    <script src="{{ url_for('static', filename='info_new/js/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/modernizr.custom.js') }}"></script>
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+      <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+	    .white p {
+		    padding-top: 0px ;
+		}
+		p {
+		    margin-bottom: 5px;
+		}
+		h1, h2, h3, h4, h5, h6 {
+		    color: #333;
+		    font-family: "Raleway";
+		    font-weight: 600;
+		}
+    .center {
+      text-align: center;
+    }
+	</style>
+  </head>
+
+  <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
+  
+  
+  	<div id="navbar-main">
+      <!-- Fixed navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span style="font-size:30px; color:#3498db;">
+              <i class="fa fa-bars"></i>
+            </span>
+          </button>
+          <!--a class="navbar-brand hidden-xs hidden-sm" href="{{ url_for('home') }}">
+            <span  style="font-size:18px; color:#3498db;">
+              <i class="fa fa-bars"></i>
+            </span>
+          </a-->
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('home') }}" class="smoothScroll">Om deltur.no</a></li>
+            <li> <a href="{{ url_for('edit') }}" class="smoothScroll">Del en tur</a></li>
+            <li> <a href="{{ url_for('infoapi') }}" class="smoothScroll">API</a></li>
+            <li class="active"> <a href="{{ url_for('infopriser') }}" class="smoothScroll">Priser</a></li>
+            <li> <a href="{{ url_for('infofaq') }}" class="smoothScroll">FAQ</a></li>
+            <li> <a href="#contact" class="smoothScroll">Kontakt</a></li>
+            <li> <a href="http://kresendo.no/blog" target="_blank">Blogg</a></li>
+          </ul>  
+          <ul class="nav navbar-nav navbar-right">
+            {% if current_user.is_authenticated() %}
+            <li><a href="{{ url_for('adminIndex') }}">Admin</a></li>
+              <li class="dropdown">
+                <a href="{{ url_for('adminIndex') }}" class="dropdown-toggle" data-toggle="dropdown">{{ current_user.email }} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ url_for('security.logout') }}">Logg ut</a></li>
+                </ul>
+              </li>
+            {% else %}
+              <li><a href="{{ url_for('security.login') }}">Logg inn</a></li>
+            {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    </div>
+
+  
+  
+		
+		
+		<!-- ==== ABOUT ==== -->
+		<div class="container" id="about" name="about">
+      <div class="row white">
+         <div class="span12">
+            <br><br><br>
+
+            <h2 class="center">Standard eller Ekspert?</h2>
+            <p class="center">Bruk deltur.no gratis eller velg en betalings-versjon og få mange flere muligheter!</p>
+
+    			   <table cellspacing="0">
+              <tr>
+                <th><img src="{{ url_for('static', filename='img/map_logo.png') }}" height="40" width="40" ><br>deltur.no abbonement</th>
+                <th>Ingen registrering</th>
+                <th>Gratis</th><th>Standard</th>
+                <th>Pro</th>
+                <th>Ekspert</th>
+              </tr>
+              <tr>
+                <td><b>Per måned</b></td>
+                <td>0,-</td>
+                <td>0,-</td>
+                <td>6,-</td>
+                <td>35,-</td>
+                <td>299,-</td>
+              </tr>
+              <tr>
+                <td><b>For hvem</b></td>
+                <td>Enkel deling på sosiale medier</td>
+                <td>Den enkle bloggen</td>
+                <td>Bloggeren med sans for design</td>
+                <td>Hotell og reiseliv</td>
+                <td>Eksperten</td>
+              </tr>
+              <tr>
+                <td><b>Varighet på turen</b></td>
+                <td>Slettes etter 14 dager</td>
+                <td>Slettes aldri</td>
+                <td>Slettes aldri</td>
+                <td>Slettes aldri</td>
+                <td>Slettes aldri</td>
+              </tr>
+              <tr>
+                <td><b>Kartvisninger</b></td>
+                <td>Ingen begrensninger</td>
+                <td>1000</td>
+                <td>3000</td>
+                <td>20 000</td>
+                <td>200 000</td>
+              </tr>
+              <tr>
+                <td><b>API-kall</b></td>
+                <td>Ingen begrensninger</td>
+                <td>100</td>
+                <td>250</td>
+                <td>1 000</td>
+                <td>10 000</td>
+              </tr>
+              <tr>
+                <td><b>Antall opplastede bilder</b></td>
+                <td>Ingen begrensninger</td>
+                <td>10</td>
+                <td>100</td>
+                <td>250</td>
+                <td>2 000</td>
+              </tr>
+              <tr>
+                <td><b>Del og miks turer</b></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+              <tr>
+                <td><b>Embed tur på eget nettsted</b></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+               <tr>
+                <td><b>Tilgang til <a href="/info/api">API</a></b></td>
+                <td></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+              <tr>
+                <td><b>Endre farger og stil</b></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+              <tr>
+                <td><b>Ingen logo i kartet</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+              <tr>
+                <td><b>Skru av kopiering av dine turer</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+              <tr>
+                <td><b>Ingen reklame i kartet</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+              <tr>
+                <td><b>Bruk ulike <a href="/info/api#visningstype">visningsvarianter</a></b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+              <tr>
+                <td><b><a href="/info/faq#spesialkart">Eget bakgrunnskart</a></b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+              <tr>
+                <td><b>Egne opplastingsverktøy</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><i class="fa fa-check fa-2x"></i></td>
+              </tr>
+             </table>
+
+             <br><br>
+            <h3 class="center">
+              Prøv med en gang!
+              <a href="{{ url_for('security.register') }}" title="Registrer deg!.">
+                Registrer deg
+              </a>&rarr;
+            </h3>
+    
+			     </div><!-- row -->
+		    </div>
+		</div><!-- container -->
+
+		<div class="container" id="contact" name="contact">
+      <div class="row">
+      <br>
+        
+        <br>
+        <br>
+        <div class="col-lg-4">
+          <h3>Kontaktinformasjon</h3>
+          <p><span class="icon icon-home"></span> Baldersvei 2, 1445 Drøbak<br/>
+            <span class="icon icon-mobile"></span> 40 22 22 04 <br/>
+            <span class="icon icon-envelop"></span> <a href="#"> espen@kresendo.no</a> <br/>
+            <span class="icon icon-twitter"></span> <a href="#"> @deltur_no </a> <br/>
+            <span class="icon icon-facebook"></span> <a href="#"> facebook.com/delturno </a> <br/>
+          </p>
+        </div><!-- col -->
+        
+        <div class="col-lg-4">
+          
+          <h3>&nbsp;</h3>
+          <p>Kresendo er et lite kartfirma som blant annet står bak <a href="http://deltur.no">deltur.no</a> og <a href="http://turkompisen.no">Turkompisen.no</a> Kresendo kan også hjelpe til med dine egne utfordinger med kart. Se mer på <a href="http://kresendo.no">kresendo.no</a></p>
+          
+        </div><!-- col -->
+        
+        <div class="col-lg-4">
+          <h3>&nbsp;</h3>
+          <p>
+            Har du spørsmål om deltur.no kan du kontakte Kresendo på <a href="mailto:espen@kresendo.no">e-post</a> eller besøk deltur.no på <a href="http://twitter.no/deltur_no">Twitter</a> og <a href="http://facebook.com">Facebook</a>. 
+          </p>
+          <p><a href="{{ url_for('infoterms') }}"><i class="fa fa-circle-o"></i>  Brukeravtale</a> <br/>
+            <a href="{{ url_for('infoprivacypolicy') }}"><i class="fa fa-circle-o"></i>  Personværnserklæring</a> <br/></p>
+        </div><!-- col -->
+
+      </div><!-- row -->
+    
+    </div><!-- container -->
+
+    <div id="footerwrap">
+      <div class="container">
+        <h4><a href="http://kresendo.co">Kresendo</a> står bak deltur.no</h4>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+		
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/bootstrap.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/retina.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/jquery.easing.1.3.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/smoothscroll.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='info_new/js/jquery-func.js') }}"></script>
+  
+  </body>
+</html>
