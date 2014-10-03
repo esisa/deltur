@@ -91,11 +91,11 @@
 	  		 		<p>deltur.no</p>
 	  		 		<p>Del din tur på 1-2-3</p>
 	  		 		<a href="{{ url_for('edit') }}">
-	  		 			<button type="button" class="btn btn-default">Del en tur</button>
+	  		 			<button type="button" class="btn-lg btn-default">Del en tur</button>
 	  		 		</a>
 	  		 		{% if not current_user.is_authenticated() %}
 		  		 		<a href="{{ url_for('security.register') }}">
-		  		 			<button type="button" class="btn btn-default">Registrer deg</button>
+		  		 			<button type="button" class="btn-lg btn-default">Registrer deg</button>
 		  		 		</a>
 		  		 	{% endif %}
 	  		</header>	    
