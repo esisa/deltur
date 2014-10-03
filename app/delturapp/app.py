@@ -1103,15 +1103,14 @@ def getTripEmbed(ids, mapType='topokart'):
     plan = getLowestPlan(ids)
 
     embedType = request.args.get('embedType', '')
+
+    print plan
     
     if plan != "noreg":
         if embedType != '':
-            if plan == "expert":
-                try:
-                    return render_template('embeds/' + embedType + '.html', mapType=map, idList=ids)
-                except TemplateNotFound:
-                    return render_template('404.html'), 404
-            else:
+            try:
+                return render_template('embeds/' + embedType + '.html', mapType=map, idList=ids)
+            except TemplateNotFound:
                 return render_template('404.html'), 404
         else:
             return render_template('embeds/index.html', mapType=map, idList=ids, showLogo=showLogo)
