@@ -1570,7 +1570,11 @@
 
 
                         $('#deltur-button').attr('disabled', false); // Enable button
-                        $('#embed-button').attr('disabled', false); // Enable button
+                        {% if current_user.is_authenticated() %}
+                            $('#embed-button').attr('disabled', false); // Enable button
+                        {% else %}
+                            $('#embed-button').attr('disabled', true); // Keep it disabled 
+                        {% endif %}
                         
                         // Stop interval
                         clearInterval(lineInterval);
@@ -1626,7 +1630,11 @@
 
 
                         $('#deltur-button').attr('disabled', false); // Enable button
-                        $('#embed-button').attr('disabled', false); // Enable button
+                        {% if current_user.is_authenticated() %}
+                            $('#embed-button').attr('disabled', false); // Enable button
+                        {% else %}
+                            $('#embed-button').attr('disabled', true); // Keep it disabled 
+                        {% endif %}
                         
                         // Stop interval
                         clearInterval(interval);
