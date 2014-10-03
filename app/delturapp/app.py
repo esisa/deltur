@@ -1337,7 +1337,7 @@ def addLineToDB(line, title):
             
     cursor = conn.cursor()
 
-    sql_string = "INSERT INTO trips(dato, title, geo) VALUES (now(), %s,ST_MULTI(ST_GEOMFROMTEXT(%s, 4326))) RETURNING id;"
+    sql_string = "INSERT INTO trips(dato, title, geo) VALUES (now(), %s,ST_Force_2D(ST_MULTI(ST_GEOMFROMTEXT(%s, 4326)))) RETURNING id;"
     cursor.execute(sql_string, (title, line.wkt))
     id = cursor.fetchone()[0]
     conn.commit();
