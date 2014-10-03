@@ -228,6 +228,8 @@ var delturPoint = function () {
         if(style.markerType == "number") {
             var icon = L.AwesomeMarkers.icon({
                 text: style.markersymbol,
+                icon: '',
+                prefix: 'fa',
                 color: style.markercolor,
                 markerColor: style.markercolor
             });

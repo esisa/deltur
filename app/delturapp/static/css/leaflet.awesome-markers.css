@@ -40,6 +40,7 @@ Version: 1.0
   margin-top: 10px;
   display: inline-block;
   font-size: 14px;
+  font-weight: bold; /* Bedre på tall, ingen effekt på ikoner */
 }
 
 .awesome-marker .icon-white {

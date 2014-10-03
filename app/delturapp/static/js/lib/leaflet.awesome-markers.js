@@ -83,12 +83,33 @@
         },
 
         _createInnerText: function() {
-          if (this.options.textFormat != undefined && this.options.textFormat == 'letter') {
-            this.options.text = this.num2letter(this.options.text);
-          }
-          return "<strong class='awesome-marker-number "
-          + (this.options.spin ? " icon-spin" :"") 
-          + (this.options.iconColor ? " icon-" + this.options.iconColor :"") + "'>" + this.options.text + "</strong>";
+
+            var iconClass, iconSpinClass = "", iconColorClass = "", iconColorStyle = "", options = this.options;
+
+            if(options.icon.slice(0,options.prefix.length+1) === options.prefix + "-") {
+                iconClass = options.icon;
+            } else {
+                iconClass = options.prefix + "-" + options.icon;
+            }
+
+            if(options.spin && typeof options.spinClass === "string") {
+                iconSpinClass = options.spinClass;
+            }
+
+            if(options.iconColor) {
+                if(options.iconColor === 'white' || options.iconColor === 'black') {
+                    iconColorClass = "icon-" + options.iconColor;
+                } else {
+                    iconColorStyle = "style='color: " + options.iconColor + "' ";
+                }
+            }
+              /*if (this.options.textFormat != undefined && this.options.textFormat == 'letter') {
+                this.options.text = this.num2letter(this.options.text);
+              }
+              return "<strong class='awesome-marker-number "
+              + (this.options.spin ? " icon-spin" :"") 
+              + (this.options.iconColor ? " icon-" + this.options.iconColor :"") + "'>" + this.options.text + "</strong>";*/
+              return "<strong><i " + iconColorStyle + "class='" + options.prefix + " " + iconClass + " " + iconSpinClass + " " + iconColorClass + "'>" + options.text + "</i></strong>";
         },
 
         num2letter: function(num) {
