@@ -1688,7 +1688,7 @@ import xmltodict
 def ssrSok():
     query = request.args.get('query', '')
     #r = requests.get('https://ws.geonorge.no/SKWS3Index/ssr/sok?navn='+query+'*&antPerSide=9&epsgKode=4258&eksakteForst=true')
-    r = requests.get('http://beta.turkompisen.no/search/ssr?query='+query)
+    r = requests.get('http://www.turkompisen.no/search/ssr?query='+query)
     #doc = xmltodict.parse(r.text)
     js = r.text #json.dumps(r.text)
 

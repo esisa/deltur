@@ -1,5 +1,5 @@
 
- 
+var timeout;
 $('.typeahead').typeahead({
   hint: true,
   highlight: true,
@@ -18,15 +18,29 @@ $('.typeahead').typeahead({
     suggestion: Handlebars.compile('<p><strong>{{stedsnavn}}</strong>, {{kommunenavn}}, {{fylkesnavn}} - {{navnetype}}</p>')
   },
   source: function (query, process) {
-        return $.get('/ssrSok', { query: query }, function (data) {
-            return process(data.sokRes.stedsnavn);
-        });
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        
+        timeout = setTimeout(function() {
+            return $.get('/ssrSok', { query: query }, function (data) {
+                return process(data.sokRes.stedsnavn);
+            });
+        }, 300);
+
+        
     }
 });
 
-$('#search-field').bind('typeahead:selected', function(obj, datum, name) {      
+$('#search-field').bind('typeahead:selected', function(obj, datum, name) { 
+    console.log("Nord: " + datum.nord + " Øst: "+ datum.aust)     
         map.panTo([datum.nord,datum.aust]);
         map.setZoom(15);
+
+        // Hack to make sure we pan to the correct place
+        map.panTo([datum.nord,datum.aust]);
+        
+        // Move to the right of sidebar
         map.panBy([-$('#sidebar').width()/2, 0]);
 });
 
