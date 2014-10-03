@@ -28,6 +28,9 @@ import requests
 import urllib
 from markupsafe import Markup
 
+# Hashing
+import base64
+import os
 import hashlib
 
 from datetime import timedelta
@@ -262,7 +265,7 @@ def test():
     return current_user.get_auth_token()
 
 
-@app.route('/<regex("[a-z0-9]+"):hash>/metadata', methods=['GET'])
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/metadata', methods=['GET'])
 @login_required
 def getHashMetadata(hash):
     try:
@@ -567,30 +570,45 @@ def hashTripLogin(ids):
     increaseApiAccess(current_user.id)
     return hashTrip(request, ids)
 
-
-def hashTrip(request, ids):
+def getDatabaseConnection():
+    conn = None
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
+    return conn
 
-    hash = hashlib.md5(ids).hexdigest()
+def hashTrip(request, ids):
 
-    cursor = conn.cursor()
+    hash = base64.urlsafe_b64encode(hashlib.md5(os.urandom(128)).digest())[:8]
 
     try:
-        sql_string = "insert into hash (hash, ids, userid, dato) VALUES(%s,%s,%s, now())"
-        cursor.execute(sql_string, (hash, ids, current_user.id,))
-        conn.commit();
-        conn.close()
+        conn = getDatabaseConnection()
+        if(conn != None):
+            cursor = conn.cursor()
+            sql_string = "insert into hash (hash, ids, userid, dato) VALUES(%s,%s,%s, now())"
+            cursor.execute(sql_string, (hash, ids, current_user.id,))
+            conn.commit();
+            conn.close()
 
-        data = {
-                    'hash'  : hash
-                }
-    except: # Hash already in table
-        data = {
-                    'hash'  : hash
-                }
+            data = {
+                        'hash'  : hash
+                    }
+    except: # Hash already in table. Make a new one. 
+        hash = base64.urlsafe_b64encode(hashlib.md5(os.urandom(128)).digest())[:8]
+
+        conn = getDatabaseConnection()
+        if(conn != None):
+            cursor = conn.cursor()
+            sql_string = "insert into hash (hash, ids, userid, dato) VALUES(%s,%s,%s, now())"
+            cursor.execute(sql_string, (hash, ids, current_user.id,))
+            conn.commit();
+            conn.close()
+
+            data = {
+                        'hash'  : hash
+                    }
+
        
     js = json.dumps(data)
 
@@ -622,7 +640,7 @@ def deleteTrip(id):
     
     return resp
 
-@app.route('/<regex("[a-z0-9]+"):hash>', methods=['DELETE'])
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>', methods=['DELETE'])
 @login_required
 def deleteHash(hash):
     try:
@@ -1010,7 +1028,7 @@ def getTripHTML(ids, mapType='topokart'):
 
 
 
-@app.route('/<regex("[a-z0-9]+"):hash>/tilejson.json')
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/tilejson.json')
 def getTilejson(hash):
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
@@ -1030,7 +1048,7 @@ def getTilejson(hash):
     resp = Response(tilejson, status=200, mimetype='application/json')
     return resp
 
-@app.route('/<regex("[a-z0-9]+"):hash>/tilejson.json', methods = ['PUT'])
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/tilejson.json', methods = ['PUT'])
 def setTilejson(hash):
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
@@ -1049,7 +1067,7 @@ def setTilejson(hash):
     resp = Response('{"result": "success"}', status=200, mimetype='application/json')
     return resp
 
-@app.route('/<regex("[a-z0-9]+"):hash>/tilejson.retina.json', methods = ['PUT'])
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/tilejson.retina.json', methods = ['PUT'])
 def setTilejsonRetina(hash):
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
@@ -1068,7 +1086,7 @@ def setTilejsonRetina(hash):
     resp = Response('{"result": "success"}', status=200, mimetype='application/json')
     return resp
 
-@app.route('/<regex("[a-z0-9]+"):hash>/tilejson.retina.json')
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/tilejson.retina.json')
 def getRetinaTilejson(hash):
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
@@ -1120,13 +1138,15 @@ def getTripEmbed(ids, mapType='topokart'):
 
 # Hash input
 #[a-z0-9]+
-@app.route('/<regex("^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$"):hash>/')
-@app.route('/<regex("^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$"):hash>/<string:mapType>/')
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/')
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/<string:mapType>/')
 def getTripHTMLByHash(hash, mapType='topokart'):
     try:
         conn = psycopg2.connect("dbname="+pg_db+" user="+pg_user+" password="+pg_passwd+" host="+pg_host+" ")
     except:
         print "Could not connect to database " + pg_db
+
+    print "hashhash"
         
     cursor = conn.cursor()
 
@@ -1143,8 +1163,8 @@ def getTripHTMLByHash(hash, mapType='topokart'):
         map = mapTypesList.index(mapType)
     return render_template('tur.html', mapType=map, idList=idString, hash=hash, showLogo=showLogo)
 
-@app.route('/<regex("[a-z0-9]+"):hash>/embed/')
-@app.route('/<regex("[a-z0-9]+"):hash>/embed/<string:mapType>/')
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/embed/')
+@app.route('/<regex("[a-zA-Z0-9\_\-\.]+"):hash>/embed/<string:mapType>/')
 def getTripEmbedByHash(hash, mapType='topokart'):
 
     #Check if there is a tilejson set
