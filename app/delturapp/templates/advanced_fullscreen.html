@@ -556,7 +556,14 @@
             <div id="section-share-buttons">
                 <button autocomplete="off" id="deltur-button" class="btn btn-large btn-primary btn-block share-button" disabled>Del turen</button>
                 <div id="share-button-text">eller</div>
+                {% if current_user.is_authenticated() %}
                 <button autocomplete="off" id="embed-button" type="button" class="btn btn-primary btn-block share-button" disabled>Vis turen på eget nettsted</button>
+                {% else %}
+                <span class="hint--bottom hint-bounce hint--rounded hint--info" data-hint="Kun ved innlogging">
+                    <button autocomplete="off" id="embed-button" type="button" class="btn btn-primary btn-block share-button" disabled>Vis turen på eget nettsted</button>
+                </span>
+                {% endif %}
+                
             </div>
         </div>
         <div id="sidebar-edit-line">
@@ -962,7 +969,14 @@
                                 $('#current-line').val(currentPlaceInArray);
 
                                 $('#deltur-button').attr('disabled', false); // Enable button
-                                $('#embed-button').attr('disabled', false); // Enable button
+
+                                {% if current_user.is_authenticated() %}
+                                    $('#embed-button').attr('disabled', false); // Enable button
+                                {% else %}
+                                    $('#embed-button').attr('disabled', true); // Keep it disabled 
+
+                                {% endif %}
+                                
                                 
                                 // Stop interval
                                 clearInterval(lineInterval);
