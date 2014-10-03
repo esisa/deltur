@@ -288,6 +288,10 @@
             display: none;
         }
 
+        #draw-line-freehand {
+            margin-left: 2.5%;
+        }
+
 
         /*
         * Dialogs
@@ -535,6 +539,7 @@
                 <span class="btn btn-default btn-file section-share-button">
                     Spor fra fil <input type="file" id="fileInputLine">
                 </span>
+                <span id="draw-line-freehand"><input id="draw-line-freehand-check" type="checkbox">&nbsp;Frihåndstegning</span>
             </div>
             <div id="section-maptype">
                 <div id="section-share-header">4. Velg bakgrunnskart</div>
@@ -1575,7 +1580,7 @@
                         {% else %}
                             $('#embed-button').attr('disabled', true); // Keep it disabled 
                         {% endif %}
-                        
+
                         // Stop interval
                         clearInterval(lineInterval);
                     }
